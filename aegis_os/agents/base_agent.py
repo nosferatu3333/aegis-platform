@@ -1,39 +1,34 @@
 class BaseAgent:
     """
-    Fundamental cognitive unit in Aegis OS.
-
-    Every specialized agent inherits from this class.
+    Base class for all Aegis agents.
     """
 
     def __init__(self, name, role):
-        self.name = name
-        self.role = role
-        self.state = "initialized"
-        self.memory = []
 
-    def activate(self):
+        self.name = name
+
+        self.role = role
+
+        self.state = "initialized"
+
+
+    def start(self):
+
         self.state = "active"
 
-        print(
-            f"Agent {self.name} activated."
+
+    def execute(self, task):
+
+        raise NotImplementedError(
+            "Agent must implement execute method"
         )
 
-    def process(self, task):
-        """
-        Executes an assigned task.
 
-        To be extended by specialized agents.
-        """
+    def __repr__(self):
 
-        result = {
-            "agent": self.name,
-            "task": task,
-            "status": "completed"
-        }
-
-        self.memory.append(result)
-
-        return result
-
-    def remember(self, information):
-        self.memory.append(information)
+        return (
+            f"Agent("
+            f"name={self.name}, "
+            f"role={self.role}, "
+            f"state={self.state})"
+        )

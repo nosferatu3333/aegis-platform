@@ -3,25 +3,25 @@ from aegis_os.agents.base_agent import BaseAgent
 
 class ExecutionAgent(BaseAgent):
     """
-    Agent specialized in performing actions
-    and executing workflows.
+    Agent specialized in execution tasks.
     """
 
     def __init__(self):
+
         super().__init__(
-            name="ExecutionAgent",
+            name="Execution Agent",
             role="Task Execution"
         )
 
-    def process(self, task):
 
-        result = {
-            "agent": self.name,
-            "role": self.role,
-            "task": task,
-            "output": "Execution completed"
-        }
+    def execute(self, task):
 
-        self.memory.append(result)
+        self.start()
+
+
+        result = (
+            f"Execution completed for: {task}"
+        )
+
 
         return result

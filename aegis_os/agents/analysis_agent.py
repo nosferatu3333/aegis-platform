@@ -3,25 +3,25 @@ from aegis_os.agents.base_agent import BaseAgent
 
 class AnalysisAgent(BaseAgent):
     """
-    Agent specialized in reasoning
-    and evaluation.
+    Agent specialized in analysis tasks.
     """
 
     def __init__(self):
+
         super().__init__(
-            name="AnalysisAgent",
-            role="Analysis and Reasoning"
+            name="Analysis Agent",
+            role="Data Analysis"
         )
 
-    def process(self, task):
 
-        result = {
-            "agent": self.name,
-            "role": self.role,
-            "task": task,
-            "output": "Analysis completed"
-        }
+    def execute(self, task):
 
-        self.memory.append(result)
+        self.start()
+
+
+        result = (
+            f"Analysis completed for: {task}"
+        )
+
 
         return result
