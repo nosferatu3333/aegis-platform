@@ -1,9 +1,9 @@
+from aegis_os.core.events import Event
+
+
 class Kernel:
     """
     Aegis OS central cognitive layer.
-
-    The Kernel coordinates system initialization,
-    state management and future cognitive processes.
     """
 
     def __init__(self):
@@ -17,3 +17,9 @@ class Kernel:
         print(f"{self.name} v{self.version}")
         print("Kernel state:", self.state)
         print("Aegis OS online.")
+
+    def create_event(self, event_type, data=None):
+        return Event(
+            event_type,
+            data
+        )
