@@ -2,8 +2,12 @@ class CognitiveCycle:
     """
     Core cognitive workflow.
 
-    Connects agents with memory systems
-    to create continuous learning.
+    Connects:
+    - Agents
+    - Memory
+    - Knowledge Context
+
+    Creates the Aegis learning loop.
     """
 
     def __init__(
@@ -11,33 +15,87 @@ class CognitiveCycle:
         agent,
         working_memory,
         long_term_memory,
-        reflection_memory
+        reflection_memory,
+        knowledge_context=None
     ):
+
         self.agent = agent
+
         self.working_memory = working_memory
+
         self.long_term_memory = long_term_memory
+
         self.reflection_memory = reflection_memory
 
-
-    def execute(self, task):
-
-        # 1. Store active context
-        self.working_memory.add(task)
+        self.knowledge_context = knowledge_context
 
 
-        # 2. Agent execution
-        result = self.agent.process(task)
+    def execute(
+        self,
+        task,
+        knowledge_topic=None
+    ):
+
+        context = None
 
 
-        # 3. Store experience
-        self.long_term_memory.store(result)
+        # 1. Retrieve knowledge
+
+        if (
+            self.knowledge_context
+            and knowledge_topic
+        ):
+
+            context = (
+                self.knowledge_context
+                .build_context(
+                    knowledge_topic
+                )
+            )
 
 
-        # 4. Reflect on outcome
+        # 2. Store active context
+
+        self.working_memory.add(
+            {
+                "task": task,
+                "context": context
+            }
+        )
+
+
+        # 3. Execute agent
+
+        result = self.agent.process(
+            task
+        )
+
+
+        # 4. Store experience
+
+        self.long_term_memory.store(
+            {
+                "task": task,
+                "result": result,
+                "context": context
+            }
+        )
+
+
+        # 5. Reflection
+
         reflection = {
+
             "task": task,
-            "evaluation": "completed successfully"
+
+            "result": result,
+
+            "knowledge_used": context,
+
+            "evaluation":
+                "completed successfully"
         }
+
 
         self.reflection_memory.record(
             reflection
