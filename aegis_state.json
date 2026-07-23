@@ -1,4 +1,6 @@
 {
-    "goal": "Build Aegis",
-    "performance": 90
+    "last_learning": "Planning strategy improved execution quality",
+    "strategies": [
+        "Planning strategy improved execution quality"
+    ]
 }
