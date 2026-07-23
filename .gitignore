@@ -226,3 +226,18 @@ License to be defined.
 Built with the vision of creating a new paradigm for autonomous intelligence.
 
 **Aegis Labs**
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+env/
+venv/
+
+# Test cache
+.pytest_cache/
+
+# IDE
+.vscode/
