@@ -1,51 +1,77 @@
-from aegis_os.agents.capability_matcher import CapabilityMatcher
+from aegis_os.agents.agent_ranker import AgentRanker
+from aegis_os.agents.performance_tracker import PerformanceTracker
 
 
 class AgentCoordinator:
     """
-    Coordinates agent selection and execution.
+    Coordinates adaptive agent selection.
     """
 
     def __init__(self, registry):
 
         self.registry = registry
 
-        self.matcher = CapabilityMatcher()
+        self.performance_tracker = (
+            PerformanceTracker()
+        )
+
+        self.ranker = AgentRanker(
+            self.performance_tracker
+        )
 
 
-    def select_agent(self, required_capabilities):
+    def select_agent(
+        self,
+        required_capabilities
+    ):
 
-        profiles = []
-
-
-        for agent in self.registry.list_agents():
-
-            profiles.append(
-                agent.profile
-            )
+        agents = (
+            self.registry.list_agents()
+        )
 
 
-        selected = self.matcher.select(
-            profiles,
+        ranking = self.ranker.rank(
+            agents,
             required_capabilities
         )
 
 
-        return selected.name
+        if not ranking:
+
+            return None
 
 
-    def assign(self, required_capabilities, task):
+        return ranking[0][0]
 
-        agent_name = self.select_agent(
+
+
+    def assign(
+        self,
+        required_capabilities,
+        task
+    ):
+
+        agent = self.select_agent(
             required_capabilities
         )
 
 
-        agent = self.registry.get(
-            agent_name
-        )
+        if not agent:
+
+            return "No suitable agent found"
 
 
-        return agent.execute(
+        result = agent.execute(
             task
         )
+
+
+        # Temporary learning signal
+
+        self.performance_tracker.record(
+            agent.name,
+            80
+        )
+
+
+        return result
