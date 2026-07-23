@@ -3,16 +3,28 @@ from aegis_os.planning.planning_engine import PlanningEngine
 from aegis_os.evaluation.evaluation_engine import EvaluationEngine
 from aegis_os.learning.learning_engine import LearningEngine
 
+from aegis_os.memory.memory_manager import MemoryManager
+from aegis_os.knowledge.retriever import Retriever
+
 
 class CognitiveOrchestrator:
     """
-    Coordinates the Aegis cognitive loop.
-    
-    Connects:
+    Coordinates the complete Aegis cognitive loop.
+
+    Cognitive Flow:
+
+    Memory
+        ↓
+    Knowledge
+        ↓
     Decision
+        ↓
     Planning
+        ↓
     Execution
+        ↓
     Evaluation
+        ↓
     Learning
     """
 
@@ -27,10 +39,26 @@ class CognitiveOrchestrator:
         self.learning_engine = LearningEngine()
 
 
+        self.memory_manager = MemoryManager()
+
+
     def process(self, goal):
 
         print(
             f"\nGoal received: {goal}"
+        )
+
+
+        # 0. Retrieve previous experiences
+
+        memories = (
+            self.memory_manager.get_experiences()
+        )
+
+
+        print(
+            "\nMemory Context:",
+            memories
         )
 
 
@@ -44,6 +72,7 @@ class CognitiveOrchestrator:
             ]
         )
 
+
         print(
             "\nDecision:",
             decision
@@ -56,6 +85,7 @@ class CognitiveOrchestrator:
             decision.option
         )
 
+
         print(
             "\nPlan:",
             plan
@@ -67,6 +97,7 @@ class CognitiveOrchestrator:
         result = (
             f"Executed plan: {plan.goal}"
         )
+
 
         print(
             "\nExecution:",
@@ -81,6 +112,7 @@ class CognitiveOrchestrator:
             result
         )
 
+
         print(
             "\nEvaluation:",
             evaluation
@@ -93,9 +125,17 @@ class CognitiveOrchestrator:
             result
         )
 
+
         print(
             "\nLearning:",
             learning
+        )
+
+
+        # 6. Persist experience
+
+        self.memory_manager.remember_experience(
+            result
         )
 
 
@@ -104,5 +144,6 @@ class CognitiveOrchestrator:
             "plan": plan,
             "result": result,
             "evaluation": evaluation,
-            "learning": learning
+            "learning": learning,
+            "memory": memories
         }
