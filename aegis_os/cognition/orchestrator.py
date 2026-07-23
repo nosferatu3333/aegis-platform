@@ -4,29 +4,32 @@ from aegis_os.evaluation.evaluation_engine import EvaluationEngine
 from aegis_os.learning.learning_engine import LearningEngine
 
 from aegis_os.memory.memory_manager import MemoryManager
-from aegis_os.knowledge.retriever import Retriever
+
+from aegis_os.agents.agent_registry import AgentRegistry
+from aegis_os.agents.agent_coordinator import AgentCoordinator
+
+from aegis_os.agents.research_agent import ResearchAgent
+from aegis_os.agents.analysis_agent import AnalysisAgent
+from aegis_os.agents.execution_agent import ExecutionAgent
 
 
 class CognitiveOrchestrator:
     """
-    Coordinates the complete Aegis cognitive loop.
+    Coordinates the complete Aegis cognitive system.
 
-    Cognitive Flow:
-
-    Memory
-        ↓
-    Knowledge
-        ↓
+    Goal
+      ↓
     Decision
-        ↓
-    Planning
-        ↓
+      ↓
+    Agent Selection
+      ↓
     Execution
-        ↓
+      ↓
     Evaluation
-        ↓
+      ↓
     Learning
     """
+
 
     def __init__(self):
 
@@ -42,6 +45,48 @@ class CognitiveOrchestrator:
         self.memory_manager = MemoryManager()
 
 
+        # Agent system
+
+        self.registry = AgentRegistry()
+
+
+        self.registry.register(
+            ResearchAgent()
+        )
+
+        self.registry.register(
+            AnalysisAgent()
+        )
+
+        self.registry.register(
+            ExecutionAgent()
+        )
+
+
+        self.agent_coordinator = AgentCoordinator(
+            self.registry
+        )
+
+
+    def select_agent(self, decision):
+
+        option = decision.option.lower()
+
+
+        if "research" in option:
+
+            return "Research Agent"
+
+
+        if "analyze" in option:
+
+            return "Analysis Agent"
+
+
+        return "Execution Agent"
+
+
+
     def process(self, goal):
 
         print(
@@ -49,26 +94,13 @@ class CognitiveOrchestrator:
         )
 
 
-        # 0. Retrieve previous experiences
-
-        memories = (
-            self.memory_manager.get_experiences()
-        )
-
-
-        print(
-            "\nMemory Context:",
-            memories
-        )
-
-
-        # 1. Decision
+        # Decision
 
         decision = self.decision_engine.decide(
             [
                 f"Research {goal}",
-                f"Build {goal}",
-                f"Analyze {goal}"
+                f"Analyze {goal}",
+                f"Build {goal}"
             ]
         )
 
@@ -79,7 +111,20 @@ class CognitiveOrchestrator:
         )
 
 
-        # 2. Planning
+        # Agent Selection
+
+        agent = self.select_agent(
+            decision
+        )
+
+
+        print(
+            "\nSelected Agent:",
+            agent
+        )
+
+
+        # Planning
 
         plan = self.planning_engine.create_plan(
             decision.option
@@ -92,20 +137,21 @@ class CognitiveOrchestrator:
         )
 
 
-        # 3. Execution
+        # Agent Execution
 
-        result = (
-            f"Executed plan: {plan.goal}"
+        result = self.agent_coordinator.assign(
+            agent,
+            plan.goal
         )
 
 
         print(
-            "\nExecution:",
+            "\nAgent Result:",
             result
         )
 
 
-        # 4. Evaluation
+        # Evaluation
 
         evaluation = self.evaluation_engine.evaluate(
             goal,
@@ -119,7 +165,7 @@ class CognitiveOrchestrator:
         )
 
 
-        # 5. Learning
+        # Learning
 
         learning = self.learning_engine.learn(
             result
@@ -132,8 +178,6 @@ class CognitiveOrchestrator:
         )
 
 
-        # 6. Persist experience
-
         self.memory_manager.remember_experience(
             result
         )
@@ -141,9 +185,9 @@ class CognitiveOrchestrator:
 
         return {
             "decision": decision,
+            "agent": agent,
             "plan": plan,
             "result": result,
             "evaluation": evaluation,
-            "learning": learning,
-            "memory": memories
+            "learning": learning
         }
