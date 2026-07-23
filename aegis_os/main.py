@@ -1,4 +1,5 @@
 from aegis_os.core.kernel import Kernel
+from aegis_os.core.runtime import Runtime
 
 
 def main():
@@ -7,6 +8,10 @@ def main():
     kernel = Kernel()
 
     kernel.boot()
+
+    runtime = Runtime(kernel)
+
+    runtime.start()
 
 
 if __name__ == "__main__":
