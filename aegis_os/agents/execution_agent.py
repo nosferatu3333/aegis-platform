@@ -1,4 +1,5 @@
 from aegis_os.agents.base_agent import BaseAgent
+from aegis_os.agents.agent_profile import AgentProfile
 
 
 class ExecutionAgent(BaseAgent):
@@ -14,14 +15,21 @@ class ExecutionAgent(BaseAgent):
         )
 
 
+        self.profile = AgentProfile(
+            self.name,
+            [
+                "execution",
+                "action",
+                "operations",
+                "implementation"
+            ]
+        )
+
+
     def execute(self, task):
 
         self.start()
 
-
-        result = (
+        return (
             f"Execution completed for: {task}"
         )
-
-
-        return result

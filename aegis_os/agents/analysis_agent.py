@@ -1,4 +1,5 @@
 from aegis_os.agents.base_agent import BaseAgent
+from aegis_os.agents.agent_profile import AgentProfile
 
 
 class AnalysisAgent(BaseAgent):
@@ -14,14 +15,21 @@ class AnalysisAgent(BaseAgent):
         )
 
 
+        self.profile = AgentProfile(
+            self.name,
+            [
+                "analysis",
+                "reasoning",
+                "evaluation",
+                "insight"
+            ]
+        )
+
+
     def execute(self, task):
 
         self.start()
 
-
-        result = (
+        return (
             f"Analysis completed for: {task}"
         )
-
-
-        return result

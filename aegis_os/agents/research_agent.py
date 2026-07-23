@@ -1,4 +1,5 @@
 from aegis_os.agents.base_agent import BaseAgent
+from aegis_os.agents.agent_profile import AgentProfile
 
 
 class ResearchAgent(BaseAgent):
@@ -14,14 +15,21 @@ class ResearchAgent(BaseAgent):
         )
 
 
+        self.profile = AgentProfile(
+            self.name,
+            [
+                "research",
+                "information",
+                "knowledge",
+                "retrieval"
+            ]
+        )
+
+
     def execute(self, task):
 
         self.start()
 
-
-        result = (
+        return (
             f"Research completed for: {task}"
         )
-
-
-        return result
