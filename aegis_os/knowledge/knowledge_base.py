@@ -1,21 +1,14 @@
-class KnowledgeBase:
-    """
-    Central repository for structured knowledge.
-
-    Stores concepts, facts and information.
-    """
-
-    def __init__(self):
-        self.knowledge = {}
+from aegis_os.cognition.orchestrator import CognitiveOrchestrator
 
 
-    def add(self, concept, information):
-        self.knowledge[concept] = information
+aegis = CognitiveOrchestrator()
 
 
-    def get(self, concept):
-        return self.knowledge.get(concept)
+result = aegis.process(
+    "Develop Aegis autonomous intelligence"
+)
 
 
-    def list_concepts(self):
-        return list(self.knowledge.keys())
+print("\nFINAL COGNITIVE RESULT")
+
+print(result)
