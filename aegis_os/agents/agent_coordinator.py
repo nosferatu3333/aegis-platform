@@ -1,5 +1,6 @@
 from aegis_os.agents.agent_ranker import AgentRanker
 from aegis_os.agents.performance_tracker import PerformanceTracker
+from aegis_os.agents.agent_memory import AgentMemory
 
 
 class AgentCoordinator:
@@ -11,9 +12,16 @@ class AgentCoordinator:
 
         self.registry = registry
 
+
         self.performance_tracker = (
             PerformanceTracker()
         )
+
+
+        self.agent_memory = (
+            AgentMemory()
+        )
+
 
         self.ranker = AgentRanker(
             self.performance_tracker
@@ -58,7 +66,9 @@ class AgentCoordinator:
 
         if not agent:
 
-            return "No suitable agent found"
+            return (
+                "No suitable agent found"
+            )
 
 
         result = agent.execute(
@@ -66,12 +76,30 @@ class AgentCoordinator:
         )
 
 
-        # Temporary learning signal
+        return {
+            "agent": agent.name,
+            "result": result
+        }
 
-        self.performance_tracker.record(
-            agent.name,
-            80
+
+
+    def learn_from_result(
+        self,
+        agent_name,
+        task,
+        result,
+        score
+    ):
+
+        self.agent_memory.remember(
+            agent_name,
+            task,
+            result,
+            score
         )
 
 
-        return result
+        self.performance_tracker.record(
+            agent_name,
+            score
+        )
