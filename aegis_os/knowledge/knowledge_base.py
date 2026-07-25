@@ -1,14 +1,23 @@
-from aegis_os.cognition.orchestrator import CognitiveOrchestrator
+"""In-memory knowledge collection for the Platform prototype."""
 
 
-aegis = CognitiveOrchestrator()
+class KnowledgeBase:
+    """Store knowledge records without triggering cognition during import."""
 
+    def __init__(self):
+        self.records = []
 
-result = aegis.process(
-    "Develop Aegis autonomous intelligence"
-)
+    def add(self, record):
+        self.records.append(record)
+        return record
 
+    def all(self):
+        return list(self.records)
 
-print("\nFINAL COGNITIVE RESULT")
-
-print(result)
+    def search(self, term):
+        normalized = str(term).lower()
+        return [
+            record
+            for record in self.records
+            if normalized in str(record).lower()
+        ]

@@ -19,9 +19,25 @@ class AgentProfile:
         score = 0
 
 
+        if isinstance(required, str):
+
+            required = (
+                required,
+            )
+
+
+        normalized_capabilities = {
+            str(capability).strip().lower()
+            for capability in self.capabilities
+        }
+
+
         for capability in required:
 
-            if capability in self.capabilities:
+            if (
+                str(capability).strip().lower()
+                in normalized_capabilities
+            ):
 
                 score += 1
 

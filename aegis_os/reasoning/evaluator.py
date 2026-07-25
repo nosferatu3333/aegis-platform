@@ -9,4 +9,8 @@ class Evaluator:
             decision.option
         )
 
+        decision.score_basis = (
+            "string_length_heuristic"
+        )
+
         return decision

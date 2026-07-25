@@ -33,6 +33,12 @@ class AgentCoordinator:
         required_capabilities
     ):
 
+        required_capabilities = (
+            self.normalize_capabilities(
+                required_capabilities
+            )
+        )
+
         agents = (
             self.registry.list_agents()
         )
@@ -59,16 +65,44 @@ class AgentCoordinator:
         task
     ):
 
+        normalized_capabilities = (
+            self.normalize_capabilities(
+                required_capabilities
+            )
+        )
+
         agent = self.select_agent(
-            required_capabilities
+            normalized_capabilities
         )
 
 
         if not agent:
 
-            return (
-                "No suitable agent found"
-            )
+            return {
+
+                "status":
+                    "failed",
+
+                "agent":
+                    None,
+
+                "required_capabilities":
+                    list(
+                        normalized_capabilities
+                    ),
+
+                "result":
+                    None,
+
+                "failures":
+                    [
+                        "No suitable agent found"
+                    ],
+
+                "simulation":
+                    True
+
+            }
 
 
         result = agent.execute(
@@ -77,9 +111,83 @@ class AgentCoordinator:
 
 
         return {
+
+            "status":
+                "completed",
+
             "agent": agent.name,
-            "result": result
+
+            "required_capabilities":
+                list(
+                    normalized_capabilities
+                ),
+
+            "result": result,
+
+            "failures":
+                [],
+
+            "simulation":
+                True
+
         }
+
+
+
+    @staticmethod
+    def normalize_capabilities(
+        required_capabilities
+    ):
+
+        aliases = {
+
+            "research agent":
+                "research",
+
+            "analysis agent":
+                "analysis",
+
+            "execution agent":
+                "execution"
+
+        }
+
+
+        if isinstance(
+            required_capabilities,
+            str
+        ):
+
+            required_capabilities = (
+                required_capabilities,
+            )
+
+
+        normalized = []
+
+
+        for capability in required_capabilities:
+
+            value = str(
+                capability
+            ).strip().lower()
+
+            value = aliases.get(
+                value,
+                value
+            )
+
+
+            if value and value not in normalized:
+
+                normalized.append(
+                    value
+                )
+
+
+        return tuple(
+            normalized
+        )
 
 
 

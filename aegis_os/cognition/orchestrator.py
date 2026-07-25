@@ -31,7 +31,11 @@ class CognitiveOrchestrator:
     """
 
 
-    def __init__(self):
+    def __init__(
+        self,
+        *,
+        memory_manager=None
+    ):
 
         self.decision_engine = DecisionEngine()
 
@@ -39,10 +43,16 @@ class CognitiveOrchestrator:
 
         self.evaluation_engine = EvaluationEngine()
 
-        self.learning_engine = LearningEngine()
+        self.memory_manager = (
+            memory_manager
+            if memory_manager is not None
+            else MemoryManager()
+        )
 
 
-        self.memory_manager = MemoryManager()
+        self.learning_engine = LearningEngine(
+            self.memory_manager
+        )
 
 
         # Agent system
@@ -75,15 +85,21 @@ class CognitiveOrchestrator:
 
         if "research" in option:
 
-            return "Research Agent"
+            return (
+                "research",
+            )
 
 
         if "analyze" in option:
 
-            return "Analysis Agent"
+            return (
+                "analysis",
+            )
 
 
-        return "Execution Agent"
+        return (
+            "execution",
+        )
 
 
 
@@ -113,14 +129,14 @@ class CognitiveOrchestrator:
 
         # Agent Selection
 
-        agent = self.select_agent(
+        required_capabilities = self.select_agent(
             decision
         )
 
 
         print(
             "\nSelected Agent:",
-            agent
+            required_capabilities
         )
 
 
@@ -140,9 +156,12 @@ class CognitiveOrchestrator:
         # Agent Execution
 
         result = self.agent_coordinator.assign(
-            agent,
+            required_capabilities,
             plan.goal
         )
+
+
+        plan.mark_assignment_observed()
 
 
         print(
@@ -178,16 +197,16 @@ class CognitiveOrchestrator:
         )
 
 
-        self.memory_manager.remember_experience(
-            result
-        )
-
-
         return {
             "decision": decision,
-            "agent": agent,
+            "agent": result.get(
+                "agent"
+            ),
+            "required_capabilities":
+                required_capabilities,
             "plan": plan,
             "result": result,
             "evaluation": evaluation,
-            "learning": learning
+            "learning": learning,
+            "simulation": True
         }

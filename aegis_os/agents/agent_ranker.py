@@ -32,6 +32,11 @@ class AgentRanker:
             )
 
 
+            if capability_score <= 0:
+
+                continue
+
+
             performance_score = (
                 self.performance_tracker.average(
                     agent.name
