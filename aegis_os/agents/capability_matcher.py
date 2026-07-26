@@ -20,6 +20,10 @@ class CapabilityMatcher:
                 required_capabilities
             )
 
+            if score <= 0:
+
+                continue
+
 
             if score > highest_score:
 

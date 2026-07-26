@@ -25,3 +25,11 @@ class AgentRegistry:
         return list(
             self.agents.values()
         )
+
+
+    def list_profiles(self):
+
+        return [
+            getattr(agent, "profile", agent)
+            for agent in self.agents.values()
+        ]

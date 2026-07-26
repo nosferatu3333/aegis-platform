@@ -27,7 +27,9 @@ class AgentProfile:
 
 
         normalized_capabilities = {
-            str(capability).strip().lower()
+            str(
+                getattr(capability, "name", capability)
+            ).strip().lower()
             for capability in self.capabilities
         }
 
@@ -35,7 +37,9 @@ class AgentProfile:
         for capability in required:
 
             if (
-                str(capability).strip().lower()
+                str(
+                    getattr(capability, "name", capability)
+                ).strip().lower()
                 in normalized_capabilities
             ):
 
