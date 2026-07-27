@@ -48,6 +48,13 @@ A common abstraction standardizes the boundary without pretending every
 provider behaves identically. Provider-specific semantics remain inside
 adapters and environment-specific policy.
 
+An environment is not the resource itself. The proposed
+[Operational Resource Model](operational-resource-model.md) describes the
+semantic entity and its stable reference. An environment exposes one or more
+access locations for that resource, and an adapter implements the requested
+operation. One environment may expose many resources; one logical resource may
+have locations in multiple environments.
+
 ## 3. Environment is broader than tool
 
 - A **tool** is one actionable interface or operation, such as reading a file
@@ -191,7 +198,8 @@ These are documentation contracts, not Python implementations.
 - **Responsibility:** immutable proposal to interact with one environment
   capability.
 - **Minimum fields:** interaction ID, request ID, execution ID, workflow
-  step ID, environment selector, capability ID, normalized inputs, requested
+  step ID, resolved resource reference/resolution ID where applicable,
+  environment selector, capability ID, normalized inputs, requested
   permissions/scopes, execution mode, timeout/budget, metadata/schema version.
 - **Invariants:** globally unique interaction ID; complete correlation;
   normalized and schema-valid input; no raw credentials; requested permissions
@@ -545,6 +553,8 @@ v0.5.0 is proposed as **Environment Interaction Layer — Simulation First**.
 
 Minimum future implementation:
 
+- Phase A provider-neutral resource contracts, synthetic in-memory catalog,
+  requirements, and deterministic resolution;
 - environment contracts;
 - deterministic registry;
 - policy-decision interface;
@@ -585,7 +595,9 @@ No later phase is authorized merely because the abstraction exists.
 ## Related documents
 
 - [Governance status](governance.md)
+- [Operational Resource Model](operational-resource-model.md)
 - [Execution engine](execution-engine.md)
 - [Benchmark suite](benchmark-suite.md)
 - [ADR-004](../adr/ADR-004-environment-interface.md)
+- [ADR-005](../adr/ADR-005-operational-resource-model.md)
 - [Proposed roadmap](../roadmap/ROADMAP.md)

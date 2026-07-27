@@ -259,6 +259,7 @@ format, scoring, and limitations.
 ## Documentation
 
 - [Architecture baseline](docs/architecture/cognitive-pipeline.md)
+- [Proposed Operational Resource Model](docs/architecture/operational-resource-model.md)
 - [Proposed Environment Interaction Layer](docs/architecture/environment-interface.md)
 - [Release history](docs/releases/RELEASE_HISTORY.md)
 - [Proposed roadmap](docs/roadmap/ROADMAP.md)

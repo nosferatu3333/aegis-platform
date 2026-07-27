@@ -18,10 +18,13 @@ See [release history](../releases/RELEASE_HISTORY.md) and the compact
 
 - **Objective:** establish the governed boundary through which all future
   external domains are requested, authorized, resolved, invoked, and audited.
-- **Minimum scope:** environment/capability/request/result/error contracts;
-  deterministic registry; policy-decision and approval-requirement interfaces;
-  one deterministic simulation adapter; interaction receipts and execution
-  correlation; stable failure taxonomy.
+- **Phase A — Operational Resource Model:** provider-neutral identities, types,
+  references, descriptors, requirements, relations, synthetic in-memory
+  catalog, deterministic resolution outcomes, and provenance contracts.
+- **Phase B — Environment Interaction Layer:** environment/capability/request/
+  result/error contracts; deterministic registry; policy-decision and
+  approval-requirement interfaces; one deterministic simulation adapter;
+  interaction receipts and execution correlation; stable failure taxonomy.
 - **Exclusions:** real filesystem, network, HTTP, shell/process, Git, database,
   email, calendar, queue, MCP, plugin, human-action, or external-agent
   integration; secrets; background work; autonomous actions; production
@@ -29,14 +32,17 @@ See [release history](../releases/RELEASE_HISTORY.md) and the compact
 - **Dependencies:** stable v0.3 execution contracts, v0.4 benchmark harness,
   request correlation, explicit risk mapping,
   [ADR-002](../adr/ADR-002-governed-execution.md), and proposed
-  [ADR-004](../adr/ADR-004-environment-interface.md).
+  [ADR-004](../adr/ADR-004-environment-interface.md) and
+  [ADR-005](../adr/ADR-005-operational-resource-model.md).
 - **Completion evidence:** deterministic contract/registry/receipt tests;
-  policy-bypass prevention; allow, deny, restrict, approval-required, malformed,
-  missing-adapter, timeout/cancellation, correlation, and simulation-only cases;
-  no external action.
-- **Benchmark implications:** add optional environment, capability, permission,
-  policy, approval, adapter-resolution, error, receipt-completeness, transition,
-  and simulation criteria without grading external content quality.
+  resource identity/reference/requirement/resolution tests; policy-bypass
+  prevention; allow, deny, restrict, approval-required, ambiguous/unavailable,
+  missing-adapter, timeout/cancellation, correlation, provenance, and
+  simulation-only cases; no external action.
+- **Benchmark implications:** add optional resource inference/type/resolution,
+  environment, capability, permission, policy, approval, adapter-resolution,
+  provenance, error, receipt-completeness, transition, and simulation criteria
+  without grading external content quality.
 
 ## Planned — v0.6.0 Persistent Memory
 

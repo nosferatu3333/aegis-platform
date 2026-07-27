@@ -34,6 +34,8 @@ boundaries around deterministic simulation, not policy enforcement.
 
 Future governance requires explicit policy decisions before any real action:
 
+- resource visibility, resolution, ownership, classification, and retention
+  decisions;
 - typed tool capabilities and least-privilege grants;
 - allow, deny, and human-approval decisions;
 - risk-to-policy mapping with bypass prevention;
@@ -47,4 +49,7 @@ capabilities. See [ADR-002](../adr/ADR-002-governed-execution.md) and the
 [execution engine](execution-engine.md). The proposed common external boundary
 is documented in the
 [Environment Interaction Layer](environment-interface.md) and
-[ADR-004](../adr/ADR-004-environment-interface.md).
+[ADR-004](../adr/ADR-004-environment-interface.md). The semantic target,
+resolution, ownership, and provenance boundary is proposed in the
+[Operational Resource Model](operational-resource-model.md) and
+[ADR-005](../adr/ADR-005-operational-resource-model.md).
