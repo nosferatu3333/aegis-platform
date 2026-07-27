@@ -256,6 +256,15 @@ Default reports are written to `benchmarks/reports/latest.json` and
 [`docs/benchmarks/README.md`](docs/benchmarks/README.md) for filters, case
 format, scoring, and limitations.
 
+## Documentation
+
+- [Architecture baseline](docs/architecture/cognitive-pipeline.md)
+- [Proposed Environment Interaction Layer](docs/architecture/environment-interface.md)
+- [Release history](docs/releases/RELEASE_HISTORY.md)
+- [Proposed roadmap](docs/roadmap/ROADMAP.md)
+- [Architecture decisions](docs/adr/ADR-001-cognitive-pipeline.md)
+- [Benchmark guide](docs/benchmarks/README.md)
+
 ## Prototype boundary
 
 AEGIS currently analyzes missions and simulates their workflow transitions. It

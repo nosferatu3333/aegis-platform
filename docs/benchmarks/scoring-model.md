@@ -34,3 +34,27 @@ suite. The summary also reports:
 Each metric is `passed / evaluated * 100`. A metric with no evaluated criteria
 returns `0.0`, avoiding division by zero. Category scores use all evaluated
 criteria within that category.
+
+The exact metric mapping is:
+
+| Metric | Criteria |
+|---|---|
+| Intent | `primary_intent` |
+| Capability | `required_capabilities` |
+| Agent selection | `selected_agent` |
+| Workflow | `workflow_step_count`, `workflow_order_valid` |
+| Analysis status | `analysis_status` |
+| Execution | `execution_status` |
+| Simulation compliance | `simulated` |
+
+`failure_code` contributes to case, suite, and category scores but has no
+separate named accuracy metric.
+
+With `--no-execution`, `execution_status` and `simulated` expectations are
+excluded by the evaluator. Other expectations remain scored. A case with no
+evaluated criteria does not pass; its score is `0.0`.
+
+Scores are rounded to two decimal places. Overall and category scores aggregate
+criteria, rather than averaging case percentages. See the
+[benchmark guide](README.md) and
+[architecture](../architecture/benchmark-suite.md).
