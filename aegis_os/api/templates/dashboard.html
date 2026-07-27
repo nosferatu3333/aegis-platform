@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AEGIS Mission Console</title>
+  <link rel="stylesheet" href="/static/dashboard.css">
+  <script src="/static/dashboard.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Cognitive systems platform</p>
+        <h1>AEGIS</h1>
+      </div>
+      <span class="prototype-badge">Backend MVP · Prototype</span>
+    </header>
+
+    <section class="mission-panel" aria-labelledby="mission-heading">
+      <div class="section-heading">
+        <div>
+          <p class="step-label">01 / Mission input</p>
+          <h2 id="mission-heading">Analyze a mission</h2>
+        </div>
+        <p class="section-note">
+          AEGIS will classify intent, select a capability, and generate
+          a proposed workflow.
+        </p>
+      </div>
+
+      <form id="mission-form" data-endpoint="/analyze-task">
+        <label for="mission-task">Mission</label>
+        <textarea
+          id="mission-task"
+          name="task"
+          rows="5"
+          required
+          placeholder="Research competitors in the cognitive systems market"
+        ></textarea>
+        <div class="form-actions">
+          <p class="input-hint">Enter a concrete objective or task.</p>
+          <button id="analyze-button" type="submit">
+            <span class="button-label">Analyze Mission</span>
+          </button>
+        </div>
+      </form>
+
+      <div id="error-message" class="error-message" role="alert" hidden></div>
+    </section>
+
+    <section id="result-panel" class="result-panel" aria-live="polite" hidden>
+      <div class="section-heading result-heading">
+        <div>
+          <p class="step-label">02 / Cognitive result</p>
+          <h2>Mission analysis</h2>
+        </div>
+        <span id="pipeline-status" class="status-badge"></span>
+      </div>
+
+      <div class="result-grid">
+        <article class="card card-wide">
+          <p class="field-label">Original task</p>
+          <p id="original-task" class="task-output"></p>
+        </article>
+
+        <article class="card">
+          <p class="field-label">Primary intent</p>
+          <p id="primary-intent" class="primary-value"></p>
+          <div id="secondary-intents-group" class="subfield" hidden>
+            <p class="field-label">Secondary intents</p>
+            <div id="secondary-intents" class="chip-list"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <p class="field-label">Required capabilities</p>
+          <div id="required-capabilities" class="chip-list"></div>
+          <dl class="metric-list">
+            <div>
+              <dt>Complexity</dt>
+              <dd id="complexity"></dd>
+            </div>
+            <div>
+              <dt>Risk</dt>
+              <dd id="risk-level"></dd>
+            </div>
+          </dl>
+        </article>
+
+        <article class="card">
+          <p class="field-label">Selected agent or capability</p>
+          <p id="selected-capability" class="primary-value"></p>
+          <dl class="metric-list">
+            <div>
+              <dt>Confidence</dt>
+              <dd id="confidence"></dd>
+            </div>
+            <div>
+              <dt>Score</dt>
+              <dd id="score"></dd>
+            </div>
+          </dl>
+        </article>
+
+        <article class="card workflow-card">
+          <div class="workflow-heading">
+            <div>
+              <p class="field-label">Generated workflow</p>
+              <h3>Proposed sequence</h3>
+            </div>
+            <span id="workflow-count" class="workflow-count"></span>
+          </div>
+          <ol id="workflow-steps" class="workflow-list"></ol>
+        </article>
+      </div>
+
+      <aside class="simulation-notice">
+        <strong>Simulation boundary</strong>
+        This workflow is generated for review and is not yet autonomously
+        executed.
+      </aside>
+
+      <details class="raw-panel">
+        <summary>Raw JSON response</summary>
+        <pre id="raw-json"></pre>
+      </details>
+    </section>
+  </main>
+</body>
+</html>
