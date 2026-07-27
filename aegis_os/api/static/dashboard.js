@@ -1,9 +1,12 @@
 const form = document.querySelector("#mission-form");
 const taskInput = document.querySelector("#mission-task");
 const analyzeButton = document.querySelector("#analyze-button");
+const executeButton = document.querySelector("#execute-button");
 const buttonLabel = analyzeButton.querySelector(".button-label");
+const executeButtonLabel = executeButton.querySelector(".button-label");
 const errorMessage = document.querySelector("#error-message");
 const resultPanel = document.querySelector("#result-panel");
+const executionPanel = document.querySelector("#execution-panel");
 
 function setText(selector, value, fallback = "Not available") {
   const element = document.querySelector(selector);
@@ -88,7 +91,52 @@ function renderResult(payload) {
     2,
   );
 
+  if (payload.status === "failed" && payload.metadata?.failure_reason) {
+    errorMessage.textContent = payload.metadata.failure_reason;
+    errorMessage.hidden = false;
+  }
+
   resultPanel.hidden = false;
+}
+
+function renderExecution(receipt) {
+  const steps = [...(receipt.steps || [])].sort(
+    (left, right) => left.order - right.order,
+  );
+  const list = document.querySelector("#execution-steps");
+  list.replaceChildren();
+
+  setText("#execution-status", receipt.status);
+  setText(
+    "#receipt-summary",
+    `${receipt.completed_steps} completed · ${receipt.failed_steps} failed`,
+  );
+  setText("#execution-count", `${steps.length} steps`);
+
+  steps.forEach((step) => {
+    const item = document.createElement("li");
+    item.className = "workflow-step";
+    const content = document.createElement("div");
+    const title = document.createElement("h4");
+    const output = document.createElement("p");
+    const status = document.createElement("span");
+
+    title.textContent = step.description;
+    output.textContent =
+      step.error || step.outputs?.message || "No simulated output.";
+    status.className = "step-status";
+    status.textContent = step.status;
+    content.append(title, output);
+    item.append(content, status);
+    list.append(item);
+  });
+
+  document.querySelector("#execution-json").textContent = JSON.stringify(
+    receipt,
+    null,
+    2,
+  );
+  executionPanel.hidden = false;
 }
 
 function describeError(payload, status) {
@@ -137,5 +185,41 @@ form.addEventListener("submit", async (event) => {
   } finally {
     analyzeButton.disabled = false;
     buttonLabel.textContent = "Analyze Mission";
+  }
+});
+
+executeButton.addEventListener("click", async () => {
+  errorMessage.hidden = true;
+  resultPanel.hidden = true;
+  executionPanel.hidden = true;
+  executeButton.disabled = true;
+  analyzeButton.disabled = true;
+  executeButtonLabel.textContent = "Simulating…";
+
+  try {
+    const response = await fetch(executeButton.dataset.endpoint, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({task: taskInput.value}),
+    });
+    const payload = await response.json();
+
+    if (!response.ok) {
+      throw new Error(describeError(payload, response.status));
+    }
+
+    renderResult(payload.analysis);
+    renderExecution(payload.execution);
+    executionPanel.scrollIntoView({behavior: "smooth", block: "start"});
+  } catch (error) {
+    errorMessage.textContent =
+      error instanceof Error
+        ? error.message
+        : "Unable to simulate execution.";
+    errorMessage.hidden = false;
+  } finally {
+    executeButton.disabled = false;
+    analyzeButton.disabled = false;
+    executeButtonLabel.textContent = "Simulate Execution";
   }
 });

@@ -54,6 +54,24 @@ class CognitiveRequestPipeline:
 
         capability = self._build_capability_match(selection)
 
+        if selection is None:
+            return CognitiveRequestResult(
+                task=clean_task,
+                intent=intent,
+                capability=capability,
+                workflow=[],
+                status=PipelineStatus.FAILED,
+                metadata={
+                    "pipeline_version": "0.1.0",
+                    "workflow_steps": 0,
+                    "failure_code": "no_capability_match",
+                    "failure_reason": (
+                        "No registered profile matched the "
+                        "required capabilities."
+                    ),
+                },
+            )
+
         workflow_definition = self._read_value(
             selection,
             "workflow",

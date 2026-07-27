@@ -14,7 +14,10 @@ def test_dashboard_serves_mission_interface():
     assert "AEGIS" in response.text
     assert 'id="mission-task"' in response.text
     assert "Analyze Mission" in response.text
+    assert "Simulate Execution" in response.text
     assert 'data-endpoint="/analyze-task"' in response.text
+    assert 'data-endpoint="/execute-task"' in response.text
+    assert "SIMULATED EXECUTION ONLY" in response.text
     assert "not yet autonomously" in response.text
 
 

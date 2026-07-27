@@ -40,9 +40,18 @@
         ></textarea>
         <div class="form-actions">
           <p class="input-hint">Enter a concrete objective or task.</p>
-          <button id="analyze-button" type="submit">
-            <span class="button-label">Analyze Mission</span>
-          </button>
+          <div class="button-group">
+            <button id="analyze-button" type="submit">
+              <span class="button-label">Analyze Mission</span>
+            </button>
+            <button
+              id="execute-button"
+              type="button"
+              data-endpoint="/execute-task"
+            >
+              <span class="button-label">Simulate Execution</span>
+            </button>
+          </div>
         </div>
       </form>
 
@@ -124,6 +133,37 @@
       <details class="raw-panel">
         <summary>Raw JSON response</summary>
         <pre id="raw-json"></pre>
+      </details>
+    </section>
+
+    <section id="execution-panel" class="result-panel" aria-live="polite" hidden>
+      <div class="section-heading result-heading">
+        <div>
+          <p class="step-label">03 / Governed execution</p>
+          <h2>Simulated execution receipt</h2>
+        </div>
+        <span id="execution-status" class="status-badge"></span>
+      </div>
+
+      <aside class="simulation-notice simulation-warning">
+        <strong>SIMULATED EXECUTION ONLY</strong>
+        No external tools, systems, files, or services are accessed or changed.
+      </aside>
+
+      <article class="card workflow-card">
+        <div class="workflow-heading">
+          <div>
+            <p class="field-label">Execution steps</p>
+            <h3 id="receipt-summary">Receipt summary</h3>
+          </div>
+          <span id="execution-count" class="workflow-count"></span>
+        </div>
+        <ol id="execution-steps" class="workflow-list"></ol>
+      </article>
+
+      <details class="raw-panel">
+        <summary>Raw execution receipt</summary>
+        <pre id="execution-json"></pre>
       </details>
     </section>
   </main>

@@ -148,6 +148,17 @@ textarea:focus {
   margin-top: 16px;
 }
 
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.simulation-warning {
+  border-left-color: #ffb454;
+  color: #f1d2a6;
+}
+
 .input-hint {
   margin: 0;
   color: var(--muted);

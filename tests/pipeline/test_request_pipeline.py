@@ -97,6 +97,7 @@ def test_pipeline_result_can_be_serialized():
 
     serialized = result.to_dict()
 
+    assert serialized["schema_version"] == "1.0"
     assert serialized["status"] == "ready"
     assert serialized["capability"]["confidence"] == 0.91
     assert serialized["workflow"][0]["order"] == 1
@@ -150,3 +151,24 @@ def test_pipeline_uses_real_registry_and_capability_matcher():
     parsed = json.loads(json.dumps(serialized))
     assert parsed["capability"]["name"] == "Research Agent"
     assert parsed["workflow"]
+
+
+def test_pipeline_returns_failed_result_when_no_profile_matches():
+    registry = AgentRegistry()
+    registry.register(
+        AgentProfile(
+            "Research Agent",
+            [Capability("research")],
+        )
+    )
+    pipeline = CognitiveRequestPipeline(
+        capability_selector=AgentSelectorAdapter(registry)
+    )
+
+    result = pipeline.process_task("Plan a product launch roadmap")
+    serialized = result.to_dict()
+
+    assert result.status is PipelineStatus.FAILED
+    assert serialized["capability"]["capability_id"] == "unknown"
+    assert serialized["workflow"] == []
+    assert serialized["metadata"]["failure_code"] == "no_capability_match"

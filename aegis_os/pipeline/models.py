@@ -5,6 +5,9 @@ from enum import Enum
 from typing import Any
 
 
+SCHEMA_VERSION = "1.0"
+
+
 class TaskComplexity(str, Enum):
     """Estimated structural complexity of an incoming mission."""
 
@@ -94,12 +97,14 @@ class CognitiveRequestResult:
     task: str
     intent: IntentAnalysis
     capability: CapabilityMatch
+    schema_version: str = SCHEMA_VERSION
     workflow: list[WorkflowStep] = field(default_factory=list)
     status: PipelineStatus = PipelineStatus.READY
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "schema_version": self.schema_version,
             "task": self.task,
             "intent": self.intent.to_dict(),
             "capability": self.capability.to_dict(),
