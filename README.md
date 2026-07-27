@@ -239,6 +239,23 @@ The tests also cover execution contracts, safe defaults, adapter fidelity,
 ordered transitions, deterministic outputs, controlled failure, skipped
 steps, receipt serialization, and the simulated API/dashboard flow.
 
+## Benchmark suite
+
+AEGIS Benchmark Suite v0.1 measures deterministic lifecycle consistency using
+external JSON missions. It reuses the real analysis pipeline, execution adapter,
+and simulated execution engine, then produces JSON and Markdown reports.
+Omitted expectations are not scored, and no LLM grading, semantic similarity,
+internet access, or real tool execution is used.
+
+```powershell
+.\env\Scripts\python.exe -m aegis_benchmark.cli --path benchmarks/missions
+```
+
+Default reports are written to `benchmarks/reports/latest.json` and
+`benchmarks/reports/latest.md`. See
+[`docs/benchmarks/README.md`](docs/benchmarks/README.md) for filters, case
+format, scoring, and limitations.
+
 ## Prototype boundary
 
 AEGIS currently analyzes missions and simulates their workflow transitions. It

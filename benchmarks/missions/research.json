@@ -1,0 +1,102 @@
+{
+  "suite": "AEGIS Benchmark Suite",
+  "version": "0.1",
+  "cases": [
+    {
+      "id": "research-001",
+      "title": "Competitor research",
+      "category": "research",
+      "difficulty": "easy",
+      "mission": "Research competitors in the cognitive systems market",
+      "expected": {
+        "primary_intent": "research",
+        "required_capabilities": ["research"],
+        "selected_agent": "Research Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["research", "market"]
+    },
+    {
+      "id": "research-002",
+      "title": "Autonomous systems investigation",
+      "category": "research",
+      "difficulty": "easy",
+      "mission": "Investigate autonomous intelligence systems",
+      "expected": {
+        "primary_intent": "research",
+        "required_capabilities": ["research"],
+        "selected_agent": "Research Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["research"]
+    },
+    {
+      "id": "research-003",
+      "title": "Platform comparison",
+      "category": "research",
+      "difficulty": "medium",
+      "mission": "Compare cognitive operating system platforms",
+      "expected": {
+        "primary_intent": "research",
+        "required_capabilities": ["research"],
+        "selected_agent": "Research Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["comparison"]
+    },
+    {
+      "id": "research-004",
+      "title": "Agent architecture study",
+      "category": "research",
+      "difficulty": "medium",
+      "mission": "Study agent architecture patterns",
+      "expected": {
+        "primary_intent": "research",
+        "required_capabilities": ["research"],
+        "selected_agent": "Research Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["agents"]
+    },
+    {
+      "id": "research-005",
+      "title": "Governance exploration",
+      "category": "research",
+      "difficulty": "medium",
+      "mission": "Explore governance approaches for AI agents",
+      "expected": {
+        "primary_intent": "research",
+        "required_capabilities": ["research"],
+        "selected_agent": "Research Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["governance"]
+    },
+    {
+      "id": "research-006",
+      "title": "Safety mechanism discovery",
+      "category": "research",
+      "difficulty": "hard",
+      "mission": "Discover safety mechanisms for autonomous systems",
+      "expected": {
+        "primary_intent": "research",
+        "required_capabilities": ["research"],
+        "selected_agent": "Research Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["safety"]
+    }
+  ]
+}

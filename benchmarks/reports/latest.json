@@ -1,0 +1,2662 @@
+{
+  "agent_selection_accuracy": 100.0,
+  "analysis_status_accuracy": 100.0,
+  "capability_accuracy": 100.0,
+  "category_breakdown": {
+    "analysis": {
+      "failed_cases": 0,
+      "passed_cases": 5,
+      "score": 100.0,
+      "total_cases": 5
+    },
+    "execution": {
+      "failed_cases": 0,
+      "passed_cases": 3,
+      "score": 100.0,
+      "total_cases": 3
+    },
+    "research": {
+      "failed_cases": 0,
+      "passed_cases": 6,
+      "score": 100.0,
+      "total_cases": 6
+    },
+    "unsupported": {
+      "failed_cases": 0,
+      "passed_cases": 3,
+      "score": 100.0,
+      "total_cases": 3
+    }
+  },
+  "execution_accuracy": 100.0,
+  "failed_cases": 0,
+  "intent_accuracy": 100.0,
+  "overall_score": 100.0,
+  "passed_cases": 17,
+  "results": [
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Analysis Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Analysis Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "analyze",
+              "and",
+              "market",
+              "risks",
+              "trends"
+            ],
+            "primary_intent": "analysis",
+            "required_capabilities": [
+              "analysis"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Analyze market risks and trends",
+          "workflow": [
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Analysis Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "analysis",
+        "required_capabilities": [
+          "analysis"
+        ],
+        "selected_agent": "Analysis Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "analysis-001",
+      "category": "analysis",
+      "criteria": [
+        {
+          "actual": "analysis",
+          "criterion": "primary_intent",
+          "expected": "analysis",
+          "passed": true
+        },
+        {
+          "actual": [
+            "analysis"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "analysis"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Analysis Agent",
+          "criterion": "selected_agent",
+          "expected": "Analysis Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Market risk analysis"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Analysis Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Analysis Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "architecture",
+              "evaluate",
+              "proposed",
+              "system",
+              "the"
+            ],
+            "primary_intent": "analysis",
+            "required_capabilities": [
+              "analysis"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Evaluate the proposed system architecture",
+          "workflow": [
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Analysis Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "analysis",
+        "required_capabilities": [
+          "analysis"
+        ],
+        "selected_agent": "Analysis Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "analysis-002",
+      "category": "analysis",
+      "criteria": [
+        {
+          "actual": "analysis",
+          "criterion": "primary_intent",
+          "expected": "analysis",
+          "passed": true
+        },
+        {
+          "actual": [
+            "analysis"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "analysis"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Analysis Agent",
+          "criterion": "selected_agent",
+          "expected": "Analysis Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Architecture evaluation"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Analysis Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Analysis Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "assess",
+              "in",
+              "platform",
+              "risks",
+              "security",
+              "the"
+            ],
+            "primary_intent": "analysis",
+            "required_capabilities": [
+              "analysis"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "medium",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Assess security risks in the platform",
+          "workflow": [
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Analysis Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "analysis",
+        "required_capabilities": [
+          "analysis"
+        ],
+        "selected_agent": "Analysis Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "analysis-003",
+      "category": "analysis",
+      "criteria": [
+        {
+          "actual": "analysis",
+          "criterion": "primary_intent",
+          "expected": "analysis",
+          "passed": true
+        },
+        {
+          "actual": [
+            "analysis"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "analysis"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Analysis Agent",
+          "criterion": "selected_agent",
+          "expected": "Analysis Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Security assessment"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Analysis Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Analysis Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "diagnose",
+              "failure",
+              "patterns",
+              "workflow"
+            ],
+            "primary_intent": "analysis",
+            "required_capabilities": [
+              "analysis"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Diagnose workflow failure patterns",
+          "workflow": [
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Analysis Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "analysis",
+        "required_capabilities": [
+          "analysis"
+        ],
+        "selected_agent": "Analysis Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "analysis-004",
+      "category": "analysis",
+      "criteria": [
+        {
+          "actual": "analysis",
+          "criterion": "primary_intent",
+          "expected": "analysis",
+          "passed": true
+        },
+        {
+          "actual": [
+            "analysis"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "analysis"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Analysis Agent",
+          "criterion": "selected_agent",
+          "expected": "Analysis Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Failure diagnosis"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Analysis Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Analysis Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "consistency",
+              "execution",
+              "receipt",
+              "review"
+            ],
+            "primary_intent": "analysis",
+            "required_capabilities": [
+              "analysis"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Review execution receipt consistency",
+          "workflow": [
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Analysis Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "analysis",
+        "required_capabilities": [
+          "analysis"
+        ],
+        "selected_agent": "Analysis Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "analysis-005",
+      "category": "analysis",
+      "criteria": [
+        {
+          "actual": "analysis",
+          "criterion": "primary_intent",
+          "expected": "analysis",
+          "passed": true
+        },
+        {
+          "actual": [
+            "analysis"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "analysis"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Analysis Agent",
+          "criterion": "selected_agent",
+          "expected": "Analysis Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Receipt review"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Research Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Research Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "cognitive",
+              "for",
+              "governance",
+              "models",
+              "research",
+              "systems"
+            ],
+            "primary_intent": "research",
+            "required_capabilities": [
+              "research"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Research governance models for cognitive systems",
+          "workflow": [
+            {
+              "capability_id": "Research Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Research Agent",
+        "execution_receipt": {
+          "completed_steps": 5,
+          "failed_steps": 0,
+          "finished_at": "2000-01-01T00:00:00+00:00",
+          "logs": [
+            "request status: pending -> ready; simulated=true",
+            "request status: ready -> running; simulated=true",
+            "step-1 status: pending -> running; simulated=true",
+            "step-1 status: running -> completed; simulated=true",
+            "step-2 status: pending -> running; simulated=true",
+            "step-2 status: running -> completed; simulated=true",
+            "step-3 status: pending -> running; simulated=true",
+            "step-3 status: running -> completed; simulated=true",
+            "step-4 status: pending -> running; simulated=true",
+            "step-4 status: running -> completed; simulated=true",
+            "step-5 status: pending -> running; simulated=true",
+            "step-5 status: running -> completed; simulated=true",
+            "request status: running -> completed; simulated=true"
+          ],
+          "mission": "Research governance models for cognitive systems",
+          "request_id": "benchmark-execution-001",
+          "schema_version": "1.0",
+          "selected_agent": "Research Agent",
+          "simulated": true,
+          "started_at": "2000-01-01T00:00:00+00:00",
+          "status": "completed",
+          "steps": [
+            {
+              "description": "Clarify the objective: Define the intended outcome, constraints, and success criteria.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 1,
+              "outputs": {
+                "message": "Simulated completion of step 1: Clarify the objective: Define the intended outcome, constraints, and success criteria.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-1"
+            },
+            {
+              "description": "Analyze the mission: Identify the information and operational requirements.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 2,
+              "outputs": {
+                "message": "Simulated completion of step 2: Analyze the mission: Identify the information and operational requirements.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-2"
+            },
+            {
+              "description": "Prepare an approach: Organize the mission into a coherent sequence of actions.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 3,
+              "outputs": {
+                "message": "Simulated completion of step 3: Prepare an approach: Organize the mission into a coherent sequence of actions.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-3"
+            },
+            {
+              "description": "Execute the first increment: Produce the smallest useful version of the requested outcome.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 4,
+              "outputs": {
+                "message": "Simulated completion of step 4: Execute the first increment: Produce the smallest useful version of the requested outcome.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-4"
+            },
+            {
+              "description": "Evaluate the result: Review the output and identify necessary refinements.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 5,
+              "outputs": {
+                "message": "Simulated completion of step 5: Evaluate the result: Review the output and identify necessary refinements.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-5"
+            }
+          ]
+        },
+        "execution_status": "completed",
+        "failure_code": null,
+        "primary_intent": "research",
+        "required_capabilities": [
+          "research"
+        ],
+        "selected_agent": "Research Agent",
+        "simulated": true,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "execution-001",
+      "category": "execution",
+      "criteria": [
+        {
+          "actual": "research",
+          "criterion": "primary_intent",
+          "expected": "research",
+          "passed": true
+        },
+        {
+          "actual": [
+            "research"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "research"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Research Agent",
+          "criterion": "selected_agent",
+          "expected": "Research Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": "completed",
+          "criterion": "execution_status",
+          "expected": "completed",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "simulated",
+          "expected": true,
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Simulated research execution"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Analysis Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Analysis Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "analyze",
+              "controls",
+              "operational",
+              "risk"
+            ],
+            "primary_intent": "analysis",
+            "required_capabilities": [
+              "analysis"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Analyze operational risk controls",
+          "workflow": [
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Analysis Agent",
+        "execution_receipt": {
+          "completed_steps": 5,
+          "failed_steps": 0,
+          "finished_at": "2000-01-01T00:00:00+00:00",
+          "logs": [
+            "request status: pending -> ready; simulated=true",
+            "request status: ready -> running; simulated=true",
+            "step-1 status: pending -> running; simulated=true",
+            "step-1 status: running -> completed; simulated=true",
+            "step-2 status: pending -> running; simulated=true",
+            "step-2 status: running -> completed; simulated=true",
+            "step-3 status: pending -> running; simulated=true",
+            "step-3 status: running -> completed; simulated=true",
+            "step-4 status: pending -> running; simulated=true",
+            "step-4 status: running -> completed; simulated=true",
+            "step-5 status: pending -> running; simulated=true",
+            "step-5 status: running -> completed; simulated=true",
+            "request status: running -> completed; simulated=true"
+          ],
+          "mission": "Analyze operational risk controls",
+          "request_id": "benchmark-execution-002",
+          "schema_version": "1.0",
+          "selected_agent": "Analysis Agent",
+          "simulated": true,
+          "started_at": "2000-01-01T00:00:00+00:00",
+          "status": "completed",
+          "steps": [
+            {
+              "description": "Clarify the objective: Define the intended outcome, constraints, and success criteria.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 1,
+              "outputs": {
+                "message": "Simulated completion of step 1: Clarify the objective: Define the intended outcome, constraints, and success criteria.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-1"
+            },
+            {
+              "description": "Analyze the mission: Identify the information and operational requirements.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 2,
+              "outputs": {
+                "message": "Simulated completion of step 2: Analyze the mission: Identify the information and operational requirements.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-2"
+            },
+            {
+              "description": "Prepare an approach: Organize the mission into a coherent sequence of actions.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 3,
+              "outputs": {
+                "message": "Simulated completion of step 3: Prepare an approach: Organize the mission into a coherent sequence of actions.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-3"
+            },
+            {
+              "description": "Execute the first increment: Produce the smallest useful version of the requested outcome.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 4,
+              "outputs": {
+                "message": "Simulated completion of step 4: Execute the first increment: Produce the smallest useful version of the requested outcome.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-4"
+            },
+            {
+              "description": "Evaluate the result: Review the output and identify necessary refinements.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 5,
+              "outputs": {
+                "message": "Simulated completion of step 5: Evaluate the result: Review the output and identify necessary refinements.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-5"
+            }
+          ]
+        },
+        "execution_status": "completed",
+        "failure_code": null,
+        "primary_intent": "analysis",
+        "required_capabilities": [
+          "analysis"
+        ],
+        "selected_agent": "Analysis Agent",
+        "simulated": true,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "execution-002",
+      "category": "execution",
+      "criteria": [
+        {
+          "actual": "analysis",
+          "criterion": "primary_intent",
+          "expected": "analysis",
+          "passed": true
+        },
+        {
+          "actual": [
+            "analysis"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "analysis"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Analysis Agent",
+          "criterion": "selected_agent",
+          "expected": "Analysis Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": "completed",
+          "criterion": "execution_status",
+          "expected": "completed",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "simulated",
+          "expected": true,
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Simulated analysis execution"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Analysis Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Analysis Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "consistency",
+              "evaluate",
+              "governed",
+              "of",
+              "workflows"
+            ],
+            "primary_intent": "analysis",
+            "required_capabilities": [
+              "analysis"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Evaluate consistency of governed workflows",
+          "workflow": [
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Analysis Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Analysis Agent",
+        "execution_receipt": {
+          "completed_steps": 5,
+          "failed_steps": 0,
+          "finished_at": "2000-01-01T00:00:00+00:00",
+          "logs": [
+            "request status: pending -> ready; simulated=true",
+            "request status: ready -> running; simulated=true",
+            "step-1 status: pending -> running; simulated=true",
+            "step-1 status: running -> completed; simulated=true",
+            "step-2 status: pending -> running; simulated=true",
+            "step-2 status: running -> completed; simulated=true",
+            "step-3 status: pending -> running; simulated=true",
+            "step-3 status: running -> completed; simulated=true",
+            "step-4 status: pending -> running; simulated=true",
+            "step-4 status: running -> completed; simulated=true",
+            "step-5 status: pending -> running; simulated=true",
+            "step-5 status: running -> completed; simulated=true",
+            "request status: running -> completed; simulated=true"
+          ],
+          "mission": "Evaluate consistency of governed workflows",
+          "request_id": "benchmark-execution-003",
+          "schema_version": "1.0",
+          "selected_agent": "Analysis Agent",
+          "simulated": true,
+          "started_at": "2000-01-01T00:00:00+00:00",
+          "status": "completed",
+          "steps": [
+            {
+              "description": "Clarify the objective: Define the intended outcome, constraints, and success criteria.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 1,
+              "outputs": {
+                "message": "Simulated completion of step 1: Clarify the objective: Define the intended outcome, constraints, and success criteria.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-1"
+            },
+            {
+              "description": "Analyze the mission: Identify the information and operational requirements.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 2,
+              "outputs": {
+                "message": "Simulated completion of step 2: Analyze the mission: Identify the information and operational requirements.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-2"
+            },
+            {
+              "description": "Prepare an approach: Organize the mission into a coherent sequence of actions.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 3,
+              "outputs": {
+                "message": "Simulated completion of step 3: Prepare an approach: Organize the mission into a coherent sequence of actions.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-3"
+            },
+            {
+              "description": "Execute the first increment: Produce the smallest useful version of the requested outcome.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 4,
+              "outputs": {
+                "message": "Simulated completion of step 4: Execute the first increment: Produce the smallest useful version of the requested outcome.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-4"
+            },
+            {
+              "description": "Evaluate the result: Review the output and identify necessary refinements.",
+              "error": null,
+              "inputs": {
+                "mission": "provided"
+              },
+              "order": 5,
+              "outputs": {
+                "message": "Simulated completion of step 5: Evaluate the result: Review the output and identify necessary refinements.",
+                "simulated": true
+              },
+              "status": "completed",
+              "step_id": "step-5"
+            }
+          ]
+        },
+        "execution_status": "completed",
+        "failure_code": null,
+        "primary_intent": "analysis",
+        "required_capabilities": [
+          "analysis"
+        ],
+        "selected_agent": "Analysis Agent",
+        "simulated": true,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "execution-003",
+      "category": "execution",
+      "criteria": [
+        {
+          "actual": "analysis",
+          "criterion": "primary_intent",
+          "expected": "analysis",
+          "passed": true
+        },
+        {
+          "actual": [
+            "analysis"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "analysis"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Analysis Agent",
+          "criterion": "selected_agent",
+          "expected": "Analysis Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": "completed",
+          "criterion": "execution_status",
+          "expected": "completed",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "simulated",
+          "expected": true,
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Ordered simulated workflow"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Research Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Research Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "cognitive",
+              "competitors",
+              "in",
+              "market",
+              "research",
+              "systems",
+              "the"
+            ],
+            "primary_intent": "research",
+            "required_capabilities": [
+              "research"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Research competitors in the cognitive systems market",
+          "workflow": [
+            {
+              "capability_id": "Research Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Research Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "research",
+        "required_capabilities": [
+          "research"
+        ],
+        "selected_agent": "Research Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "research-001",
+      "category": "research",
+      "criteria": [
+        {
+          "actual": "research",
+          "criterion": "primary_intent",
+          "expected": "research",
+          "passed": true
+        },
+        {
+          "actual": [
+            "research"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "research"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Research Agent",
+          "criterion": "selected_agent",
+          "expected": "Research Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Competitor research"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Research Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Research Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "autonomous",
+              "intelligence",
+              "investigate",
+              "systems"
+            ],
+            "primary_intent": "research",
+            "required_capabilities": [
+              "research"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Investigate autonomous intelligence systems",
+          "workflow": [
+            {
+              "capability_id": "Research Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Research Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "research",
+        "required_capabilities": [
+          "research"
+        ],
+        "selected_agent": "Research Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "research-002",
+      "category": "research",
+      "criteria": [
+        {
+          "actual": "research",
+          "criterion": "primary_intent",
+          "expected": "research",
+          "passed": true
+        },
+        {
+          "actual": [
+            "research"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "research"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Research Agent",
+          "criterion": "selected_agent",
+          "expected": "Research Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Autonomous systems investigation"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Research Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Research Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "cognitive",
+              "compare",
+              "operating",
+              "platforms",
+              "system"
+            ],
+            "primary_intent": "research",
+            "required_capabilities": [
+              "research"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Compare cognitive operating system platforms",
+          "workflow": [
+            {
+              "capability_id": "Research Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Research Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "research",
+        "required_capabilities": [
+          "research"
+        ],
+        "selected_agent": "Research Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "research-003",
+      "category": "research",
+      "criteria": [
+        {
+          "actual": "research",
+          "criterion": "primary_intent",
+          "expected": "research",
+          "passed": true
+        },
+        {
+          "actual": [
+            "research"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "research"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Research Agent",
+          "criterion": "selected_agent",
+          "expected": "Research Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Platform comparison"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Research Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Research Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "agent",
+              "architecture",
+              "patterns",
+              "study"
+            ],
+            "primary_intent": "research",
+            "required_capabilities": [
+              "research"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Study agent architecture patterns",
+          "workflow": [
+            {
+              "capability_id": "Research Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Research Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "research",
+        "required_capabilities": [
+          "research"
+        ],
+        "selected_agent": "Research Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "research-004",
+      "category": "research",
+      "criteria": [
+        {
+          "actual": "research",
+          "criterion": "primary_intent",
+          "expected": "research",
+          "passed": true
+        },
+        {
+          "actual": [
+            "research"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "research"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Research Agent",
+          "criterion": "selected_agent",
+          "expected": "Research Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Agent architecture study"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Research Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Research Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "agents",
+              "ai",
+              "approaches",
+              "explore",
+              "for",
+              "governance"
+            ],
+            "primary_intent": "research",
+            "required_capabilities": [
+              "research"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Explore governance approaches for AI agents",
+          "workflow": [
+            {
+              "capability_id": "Research Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Research Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "research",
+        "required_capabilities": [
+          "research"
+        ],
+        "selected_agent": "Research Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "research-005",
+      "category": "research",
+      "criteria": [
+        {
+          "actual": "research",
+          "criterion": "primary_intent",
+          "expected": "research",
+          "passed": true
+        },
+        {
+          "actual": [
+            "research"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "research"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Research Agent",
+          "criterion": "selected_agent",
+          "expected": "Research Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Governance exploration"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "Research Agent",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "Research Agent",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "autonomous",
+              "discover",
+              "for",
+              "mechanisms",
+              "safety",
+              "systems"
+            ],
+            "primary_intent": "research",
+            "required_capabilities": [
+              "research"
+            ],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 5
+          },
+          "schema_version": "1.0",
+          "status": "ready",
+          "task": "Discover safety mechanisms for autonomous systems",
+          "workflow": [
+            {
+              "capability_id": "Research Agent",
+              "description": "Define the intended outcome, constraints, and success criteria.",
+              "order": 1,
+              "status": "pending",
+              "title": "Clarify the objective"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Identify the information and operational requirements.",
+              "order": 2,
+              "status": "pending",
+              "title": "Analyze the mission"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Organize the mission into a coherent sequence of actions.",
+              "order": 3,
+              "status": "pending",
+              "title": "Prepare an approach"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Produce the smallest useful version of the requested outcome.",
+              "order": 4,
+              "status": "pending",
+              "title": "Execute the first increment"
+            },
+            {
+              "capability_id": "Research Agent",
+              "description": "Review the output and identify necessary refinements.",
+              "order": 5,
+              "status": "pending",
+              "title": "Evaluate the result"
+            }
+          ]
+        },
+        "analysis_status": "ready",
+        "capability_id": "Research Agent",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": null,
+        "primary_intent": "research",
+        "required_capabilities": [
+          "research"
+        ],
+        "selected_agent": "Research Agent",
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "workflow_step_count": 5
+      },
+      "case_id": "research-006",
+      "category": "research",
+      "criteria": [
+        {
+          "actual": "research",
+          "criterion": "primary_intent",
+          "expected": "research",
+          "passed": true
+        },
+        {
+          "actual": [
+            "research"
+          ],
+          "criterion": "required_capabilities",
+          "expected": [
+            "research"
+          ],
+          "passed": true
+        },
+        {
+          "actual": "Research Agent",
+          "criterion": "selected_agent",
+          "expected": "Research Agent",
+          "passed": true
+        },
+        {
+          "actual": 5,
+          "criterion": "workflow_step_count",
+          "expected": 5,
+          "passed": true
+        },
+        {
+          "actual": "ready",
+          "criterion": "analysis_status",
+          "expected": "ready",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Safety mechanism discovery"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "unknown",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "unknown",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "a",
+              "launch",
+              "plan",
+              "product",
+              "roadmap"
+            ],
+            "primary_intent": "planning",
+            "required_capabilities": [],
+            "requires_execution": false,
+            "requires_planning": true,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "failure_code": "no_capability_match",
+            "failure_reason": "No registered profile matched the required capabilities.",
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 0
+          },
+          "schema_version": "1.0",
+          "status": "failed",
+          "task": "Plan a product launch roadmap",
+          "workflow": []
+        },
+        "analysis_status": "failed",
+        "capability_id": "unknown",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": "no_capability_match",
+        "primary_intent": "planning",
+        "required_capabilities": [],
+        "selected_agent": null,
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [],
+        "workflow_step_count": 0
+      },
+      "case_id": "unsupported-001",
+      "category": "unsupported",
+      "criteria": [
+        {
+          "actual": "planning",
+          "criterion": "primary_intent",
+          "expected": "planning",
+          "passed": true
+        },
+        {
+          "actual": [],
+          "criterion": "required_capabilities",
+          "expected": [],
+          "passed": true
+        },
+        {
+          "actual": 0,
+          "criterion": "workflow_step_count",
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "actual": "failed",
+          "criterion": "analysis_status",
+          "expected": "failed",
+          "passed": true
+        },
+        {
+          "actual": "no_capability_match",
+          "criterion": "failure_code",
+          "expected": "no_capability_match",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Planning-only mission"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "unknown",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "unknown",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "adaptive",
+              "consider",
+              "future",
+              "of",
+              "organizations",
+              "the"
+            ],
+            "primary_intent": "general_reasoning",
+            "required_capabilities": [],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "failure_code": "no_capability_match",
+            "failure_reason": "No registered profile matched the required capabilities.",
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 0
+          },
+          "schema_version": "1.0",
+          "status": "failed",
+          "task": "Consider the future of adaptive organizations",
+          "workflow": []
+        },
+        "analysis_status": "failed",
+        "capability_id": "unknown",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": "no_capability_match",
+        "primary_intent": "general_reasoning",
+        "required_capabilities": [],
+        "selected_agent": null,
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [],
+        "workflow_step_count": 0
+      },
+      "case_id": "unsupported-002",
+      "category": "unsupported",
+      "criteria": [
+        {
+          "actual": "general_reasoning",
+          "criterion": "primary_intent",
+          "expected": "general_reasoning",
+          "passed": true
+        },
+        {
+          "actual": [],
+          "criterion": "required_capabilities",
+          "expected": [],
+          "passed": true
+        },
+        {
+          "actual": 0,
+          "criterion": "workflow_step_count",
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "actual": "failed",
+          "criterion": "analysis_status",
+          "expected": "failed",
+          "passed": true
+        },
+        {
+          "actual": "no_capability_match",
+          "criterion": "failure_code",
+          "expected": "no_capability_match",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "General reasoning mission"
+    },
+    {
+      "actual": {
+        "analysis": {
+          "capability": {
+            "capability_id": "unknown",
+            "confidence": 0.0,
+            "matched_tags": [],
+            "name": "unknown",
+            "reasons": [],
+            "score": 0.0
+          },
+          "intent": {
+            "complexity": "low",
+            "detected_concepts": [
+              "a",
+              "concise",
+              "project",
+              "summary",
+              "write"
+            ],
+            "primary_intent": "communication",
+            "required_capabilities": [],
+            "requires_execution": false,
+            "requires_planning": false,
+            "risk": "low",
+            "secondary_intents": []
+          },
+          "metadata": {
+            "failure_code": "no_capability_match",
+            "failure_reason": "No registered profile matched the required capabilities.",
+            "pipeline_version": "0.1.0",
+            "workflow_steps": 0
+          },
+          "schema_version": "1.0",
+          "status": "failed",
+          "task": "Write a concise project summary",
+          "workflow": []
+        },
+        "analysis_status": "failed",
+        "capability_id": "unknown",
+        "execution_receipt": null,
+        "execution_status": null,
+        "failure_code": "no_capability_match",
+        "primary_intent": "communication",
+        "required_capabilities": [],
+        "selected_agent": null,
+        "simulated": null,
+        "workflow_order_valid": true,
+        "workflow_orders": [],
+        "workflow_step_count": 0
+      },
+      "case_id": "unsupported-003",
+      "category": "unsupported",
+      "criteria": [
+        {
+          "actual": "communication",
+          "criterion": "primary_intent",
+          "expected": "communication",
+          "passed": true
+        },
+        {
+          "actual": [],
+          "criterion": "required_capabilities",
+          "expected": [],
+          "passed": true
+        },
+        {
+          "actual": 0,
+          "criterion": "workflow_step_count",
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "actual": "failed",
+          "criterion": "analysis_status",
+          "expected": "failed",
+          "passed": true
+        },
+        {
+          "actual": "no_capability_match",
+          "criterion": "failure_code",
+          "expected": "no_capability_match",
+          "passed": true
+        },
+        {
+          "actual": true,
+          "criterion": "workflow_order_valid",
+          "expected": true,
+          "passed": true
+        }
+      ],
+      "passed": true,
+      "score": 100.0,
+      "title": "Communication-only mission"
+    }
+  ],
+  "simulation_compliance_accuracy": 100.0,
+  "suite": "AEGIS Benchmark Suite",
+  "total_cases": 17,
+  "version": "0.1",
+  "workflow_accuracy": 100.0
+}

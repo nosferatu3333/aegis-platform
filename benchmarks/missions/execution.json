@@ -1,0 +1,74 @@
+{
+  "suite": "AEGIS Benchmark Suite",
+  "version": "0.1",
+  "cases": [
+    {
+      "id": "execution-001",
+      "title": "Simulated research execution",
+      "category": "execution",
+      "difficulty": "easy",
+      "mission": "Research governance models for cognitive systems",
+      "expected": {
+        "primary_intent": "research",
+        "required_capabilities": ["research"],
+        "selected_agent": "Research Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready",
+        "execution_status": "completed",
+        "simulated": true
+      },
+      "tags": ["execution", "simulation"]
+    },
+    {
+      "id": "execution-002",
+      "title": "Simulated analysis execution",
+      "category": "execution",
+      "difficulty": "medium",
+      "mission": "Analyze operational risk controls",
+      "expected": {
+        "primary_intent": "analysis",
+        "required_capabilities": ["analysis"],
+        "selected_agent": "Analysis Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready",
+        "execution_status": "completed",
+        "simulated": true
+      },
+      "tags": ["execution", "simulation"]
+    },
+    {
+      "id": "execution-003",
+      "title": "Ordered simulated workflow",
+      "category": "execution",
+      "difficulty": "hard",
+      "mission": "Evaluate consistency of governed workflows",
+      "expected": {
+        "primary_intent": "analysis",
+        "required_capabilities": ["analysis"],
+        "selected_agent": "Analysis Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready",
+        "execution_status": "completed",
+        "simulated": true
+      },
+      "tags": ["execution", "ordering"]
+    },
+    {
+      "id": "execution-disabled-example",
+      "title": "Disabled future real-tool case",
+      "category": "execution",
+      "difficulty": "hard",
+      "mission": "Research current external sources using a real browser",
+      "expected": {
+        "primary_intent": "research",
+        "execution_status": "completed",
+        "simulated": false
+      },
+      "tags": ["disabled", "future"],
+      "enabled": false
+    }
+  ]
+}

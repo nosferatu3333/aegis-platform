@@ -1,0 +1,86 @@
+{
+  "suite": "AEGIS Benchmark Suite",
+  "version": "0.1",
+  "cases": [
+    {
+      "id": "analysis-001",
+      "title": "Market risk analysis",
+      "category": "analysis",
+      "difficulty": "easy",
+      "mission": "Analyze market risks and trends",
+      "expected": {
+        "primary_intent": "analysis",
+        "required_capabilities": ["analysis"],
+        "selected_agent": "Analysis Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["analysis", "market"]
+    },
+    {
+      "id": "analysis-002",
+      "title": "Architecture evaluation",
+      "category": "analysis",
+      "difficulty": "easy",
+      "mission": "Evaluate the proposed system architecture",
+      "expected": {
+        "primary_intent": "analysis",
+        "required_capabilities": ["analysis"],
+        "selected_agent": "Analysis Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["architecture"]
+    },
+    {
+      "id": "analysis-003",
+      "title": "Security assessment",
+      "category": "analysis",
+      "difficulty": "medium",
+      "mission": "Assess security risks in the platform",
+      "expected": {
+        "primary_intent": "analysis",
+        "required_capabilities": ["analysis"],
+        "selected_agent": "Analysis Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["security", "risk"]
+    },
+    {
+      "id": "analysis-004",
+      "title": "Failure diagnosis",
+      "category": "analysis",
+      "difficulty": "medium",
+      "mission": "Diagnose workflow failure patterns",
+      "expected": {
+        "primary_intent": "analysis",
+        "required_capabilities": ["analysis"],
+        "selected_agent": "Analysis Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["diagnosis"]
+    },
+    {
+      "id": "analysis-005",
+      "title": "Receipt review",
+      "category": "analysis",
+      "difficulty": "hard",
+      "mission": "Review execution receipt consistency",
+      "expected": {
+        "primary_intent": "analysis",
+        "required_capabilities": ["analysis"],
+        "selected_agent": "Analysis Agent",
+        "workflow_step_count": 5,
+        "workflow_order_valid": true,
+        "analysis_status": "ready"
+      },
+      "tags": ["receipt"]
+    }
+  ]
+}

@@ -11,15 +11,10 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
-from aegis_os.agents.agent_profile import AgentProfile
-from aegis_os.agents.agent_registry import AgentRegistry
-from aegis_os.agents.capability import Capability
-from aegis_os.agents.capability_matcher import CapabilityMatcher
 from aegis_os.execution.adapter import build_execution_request
 from aegis_os.execution.execution_engine import ExecutionEngine
-from aegis_os.pipeline.agent_selector_adapter import AgentSelectorAdapter
+from aegis_os.pipeline.composition import create_default_pipeline
 from aegis_os.pipeline.models import SCHEMA_VERSION
-from aegis_os.pipeline.request_pipeline import CognitiveRequestPipeline
 
 
 API_DIRECTORY = Path(__file__).resolve().parent
@@ -47,32 +42,7 @@ class AnalyzeTaskRequest(BaseModel):
         return value
 
 
-def create_pipeline() -> CognitiveRequestPipeline:
-    registry = AgentRegistry()
-    registry.register(
-        AgentProfile(
-            "Research Agent",
-            [
-                Capability("research"),
-                Capability("knowledge"),
-            ],
-        )
-    )
-    registry.register(
-        AgentProfile(
-            "Analysis Agent",
-            [
-                Capability("analysis"),
-                Capability("evaluation"),
-            ],
-        )
-    )
-
-    selector = AgentSelectorAdapter(
-        registry=registry,
-        matcher=CapabilityMatcher(),
-    )
-    return CognitiveRequestPipeline(capability_selector=selector)
+create_pipeline = create_default_pipeline
 
 
 def create_app() -> FastAPI:

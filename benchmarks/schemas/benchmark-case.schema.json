@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.local/schemas/benchmark-case.schema.json",
+  "title": "AEGIS Benchmark Case File",
+  "type": "object",
+  "required": ["suite", "version", "cases"],
+  "properties": {
+    "suite": {"type": "string"},
+    "version": {"const": "0.1"},
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "case": {
+      "type": "object",
+      "required": [
+        "id", "title", "category", "difficulty", "mission", "expected"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "category": {"type": "string", "minLength": 1},
+        "difficulty": {"type": "string", "minLength": 1},
+        "mission": {"type": "string", "minLength": 1},
+        "tags": {"type": "array", "items": {"type": "string"}},
+        "enabled": {"type": "boolean", "default": true},
+        "expected": {
+          "type": "object",
+          "properties": {
+            "primary_intent": {"type": "string"},
+            "required_capabilities": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "selected_agent": {"type": "string"},
+            "workflow_step_count": {"type": "integer", "minimum": 0},
+            "analysis_status": {"type": "string"},
+            "execution_status": {"type": "string"},
+            "simulated": {"type": "boolean"},
+            "failure_code": {"type": "string"},
+            "workflow_order_valid": {"type": "boolean"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

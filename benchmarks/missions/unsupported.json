@@ -1,0 +1,54 @@
+{
+  "suite": "AEGIS Benchmark Suite",
+  "version": "0.1",
+  "cases": [
+    {
+      "id": "unsupported-001",
+      "title": "Planning-only mission",
+      "category": "unsupported",
+      "difficulty": "easy",
+      "mission": "Plan a product launch roadmap",
+      "expected": {
+        "primary_intent": "planning",
+        "required_capabilities": [],
+        "workflow_step_count": 0,
+        "workflow_order_valid": true,
+        "analysis_status": "failed",
+        "failure_code": "no_capability_match"
+      },
+      "tags": ["planning", "no-match"]
+    },
+    {
+      "id": "unsupported-002",
+      "title": "General reasoning mission",
+      "category": "unsupported",
+      "difficulty": "medium",
+      "mission": "Consider the future of adaptive organizations",
+      "expected": {
+        "primary_intent": "general_reasoning",
+        "required_capabilities": [],
+        "workflow_step_count": 0,
+        "workflow_order_valid": true,
+        "analysis_status": "failed",
+        "failure_code": "no_capability_match"
+      },
+      "tags": ["general-reasoning", "no-match"]
+    },
+    {
+      "id": "unsupported-003",
+      "title": "Communication-only mission",
+      "category": "unsupported",
+      "difficulty": "medium",
+      "mission": "Write a concise project summary",
+      "expected": {
+        "primary_intent": "communication",
+        "required_capabilities": [],
+        "workflow_step_count": 0,
+        "workflow_order_valid": true,
+        "analysis_status": "failed",
+        "failure_code": "no_capability_match"
+      },
+      "tags": ["communication", "no-match"]
+    }
+  ]
+}
