@@ -1,6 +1,11 @@
 # ADR-004 — Governed Environment Interaction Layer
 
-- **Status:** Proposed
+- **Status:** Superseded by
+  [ADR-006](ADR-006-environment-interaction-layer.md)
+
+> Preserved as the historical precursor written before the Operational
+> Resource Foundation was implemented. ADR-006 is the current proposed
+> decision.
 
 ## Context
 

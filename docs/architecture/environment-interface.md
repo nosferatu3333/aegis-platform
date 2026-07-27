@@ -1,6 +1,13 @@
-# Environment Interaction Layer — proposed architecture
+# Environment Interface — historical precursor
 
-> **Status: Proposed.** This document defines a future boundary. No environment
+> **Status: Superseded.** This proposal was refined after implementation of the
+> Operational Resource Foundation. The current Phase B authority is
+> [Environment Interaction Layer](environment-interaction-layer.md), recorded
+> by [ADR-006](../adr/ADR-006-environment-interaction-layer.md). This file is
+> retained for architectural history and must not be used as the current
+> implementation specification.
+
+This document defined a future boundary. No environment
 > registry, policy engine, approval service, adapter invocation, or external
 > integration described here is implemented in the current v0.4.0 runtime.
 

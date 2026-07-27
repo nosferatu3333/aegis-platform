@@ -95,8 +95,8 @@ interception, environment/adapter resolution, controlled invocation,
 normalized results, and receipts. An environment may expose many resources and
 one resource may have multiple environment locations.
 
-See [ADR-004](ADR-004-environment-interface.md) and the
-[environment architecture](../architecture/environment-interface.md).
+See [ADR-006](ADR-006-environment-interaction-layer.md) and the current
+[environment architecture](../architecture/environment-interaction-layer.md).
 
 ## Relationship to future memory and knowledge
 

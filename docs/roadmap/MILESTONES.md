@@ -10,8 +10,8 @@ production readiness.
 | v0.2.0 | Completed | Can users inspect the pipeline from a browser? | Dashboard MVP | Dashboard and API-flow tests | Workflow display only |
 | v0.3.0 | Completed | Can execution semantics exist safely before tools? | Simulated engine and receipt | Execution/API tests | No real action or policy engine |
 | v0.4.0 | Completed | Is lifecycle behavior capable and consistent on declared cases? | Deterministic benchmark suite | 53 tests; 17/17 benchmark cases | Small exact-match dataset |
-| v0.5.0 Phase A | Next | Can missions name and resolve semantic resources without provider coupling? | Operational Resource Model | Proposed identity, reference, requirement, deterministic resolution, provenance, and kernel-decoupling tests | Synthetic in-memory resources only |
-| v0.5.0 Phase B | Next | Can every future external interaction cross one governed boundary? | Environment Interaction Layer — Simulation First | Proposed policy-interception, registry, receipt, and simulation benchmarks | No real adapters or external actions |
+| v0.5.0 Phase A | Implemented | Can missions name and resolve semantic resources without provider coupling? | Operational Resource Foundation | Identity, reference, requirement, deterministic resolution, relation, and isolation tests | Explicit in-memory resources only |
+| v0.5.0 Phase B | Architecture proposed | Can every future external interaction cross one governed boundary? | Environment Interaction Layer — Simulation First | Proposed policy, approval, registry, adapter, result, receipt, and simulation tests | Runtime not implemented; no real adapters or external actions |
 | v0.6.0 | Planned | Can cross-run state be durable, scoped, and attributable? | Persistent memory | Proposed persistence/isolation tests | No autonomous learning |
 | v0.7.0 | Planned | Can lessons be promoted only from sufficient evidence? | Reflection and learning | Proposed evidence/promotion tests | No opaque self-modification |
 | v0.8.0 | Planned | Can multiple roles collaborate within bounded workflows? | Multi-agent collaboration | Proposed delegation/failure tests | No unconstrained teams |

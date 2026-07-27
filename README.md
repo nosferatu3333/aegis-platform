@@ -260,7 +260,7 @@ format, scoring, and limitations.
 
 - [Architecture baseline](docs/architecture/cognitive-pipeline.md)
 - [Proposed Operational Resource Model](docs/architecture/operational-resource-model.md)
-- [Proposed Environment Interaction Layer](docs/architecture/environment-interface.md)
+- [Proposed Environment Interaction Layer](docs/architecture/environment-interaction-layer.md)
 - [Release history](docs/releases/RELEASE_HISTORY.md)
 - [Proposed roadmap](docs/roadmap/ROADMAP.md)
 - [Architecture decisions](docs/adr/ADR-001-cognitive-pipeline.md)

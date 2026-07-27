@@ -16,11 +16,16 @@ See [release history](../releases/RELEASE_HISTORY.md) and the compact
 
 ## Next — v0.5.0 Environment Interaction Layer — Simulation First
 
+Phase A is implemented. Phase B architecture is proposed; its runtime is not
+implemented. See the current
+[Environment Interaction Layer architecture](../architecture/environment-interaction-layer.md).
+
 - **Objective:** establish the governed boundary through which all future
   external domains are requested, authorized, resolved, invoked, and audited.
-- **Phase A — Operational Resource Model:** provider-neutral identities, types,
-  references, descriptors, requirements, relations, synthetic in-memory
-  catalog, deterministic resolution outcomes, and provenance contracts.
+- **Phase A — Operational Resource Foundation (implemented):** provider-neutral
+  identities, types, references, descriptors, requirements, relations,
+  explicit in-memory catalog, deterministic resolution outcomes, and
+  provenance contracts.
 - **Phase B — Environment Interaction Layer:** environment/capability/request/
   result/error contracts; deterministic registry; policy-decision and
   approval-requirement interfaces; one deterministic simulation adapter;
@@ -32,7 +37,7 @@ See [release history](../releases/RELEASE_HISTORY.md) and the compact
 - **Dependencies:** stable v0.3 execution contracts, v0.4 benchmark harness,
   request correlation, explicit risk mapping,
   [ADR-002](../adr/ADR-002-governed-execution.md), and proposed
-  [ADR-004](../adr/ADR-004-environment-interface.md) and
+  [ADR-006](../adr/ADR-006-environment-interaction-layer.md) and
   [ADR-005](../adr/ADR-005-operational-resource-model.md).
 - **Completion evidence:** deterministic contract/registry/receipt tests;
   resource identity/reference/requirement/resolution tests; policy-bypass

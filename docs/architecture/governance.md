@@ -48,8 +48,8 @@ These items are proposals in the [roadmap](../roadmap/ROADMAP.md), not current
 capabilities. See [ADR-002](../adr/ADR-002-governed-execution.md) and the
 [execution engine](execution-engine.md). The proposed common external boundary
 is documented in the
-[Environment Interaction Layer](environment-interface.md) and
-[ADR-004](../adr/ADR-004-environment-interface.md). The semantic target,
+[Environment Interaction Layer](environment-interaction-layer.md) and
+[ADR-006](../adr/ADR-006-environment-interaction-layer.md). The semantic target,
 resolution, ownership, and provenance boundary is proposed in the
 [Operational Resource Model](operational-resource-model.md) and
 [ADR-005](../adr/ADR-005-operational-resource-model.md).

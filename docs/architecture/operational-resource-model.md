@@ -716,8 +716,9 @@ Resources may also be internal/logical and require no external invocation.
 Environment definitions are therefore not substitutes for resources, and the
 resource model must not absorb adapter/provider registration.
 
-See [environment-interface.md](environment-interface.md) and
-[ADR-004](../adr/ADR-004-environment-interface.md).
+See the current
+[Environment Interaction Layer](environment-interaction-layer.md) and
+[ADR-006](../adr/ADR-006-environment-interaction-layer.md).
 
 ## 23. Benchmark implications
 
@@ -808,7 +809,7 @@ results/errors, and receipts targeting Phase A references.
 
 ## Related documents
 
-- [Environment Interaction Layer](environment-interface.md)
+- [Environment Interaction Layer](environment-interaction-layer.md)
 - [Governance status](governance.md)
 - [Memory status](memory-system.md)
 - [Benchmark architecture](benchmark-suite.md)
