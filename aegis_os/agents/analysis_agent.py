@@ -1,5 +1,5 @@
-from aegis_os.agents.base_agent import BaseAgent
 from aegis_os.agents.agent_profile import AgentProfile
+from aegis_os.agents.base_agent import BaseAgent
 
 
 class AnalysisAgent(BaseAgent):
@@ -9,27 +9,14 @@ class AnalysisAgent(BaseAgent):
 
     def __init__(self):
 
-        super().__init__(
-            name="Analysis Agent",
-            role="Data Analysis"
-        )
-
+        super().__init__(name="Analysis Agent", role="Data Analysis")
 
         self.profile = AgentProfile(
-            self.name,
-            [
-                "analysis",
-                "reasoning",
-                "evaluation",
-                "insight"
-            ]
+            self.name, ["analysis", "reasoning", "evaluation", "insight"]
         )
-
 
     def execute(self, task):
 
         self.start()
 
-        return (
-            f"Analysis completed for: {task}"
-        )
+        return f"Analysis completed for: {task}"

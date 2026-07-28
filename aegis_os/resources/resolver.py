@@ -9,6 +9,7 @@ from aegis_os.resources.errors import (
     ResourceValidationError,
 )
 from aegis_os.resources.models import (
+    SUPPORTED_CONSTRAINT_KINDS,
     CandidateEvaluation,
     Cardinality,
     ConstraintStrength,
@@ -19,7 +20,6 @@ from aegis_os.resources.models import (
     ResourceRequirement,
     ResourceResolution,
     ResourceResolutionStatus,
-    SUPPORTED_CONSTRAINT_KINDS,
     validate_identifier,
 )
 
@@ -95,18 +95,13 @@ class ResourceResolver:
                 requirement,
                 resolution_id,
                 ResourceResolutionStatus.UNSUPPORTED,
-                reason_codes=(
-                    ReasonCode.REQUIRED_CONSTRAINT_UNSUPPORTED,
-                ),
+                reason_codes=(ReasonCode.REQUIRED_CONSTRAINT_UNSUPPORTED,),
             )
 
         registered_types = {
-            resource_type.type_id
-            for resource_type in self.catalog.list_types()
+            resource_type.type_id for resource_type in self.catalog.list_types()
         }
-        supported_requested_types = (
-            registered_types & set(requirement.type_ids)
-        )
+        supported_requested_types = registered_types & set(requirement.type_ids)
         if not supported_requested_types:
             return self._resolution(
                 requirement,
@@ -120,11 +115,7 @@ class ResourceResolver:
             for descriptor in self.catalog.list_descriptors()
         )
         eligible = sorted(
-            (
-                candidate
-                for candidate in evaluated
-                if candidate.evaluation.eligible
-            ),
+            (candidate for candidate in evaluated if candidate.evaluation.eligible),
             key=self._sort_key,
         )
 
@@ -148,10 +139,7 @@ class ResourceResolver:
         ):
             status = ResourceResolutionStatus.RESOLVED
             reason_codes = (ReasonCode.OPTIONAL_UNRESOLVED,)
-        if (
-            requirement.optional
-            and status is ResourceResolutionStatus.UNRESOLVED
-        ):
+        if requirement.optional and status is ResourceResolutionStatus.UNRESOLVED:
             status = ResourceResolutionStatus.RESOLVED
             reason_codes = (ReasonCode.OPTIONAL_UNRESOLVED,)
 
@@ -159,9 +147,7 @@ class ResourceResolver:
             requirement,
             resolution_id,
             status,
-            candidate_evaluations=tuple(
-                item.evaluation for item in evaluated
-            ),
+            candidate_evaluations=tuple(item.evaluation for item in evaluated),
             reason_codes=reason_codes,
         )
 
@@ -175,34 +161,28 @@ class ResourceResolver:
         rejection_codes: list[str] = []
 
         if descriptor.identity.type_id in requirement.type_ids:
-            required_matches.append(
-                f"type:{descriptor.identity.type_id}"
-            )
+            required_matches.append(f"type:{descriptor.identity.type_id}")
         else:
             rejection_codes.append(ReasonCode.TYPE_MISMATCH)
 
         missing_capabilities = sorted(
-            set(requirement.required_capability_ids)
-            - set(descriptor.capability_ids)
+            set(requirement.required_capability_ids) - set(descriptor.capability_ids)
         )
         if missing_capabilities:
             rejection_codes.append(ReasonCode.CAPABILITY_MISMATCH)
         else:
             required_matches.extend(
-                f"capability:{item}"
-                for item in requirement.required_capability_ids
+                f"capability:{item}" for item in requirement.required_capability_ids
             )
 
         missing_permissions = sorted(
-            set(requirement.required_permission_ids)
-            - set(descriptor.permission_ids)
+            set(requirement.required_permission_ids) - set(descriptor.permission_ids)
         )
         if missing_permissions:
             rejection_codes.append(ReasonCode.PERMISSION_MISMATCH)
         else:
             required_matches.extend(
-                f"permission:{item}"
-                for item in requirement.required_permission_ids
+                f"permission:{item}" for item in requirement.required_permission_ids
             )
 
         self._evaluate_selectors(
@@ -221,9 +201,7 @@ class ResourceResolver:
         for constraint in requirement.constraints:
             if not constraint.supported:
                 if constraint.strength is ConstraintStrength.PREFERRED:
-                    preferred_matches.append(
-                        f"unsupported:{constraint.constraint_id}"
-                    )
+                    preferred_matches.append(f"unsupported:{constraint.constraint_id}")
                 continue
             matches = self._constraint_matches(
                 descriptor,
@@ -231,23 +209,16 @@ class ResourceResolver:
             )
             if constraint.strength is ConstraintStrength.REQUIRED:
                 if matches:
-                    required_matches.append(
-                        f"constraint:{constraint.constraint_id}"
-                    )
+                    required_matches.append(f"constraint:{constraint.constraint_id}")
                 else:
-                    rejection_codes.append(
-                        self._constraint_rejection_code(constraint)
-                    )
+                    rejection_codes.append(self._constraint_rejection_code(constraint))
             elif matches:
-                preferred_matches.append(
-                    f"constraint:{constraint.constraint_id}"
-                )
+                preferred_matches.append(f"constraint:{constraint.constraint_id}")
 
         environment_match = int(
             requirement.preferred_environment_id is not None
             and any(
-                location.environment_id
-                == requirement.preferred_environment_id
+                location.environment_id == requirement.preferred_environment_id
                 for location in descriptor.locations
             )
         )
@@ -343,18 +314,16 @@ class ResourceResolver:
         identity = descriptor.identity
         state = descriptor.state
         handlers: dict[str, Any] = {
-            "namespace_equals": lambda: identity.namespace
-            == constraint.value,
+            "namespace_equals": lambda: identity.namespace == constraint.value,
             "owner_equals": lambda: identity.owner_id == constraint.value,
-            "authority_equals": lambda: identity.authority_id
-            == constraint.value,
+            "authority_equals": lambda: identity.authority_id == constraint.value,
             "tenant_equals": lambda: identity.tenant_id == constraint.value,
-            "trust_level_equals": lambda: descriptor.trust_level
-            == constraint.value,
+            "trust_level_equals": lambda: descriptor.trust_level == constraint.value,
             "version_equals": lambda: state.version == constraint.value,
             "revision_equals": lambda: state.revision == constraint.value,
-            "classification_contains": lambda: constraint.value
-            in descriptor.classification_labels,
+            "classification_contains": lambda: (
+                constraint.value in descriptor.classification_labels
+            ),
             "location_environment_equals": lambda: any(
                 location.environment_id == constraint.value
                 for location in descriptor.locations
@@ -404,40 +373,28 @@ class ResourceResolver:
         if (
             single
             and len(eligible) > 1
-            and eligible[0].preference_score
-            == eligible[1].preference_score
+            and eligible[0].preference_score == eligible[1].preference_score
         ):
             return self._resolution(
                 requirement,
                 resolution_id,
                 ResourceResolutionStatus.AMBIGUOUS,
-                candidate_evaluations=tuple(
-                    item.evaluation for item in evaluated
-                ),
+                candidate_evaluations=tuple(item.evaluation for item in evaluated),
                 reason_codes=(ReasonCode.AMBIGUOUS_TOP_RANK,),
             )
 
-        selected = (
-            eligible[:1]
-            if single
-            else eligible
-        )
+        selected = eligible[:1] if single else eligible
         reason_code = (
-            ReasonCode.RESOLVED
-            if len(selected) == 1
-            else ReasonCode.MULTIPLE_RESOLVED
+            ReasonCode.RESOLVED if len(selected) == 1 else ReasonCode.MULTIPLE_RESOLVED
         )
         return self._resolution(
             requirement,
             resolution_id,
             ResourceResolutionStatus.RESOLVED,
             selected_references=tuple(
-                item.evaluation.resource_reference
-                for item in selected
+                item.evaluation.resource_reference for item in selected
             ),
-            candidate_evaluations=tuple(
-                item.evaluation for item in evaluated
-            ),
+            candidate_evaluations=tuple(item.evaluation for item in evaluated),
             reason_codes=(reason_code,),
         )
 
@@ -450,14 +407,9 @@ class ResourceResolver:
         relevant = [
             item.evaluation
             for item in evaluated
-            if item.descriptor.identity.type_id
-            in supported_requested_types
+            if item.descriptor.identity.type_id in supported_requested_types
         ]
-        rejection_codes = {
-            code
-            for item in relevant
-            for code in item.rejection_codes
-        }
+        rejection_codes = {code for item in relevant for code in item.rejection_codes}
 
         denied_codes = {
             ReasonCode.PERMISSION_MISMATCH,
@@ -480,17 +432,10 @@ class ResourceResolver:
         if rejection_codes & unavailable_codes:
             return (
                 ResourceResolutionStatus.UNAVAILABLE,
-                (
-                    sorted(rejection_codes & unavailable_codes)[0],
-                ),
+                (sorted(rejection_codes & unavailable_codes)[0],),
             )
-        if (
-            relevant
-            and all(
-                ReasonCode.CAPABILITY_MISMATCH
-                in item.rejection_codes
-                for item in relevant
-            )
+        if relevant and all(
+            ReasonCode.CAPABILITY_MISMATCH in item.rejection_codes for item in relevant
         ):
             return (
                 ResourceResolutionStatus.UNSUPPORTED,

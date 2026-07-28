@@ -3,24 +3,17 @@ class Decision:
     Represents a possible strategic choice.
     """
 
-    def __init__(
-        self,
-        option,
-        score=0
-    ):
+    def __init__(self, option, score=0):
         self.option = option
         self.score = score
         self.status = "pending"
         self.score_basis = "unscored"
 
-
     def select(self):
         self.status = "selected"
 
-
     def reject(self):
         self.status = "rejected"
-
 
     def __repr__(self):
 

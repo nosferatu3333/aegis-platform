@@ -7,9 +7,6 @@ class Capability:
 
         self.name = name
 
-
     def __repr__(self):
 
-        return (
-            f"Capability({self.name})"
-        )
+        return f"Capability({self.name})"

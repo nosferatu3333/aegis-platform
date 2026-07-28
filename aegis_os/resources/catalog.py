@@ -57,10 +57,7 @@ class ResourceCatalog:
             ) from error
 
     def list_types(self) -> tuple[ResourceType, ...]:
-        return tuple(
-            self._types[type_id]
-            for type_id in sorted(self._types)
-        )
+        return tuple(self._types[type_id] for type_id in sorted(self._types))
 
     def register(self, descriptor: ResourceDescriptor) -> None:
         if not isinstance(descriptor, ResourceDescriptor):
@@ -114,10 +111,7 @@ class ResourceCatalog:
         return descriptor
 
     def list_descriptors(self) -> tuple[ResourceDescriptor, ...]:
-        return tuple(
-            self._descriptors[key]
-            for key in sorted(self._descriptors)
-        )
+        return tuple(self._descriptors[key] for key in sorted(self._descriptors))
 
     def resolve(
         self,

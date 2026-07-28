@@ -13,95 +13,39 @@ class AgentMemory:
 
         self.memory = {}
 
-
-    def remember(
-        self,
-        agent_name,
-        task,
-        result,
-        score
-    ):
+    def remember(self, agent_name, task, result, score):
 
         if agent_name not in self.memory:
-
             self.memory[agent_name] = []
 
+        experience = {"task": task, "result": result, "score": score}
 
-        experience = {
+        self.memory[agent_name].append(experience)
 
-            "task": task,
+    def recall(self, agent_name):
 
-            "result": result,
+        return self.memory.get(agent_name, [])
 
-            "score": score
+    def average_score(self, agent_name):
 
-        }
-
-
-        self.memory[agent_name].append(
-            experience
-        )
-
-
-    def recall(
-        self,
-        agent_name
-    ):
-
-        return self.memory.get(
-            agent_name,
-            []
-        )
-
-
-    def average_score(
-        self,
-        agent_name
-    ):
-
-        experiences = self.recall(
-            agent_name
-        )
-
+        experiences = self.recall(agent_name)
 
         if not experiences:
-
             return 0
 
-
-        scores = [
-            item["score"]
-            for item in experiences
-        ]
-
+        scores = [item["score"] for item in experiences]
 
         return sum(scores) / len(scores)
-
 
     def best_agent(self):
 
         ranking = []
 
-
         for agent, experiences in self.memory.items():
+            score = self.average_score(agent)
 
-            score = self.average_score(
-                agent
-            )
+            ranking.append((agent, score))
 
-
-            ranking.append(
-                (
-                    agent,
-                    score
-                )
-            )
-
-
-        ranking.sort(
-            key=lambda x: x[1],
-            reverse=True
-        )
-
+        ranking.sort(key=lambda x: x[1], reverse=True)
 
         return ranking

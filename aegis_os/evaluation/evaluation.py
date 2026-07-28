@@ -7,11 +7,7 @@ class Evaluation:
     of an executed action.
     """
 
-    def __init__(
-        self,
-        objective,
-        result
-    ):
+    def __init__(self, objective, result):
 
         self.objective = objective
 
@@ -25,25 +21,10 @@ class Evaluation:
 
         self.confidence = 0.1
 
+    def set_metrics(self, quality, efficiency, accuracy):
 
-    def set_metrics(
-        self,
-        quality,
-        efficiency,
-        accuracy
-    ):
-
-        self.metrics = Metrics(
-            quality,
-            efficiency,
-            accuracy
-        )
-
+        self.metrics = Metrics(quality, efficiency, accuracy)
 
     def __repr__(self):
 
-        return (
-            f"Evaluation("
-            f"objective={self.objective}, "
-            f"score={self.metrics.score()})"
-        )
+        return f"Evaluation(objective={self.objective}, score={self.metrics.score()})"

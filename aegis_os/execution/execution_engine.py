@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from aegis_os.execution.models import (
@@ -13,7 +13,6 @@ from aegis_os.execution.models import (
     ExecutionStepStatus,
 )
 
-
 logger = logging.getLogger("aegis.execution")
 FAILURE_MARKER = "[simulate-failure]"
 
@@ -23,7 +22,7 @@ class ExecutionEngine:
         self,
         clock: Callable[[], datetime] | None = None,
     ) -> None:
-        self._clock = clock or (lambda: datetime.now(timezone.utc))
+        self._clock = clock or (lambda: datetime.now(UTC))
 
     def execute(self, request: ExecutionRequest) -> ExecutionReceipt:
         self._validate_request(request)
@@ -39,8 +38,7 @@ class ExecutionEngine:
         receipt.started_at = self._clock()
         self._transition(receipt, ExecutionStatus.RUNNING)
         logger.info(
-            "event=execution_started request_id=%s selected_agent=%s "
-            "simulated=true",
+            "event=execution_started request_id=%s selected_agent=%s simulated=true",
             request.request_id,
             request.selected_agent,
         )
@@ -49,9 +47,7 @@ class ExecutionEngine:
             self._step_transition(receipt, step, ExecutionStepStatus.RUNNING)
 
             if FAILURE_MARKER in step.description.lower():
-                step.error = (
-                    "Controlled simulated failure marker encountered."
-                )
+                step.error = "Controlled simulated failure marker encountered."
                 receipt.logs.append(
                     f"{step.step_id} failure: {step.error} simulated=true"
                 )
@@ -80,8 +76,7 @@ class ExecutionEngine:
 
             step.outputs = {
                 "message": (
-                    f"Simulated completion of step {step.order}: "
-                    f"{step.description}"
+                    f"Simulated completion of step {step.order}: {step.description}"
                 ),
                 "simulated": True,
             }
@@ -95,8 +90,7 @@ class ExecutionEngine:
         receipt.finished_at = self._clock()
         self._transition(receipt, ExecutionStatus.COMPLETED)
         logger.info(
-            "event=execution_completed request_id=%s "
-            "selected_agent=%s simulated=true",
+            "event=execution_completed request_id=%s selected_agent=%s simulated=true",
             request.request_id,
             request.selected_agent,
         )
@@ -119,13 +113,11 @@ class ExecutionEngine:
             ExecutionEngine._read_value(step, "order")
             for step in request.workflow_steps
         ]
-        if (
-            any(not isinstance(order, int) or order < 1 for order in orders)
-            or len(set(orders)) != len(orders)
-        ):
+        if any(not isinstance(order, int) or order < 1 for order in orders) or len(
+            set(orders)
+        ) != len(orders):
             raise ValueError(
-                "Execution workflow step orders must be unique "
-                "positive integers."
+                "Execution workflow step orders must be unique positive integers."
             )
 
     @classmethod
@@ -137,16 +129,12 @@ class ExecutionEngine:
         ):
             order = cls._read_value(raw_step, "order")
             title = str(cls._read_value(raw_step, "title", "")).strip()
-            description = str(
-                cls._read_value(raw_step, "description", "")
-            ).strip()
+            description = str(cls._read_value(raw_step, "description", "")).strip()
             if not description:
                 raise ValueError(
                     f"Execution workflow step {order} needs a description."
                 )
-            display_description = (
-                f"{title}: {description}" if title else description
-            )
+            display_description = f"{title}: {description}" if title else description
             result.append(
                 ExecutionStep(
                     step_id=f"step-{order}",
@@ -174,14 +162,10 @@ class ExecutionEngine:
     ) -> None:
         previous = receipt.status
         receipt.status = status
-        entry = (
-            f"request status: {previous.value} -> {status.value}; "
-            "simulated=true"
-        )
+        entry = f"request status: {previous.value} -> {status.value}; simulated=true"
         receipt.logs.append(entry)
         logger.info(
-            "event=request_transition request_id=%s from=%s to=%s "
-            "simulated=true",
+            "event=request_transition request_id=%s from=%s to=%s simulated=true",
             receipt.request_id,
             previous.value,
             status.value,
@@ -196,8 +180,7 @@ class ExecutionEngine:
         previous = step.status
         step.status = status
         receipt.logs.append(
-            f"{step.step_id} status: {previous.value} -> {status.value}; "
-            "simulated=true"
+            f"{step.step_id} status: {previous.value} -> {status.value}; simulated=true"
         )
         logger.info(
             "event=step_transition request_id=%s step_id=%s "

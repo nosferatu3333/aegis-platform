@@ -20,8 +20,4 @@ class Runtime:
         print("Aegis Runtime started.")
         print("Runtime state:", self.state)
 
-        self.event_bus.publish(
-            self.kernel.create_event(
-                "SYSTEM_STARTED"
-            )
-        )
+        self.event_bus.publish(self.kernel.create_event("SYSTEM_STARTED"))

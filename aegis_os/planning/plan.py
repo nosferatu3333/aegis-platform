@@ -12,15 +12,12 @@ class Plan:
         self.status = "created"
         self.tasks_executed = False
 
-
     def activate(self):
         self.status = "active"
-
 
     def complete(self):
         self.status = "completed"
         self.tasks_executed = True
-
 
     def mark_assignment_observed(self):
 
@@ -28,10 +25,5 @@ class Plan:
 
         self.tasks_executed = False
 
-
     def __repr__(self):
-        return (
-            f"Plan(goal={self.goal}, "
-            f"tasks={self.tasks}, "
-            f"status={self.status})"
-        )
+        return f"Plan(goal={self.goal}, tasks={self.tasks}, status={self.status})"

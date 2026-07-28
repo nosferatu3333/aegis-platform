@@ -7,13 +7,8 @@ class PatternDetector:
 
         patterns = []
 
-
         for experience in experiences:
-
             if experience not in patterns:
-                patterns.append(
-                    experience
-                )
-
+                patterns.append(experience)
 
         return patterns

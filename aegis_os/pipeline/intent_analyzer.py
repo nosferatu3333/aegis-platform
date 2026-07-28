@@ -134,9 +134,7 @@ class IntentAnalyzer:
         detected_intents = self._detect_intents(tokens)
 
         primary_intent = (
-            detected_intents[0]
-            if detected_intents
-            else "general_reasoning"
+            detected_intents[0] if detected_intents else "general_reasoning"
         )
 
         secondary_intents = tuple(detected_intents[1:])
@@ -180,9 +178,7 @@ class IntentAnalyzer:
             if score > 0:
                 scored_intents.append((intent, score))
 
-        scored_intents.sort(
-            key=lambda item: (-item[1], item[0])
-        )
+        scored_intents.sort(key=lambda item: (-item[1], item[0]))
 
         return [intent for intent, _ in scored_intents]
 

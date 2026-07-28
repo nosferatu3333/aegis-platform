@@ -2,7 +2,6 @@ from fastapi.testclient import TestClient
 
 from aegis_os.api.app import create_app
 
-
 client = TestClient(create_app())
 MISSION = "Research competitors in the cognitive systems market"
 
@@ -25,10 +24,7 @@ def test_execute_task_runs_simulated_workflow():
         4,
         5,
     ]
-    assert all(
-        step["status"] == "completed"
-        for step in execution["steps"]
-    )
+    assert all(step["status"] == "completed" for step in execution["steps"])
     assert execution["completed_steps"] == 5
     assert execution["simulated"] is True
     assert payload["simulated"] is True

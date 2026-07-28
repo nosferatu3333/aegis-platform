@@ -6,7 +6,6 @@ from typing import Any
 from aegis_os.execution.models import ExecutionRequest
 from aegis_os.pipeline.models import CognitiveRequestResult, PipelineStatus
 
-
 logger = logging.getLogger("aegis.execution")
 
 
@@ -25,9 +24,7 @@ def build_execution_request(
         request_id=request_id,
         mission=cognitive_result.task,
         selected_agent=cognitive_result.capability.name,
-        required_capabilities=list(
-            cognitive_result.intent.required_capabilities
-        ),
+        required_capabilities=list(cognitive_result.intent.required_capabilities),
         workflow_steps=sorted(
             cognitive_result.workflow,
             key=lambda step: step.order,

@@ -61,11 +61,9 @@ def _render_markdown(summary: BenchmarkRunSummary) -> str:
             "|---|---:|",
             f"| Intent | {summary.intent_accuracy:.2f}% |",
             f"| Capability | {summary.capability_accuracy:.2f}% |",
-            f"| Agent selection | "
-            f"{summary.agent_selection_accuracy:.2f}% |",
+            f"| Agent selection | {summary.agent_selection_accuracy:.2f}% |",
             f"| Workflow | {summary.workflow_accuracy:.2f}% |",
-            f"| Analysis status | "
-            f"{summary.analysis_status_accuracy:.2f}% |",
+            f"| Analysis status | {summary.analysis_status_accuracy:.2f}% |",
             f"| Execution | {summary.execution_accuracy:.2f}% |",
             f"| Simulation compliance | "
             f"{summary.simulation_compliance_accuracy:.2f}% |",
@@ -76,8 +74,7 @@ def _render_markdown(summary: BenchmarkRunSummary) -> str:
     )
     failed = [result for result in summary.results if not result.passed]
     lines.extend(
-        [f"- `{result.case_id}` — {result.title}" for result in failed]
-        or ["None."]
+        [f"- `{result.case_id}` — {result.title}" for result in failed] or ["None."]
     )
     lines.extend(
         [

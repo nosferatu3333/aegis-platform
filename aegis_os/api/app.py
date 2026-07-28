@@ -16,7 +16,6 @@ from aegis_os.execution.execution_engine import ExecutionEngine
 from aegis_os.pipeline.composition import create_default_pipeline
 from aegis_os.pipeline.models import SCHEMA_VERSION
 
-
 API_DIRECTORY = Path(__file__).resolve().parent
 STATIC_DIRECTORY = API_DIRECTORY / "static"
 TEMPLATE_DIRECTORY = API_DIRECTORY / "templates"
@@ -82,8 +81,7 @@ def create_app() -> FastAPI:
     ) -> JSONResponse:
         request_id = request.state.request_id
         logger.info(
-            "event=request_rejected request_id=%s "
-            "pipeline_status=invalid_request",
+            "event=request_rejected request_id=%s pipeline_status=invalid_request",
             request_id,
         )
         return JSONResponse(
@@ -103,9 +101,7 @@ def create_app() -> FastAPI:
 
     @application.get("/", response_class=FileResponse)
     def dashboard() -> FileResponse:
-        return FileResponse(
-            TEMPLATE_DIRECTORY / "dashboard.html"
-        )
+        return FileResponse(TEMPLATE_DIRECTORY / "dashboard.html")
 
     @application.get("/health")
     def health() -> dict:
@@ -126,8 +122,7 @@ def create_app() -> FastAPI:
             result = pipeline.process_task(body.task)
         except ValueError as error:
             logger.info(
-                "event=request_rejected request_id=%s "
-                "pipeline_status=invalid_request",
+                "event=request_rejected request_id=%s pipeline_status=invalid_request",
                 request_id,
             )
             raise HTTPException(
@@ -139,9 +134,7 @@ def create_app() -> FastAPI:
         payload["request_id"] = request_id
 
         selected_profile = (
-            result.capability.name
-            if result.status.value != "failed"
-            else "none"
+            result.capability.name if result.status.value != "failed" else "none"
         )
         logger.info(
             "event=analysis_completed request_id=%s "
@@ -166,15 +159,12 @@ def create_app() -> FastAPI:
             execution_request = build_execution_request(
                 analysis,
                 request_id,
-                constraints=[
-                    "Simulation only; no external actions are permitted."
-                ],
+                constraints=["Simulation only; no external actions are permitted."],
                 permissions=["simulated_workflow_execution"],
             )
         except ValueError as error:
             logger.info(
-                "event=request_rejected request_id=%s "
-                "pipeline_status=invalid_request",
+                "event=request_rejected request_id=%s pipeline_status=invalid_request",
                 request_id,
             )
             raise HTTPException(

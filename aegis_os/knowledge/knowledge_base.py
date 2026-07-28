@@ -16,8 +16,4 @@ class KnowledgeBase:
 
     def search(self, term):
         normalized = str(term).lower()
-        return [
-            record
-            for record in self.records
-            if normalized in str(record).lower()
-        ]
+        return [record for record in self.records if normalized in str(record).lower()]

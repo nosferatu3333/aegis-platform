@@ -95,4 +95,3 @@ and detailed reason codes belong in the Phase B implementation specification.
 - [Operational Resource Model](../architecture/operational-resource-model.md)
 - [ADR-004 historical precursor](ADR-004-environment-interface.md)
 - [ADR-005](ADR-005-operational-resource-model.md)
-

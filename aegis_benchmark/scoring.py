@@ -10,7 +10,6 @@ from aegis_benchmark.models import (
     CriterionResult,
 )
 
-
 METRIC_CRITERIA = {
     "intent_accuracy": {"primary_intent"},
     "capability_accuracy": {"required_capabilities"},
@@ -42,11 +41,7 @@ def calculate_summary(
     suite: str = "AEGIS Benchmark Suite",
     version: str = BENCHMARK_VERSION,
 ) -> BenchmarkRunSummary:
-    all_criteria = [
-        criterion
-        for result in results
-        for criterion in result.criteria
-    ]
+    all_criteria = [criterion for result in results for criterion in result.criteria]
     metrics = {
         name: _criteria_accuracy(all_criteria, criterion_names)
         for name, criterion_names in METRIC_CRITERIA.items()
@@ -58,9 +53,7 @@ def calculate_summary(
     category_breakdown: dict[str, dict[str, Any]] = {}
     for category in sorted(category_results):
         items = category_results[category]
-        category_criteria = [
-            criterion for item in items for criterion in item.criteria
-        ]
+        category_criteria = [criterion for item in items for criterion in item.criteria]
         category_breakdown[category] = {
             "total_cases": len(items),
             "passed_cases": sum(item.passed for item in items),
@@ -92,9 +85,7 @@ def _criteria_accuracy(
     criterion_names: set[str],
 ) -> float:
     selected = [
-        criterion
-        for criterion in criteria
-        if criterion.criterion in criterion_names
+        criterion for criterion in criteria if criterion.criterion in criterion_names
     ]
     return percentage(
         sum(criterion.passed for criterion in selected),

@@ -7,13 +7,9 @@ class ExperienceRepository:
 
         self.experiences = []
 
-
     def add(self, experience):
 
-        self.experiences.append(
-            experience
-        )
-
+        self.experiences.append(experience)
 
     def all(self):
 

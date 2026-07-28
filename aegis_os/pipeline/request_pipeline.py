@@ -14,8 +14,7 @@ from aegis_os.pipeline.workflow_generator import WorkflowGenerator
 class CapabilitySelectorProtocol(Protocol):
     """Minimal selector interface required by the pipeline."""
 
-    def select(self, task: str, **context: Any) -> Any:
-        ...
+    def select(self, task: str, **context: Any) -> Any: ...
 
 
 class CognitiveRequestPipeline:
@@ -34,9 +33,7 @@ class CognitiveRequestPipeline:
     ) -> None:
         self.capability_selector = capability_selector
         self.intent_analyzer = intent_analyzer or IntentAnalyzer()
-        self.workflow_generator = (
-            workflow_generator or WorkflowGenerator()
-        )
+        self.workflow_generator = workflow_generator or WorkflowGenerator()
 
     def process_task(self, task: str) -> CognitiveRequestResult:
         clean_task = task.strip()
@@ -66,8 +63,7 @@ class CognitiveRequestPipeline:
                     "workflow_steps": 0,
                     "failure_code": "no_capability_match",
                     "failure_reason": (
-                        "No registered profile matched the "
-                        "required capabilities."
+                        "No registered profile matched the required capabilities."
                     ),
                 },
             )

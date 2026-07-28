@@ -92,9 +92,7 @@ class WorkflowGenerator:
             ).strip()
 
             description = str(
-                raw_step.get("description")
-                or raw_step.get("instruction")
-                or title
+                raw_step.get("description") or raw_step.get("instruction") or title
             ).strip()
 
             return title, description

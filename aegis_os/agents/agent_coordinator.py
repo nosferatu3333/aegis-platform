@@ -1,6 +1,6 @@
+from aegis_os.agents.agent_memory import AgentMemory
 from aegis_os.agents.agent_ranker import AgentRanker
 from aegis_os.agents.performance_tracker import PerformanceTracker
-from aegis_os.agents.agent_memory import AgentMemory
 
 
 class AgentCoordinator:
@@ -12,202 +12,78 @@ class AgentCoordinator:
 
         self.registry = registry
 
+        self.performance_tracker = PerformanceTracker()
 
-        self.performance_tracker = (
-            PerformanceTracker()
-        )
+        self.agent_memory = AgentMemory()
 
+        self.ranker = AgentRanker(self.performance_tracker)
 
-        self.agent_memory = (
-            AgentMemory()
-        )
+    def select_agent(self, required_capabilities):
 
+        required_capabilities = self.normalize_capabilities(required_capabilities)
 
-        self.ranker = AgentRanker(
-            self.performance_tracker
-        )
+        agents = self.registry.list_agents()
 
-
-    def select_agent(
-        self,
-        required_capabilities
-    ):
-
-        required_capabilities = (
-            self.normalize_capabilities(
-                required_capabilities
-            )
-        )
-
-        agents = (
-            self.registry.list_agents()
-        )
-
-
-        ranking = self.ranker.rank(
-            agents,
-            required_capabilities
-        )
-
+        ranking = self.ranker.rank(agents, required_capabilities)
 
         if not ranking:
-
             return None
-
 
         return ranking[0][0]
 
+    def assign(self, required_capabilities, task):
 
+        normalized_capabilities = self.normalize_capabilities(required_capabilities)
 
-    def assign(
-        self,
-        required_capabilities,
-        task
-    ):
-
-        normalized_capabilities = (
-            self.normalize_capabilities(
-                required_capabilities
-            )
-        )
-
-        agent = self.select_agent(
-            normalized_capabilities
-        )
-
+        agent = self.select_agent(normalized_capabilities)
 
         if not agent:
-
             return {
-
-                "status":
-                    "failed",
-
-                "agent":
-                    None,
-
-                "required_capabilities":
-                    list(
-                        normalized_capabilities
-                    ),
-
-                "result":
-                    None,
-
-                "failures":
-                    [
-                        "No suitable agent found"
-                    ],
-
-                "simulation":
-                    True
-
+                "status": "failed",
+                "agent": None,
+                "required_capabilities": list(normalized_capabilities),
+                "result": None,
+                "failures": ["No suitable agent found"],
+                "simulation": True,
             }
 
-
-        result = agent.execute(
-            task
-        )
-
+        result = agent.execute(task)
 
         return {
-
-            "status":
-                "completed",
-
+            "status": "completed",
             "agent": agent.name,
-
-            "required_capabilities":
-                list(
-                    normalized_capabilities
-                ),
-
+            "required_capabilities": list(normalized_capabilities),
             "result": result,
-
-            "failures":
-                [],
-
-            "simulation":
-                True
-
+            "failures": [],
+            "simulation": True,
         }
-
-
 
     @staticmethod
-    def normalize_capabilities(
-        required_capabilities
-    ):
+    def normalize_capabilities(required_capabilities):
 
         aliases = {
-
-            "research agent":
-                "research",
-
-            "analysis agent":
-                "analysis",
-
-            "execution agent":
-                "execution"
-
+            "research agent": "research",
+            "analysis agent": "analysis",
+            "execution agent": "execution",
         }
 
-
-        if isinstance(
-            required_capabilities,
-            str
-        ):
-
-            required_capabilities = (
-                required_capabilities,
-            )
-
+        if isinstance(required_capabilities, str):
+            required_capabilities = (required_capabilities,)
 
         normalized = []
 
-
         for capability in required_capabilities:
+            value = str(capability).strip().lower()
 
-            value = str(
-                capability
-            ).strip().lower()
-
-            value = aliases.get(
-                value,
-                value
-            )
-
+            value = aliases.get(value, value)
 
             if value and value not in normalized:
+                normalized.append(value)
 
-                normalized.append(
-                    value
-                )
+        return tuple(normalized)
 
+    def learn_from_result(self, agent_name, task, result, score):
 
-        return tuple(
-            normalized
-        )
+        self.agent_memory.remember(agent_name, task, result, score)
 
-
-
-    def learn_from_result(
-        self,
-        agent_name,
-        task,
-        result,
-        score
-    ):
-
-        self.agent_memory.remember(
-            agent_name,
-            task,
-            result,
-            score
-        )
-
-
-        self.performance_tracker.record(
-            agent_name,
-            score
-        )
+        self.performance_tracker.record(agent_name, score)

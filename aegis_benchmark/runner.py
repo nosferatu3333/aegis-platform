@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from aegis_benchmark.evaluator import BenchmarkEvaluator
 from aegis_benchmark.models import (
@@ -16,8 +16,7 @@ from aegis_os.pipeline.composition import create_default_pipeline
 from aegis_os.pipeline.models import PipelineStatus
 from aegis_os.pipeline.request_pipeline import CognitiveRequestPipeline
 
-
-BENCHMARK_TIME = datetime(2000, 1, 1, tzinfo=timezone.utc)
+BENCHMARK_TIME = datetime(2000, 1, 1, tzinfo=UTC)
 
 
 class BenchmarkRunner:
@@ -45,11 +44,7 @@ class BenchmarkRunner:
             case.expected.execution_status is not None
             or case.expected.simulated is not None
         )
-        if (
-            self.execute
-            and wants_execution
-            and analysis.status is PipelineStatus.READY
-        ):
+        if self.execute and wants_execution and analysis.status is PipelineStatus.READY:
             execution_request = build_execution_request(
                 analysis,
                 request_id=f"benchmark-{case.id}",
@@ -57,16 +52,12 @@ class BenchmarkRunner:
                 permissions=["simulated_workflow_execution"],
                 metadata={"benchmark_case_id": case.id},
             )
-            receipt_payload = self.execution_engine.execute(
-                execution_request
-            ).to_dict()
+            receipt_payload = self.execution_engine.execute(execution_request).to_dict()
 
         orders = [step.order for step in analysis.workflow]
         actual = BenchmarkActual(
             primary_intent=analysis.intent.primary_intent,
-            required_capabilities=list(
-                analysis.intent.required_capabilities
-            ),
+            required_capabilities=list(analysis.intent.required_capabilities),
             selected_agent=(
                 analysis.capability.name
                 if analysis.status is PipelineStatus.READY
@@ -75,16 +66,10 @@ class BenchmarkRunner:
             capability_id=analysis.capability.capability_id,
             workflow_step_count=len(analysis.workflow),
             workflow_orders=orders,
-            workflow_order_valid=orders == list(
-                range(1, len(orders) + 1)
-            ),
+            workflow_order_valid=orders == list(range(1, len(orders) + 1)),
             analysis_status=analysis.status.value,
-            execution_status=(
-                receipt_payload["status"] if receipt_payload else None
-            ),
-            simulated=(
-                receipt_payload["simulated"] if receipt_payload else None
-            ),
+            execution_status=(receipt_payload["status"] if receipt_payload else None),
+            simulated=(receipt_payload["simulated"] if receipt_payload else None),
             failure_code=analysis.metadata.get("failure_code"),
             analysis=analysis_payload,
             execution_receipt=receipt_payload,

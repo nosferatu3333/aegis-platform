@@ -10,7 +10,6 @@ from aegis_benchmark.models import (
 )
 from aegis_benchmark.scoring import calculate_case_score
 
-
 EXECUTION_CRITERIA = {"execution_status", "simulated"}
 
 

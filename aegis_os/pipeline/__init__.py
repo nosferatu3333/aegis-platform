@@ -23,4 +23,6 @@ __all__ = [
     "WorkflowGenerator",
     "WorkflowStep",
 ]
-from aegis_os.pipeline.agent_selector_adapter import AgentSelectorAdapter
+from aegis_os.pipeline.agent_selector_adapter import (
+    AgentSelectorAdapter as AgentSelectorAdapter,
+)

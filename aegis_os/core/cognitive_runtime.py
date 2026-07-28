@@ -13,38 +13,21 @@ class CognitiveRuntime:
 
         self.state = "initialized"
 
-
     def start(self):
 
         self.state = "running"
 
-        print(
-            "Cognitive Runtime started."
-        )
-
+        print("Cognitive Runtime started.")
 
     def process_goal(self, goal):
 
         if self.state != "running":
+            raise RuntimeError("Cognitive Runtime is not running")
 
-            raise RuntimeError(
-                "Cognitive Runtime is not running"
-            )
+        print(f"Cognitive goal received: {goal}")
 
+        result = self.orchestrator.process(goal)
 
-        print(
-            f"Cognitive goal received: {goal}"
-        )
-
-
-        result = self.orchestrator.process(
-            goal
-        )
-
-
-        print(
-            "Cognitive cycle completed."
-        )
-
+        print("Cognitive cycle completed.")
 
         return result

@@ -5,7 +5,6 @@ from datetime import datetime
 from enum import Enum
 from typing import Any
 
-
 EXECUTION_SCHEMA_VERSION = "1.0"
 
 
@@ -92,12 +91,8 @@ class ExecutionReceipt:
             "selected_agent": self.selected_agent,
             "status": self.status.value,
             "steps": [step.to_dict() for step in self.steps],
-            "started_at": (
-                self.started_at.isoformat() if self.started_at else None
-            ),
-            "finished_at": (
-                self.finished_at.isoformat() if self.finished_at else None
-            ),
+            "started_at": (self.started_at.isoformat() if self.started_at else None),
+            "finished_at": (self.finished_at.isoformat() if self.finished_at else None),
             "completed_steps": self.completed_steps,
             "failed_steps": self.failed_steps,
             "logs": list(self.logs),

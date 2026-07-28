@@ -1,5 +1,5 @@
-from aegis_os.core.events import Event
 from aegis_os.core.cognitive_runtime import CognitiveRuntime
+from aegis_os.core.events import Event
 
 
 class Kernel:
@@ -15,7 +15,6 @@ class Kernel:
 
         self.cognitive_runtime = CognitiveRuntime()
 
-
     def boot(self):
 
         self.state = "running"
@@ -26,17 +25,10 @@ class Kernel:
 
         self.cognitive_runtime.start()
 
-
     def create_event(self, event_type, data=None):
 
-        return Event(
-            event_type,
-            data
-        )
-
+        return Event(event_type, data)
 
     def process_goal(self, goal):
 
-        return self.cognitive_runtime.process_goal(
-            goal
-        )
+        return self.cognitive_runtime.process_goal(goal)

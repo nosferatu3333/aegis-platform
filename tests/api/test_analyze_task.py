@@ -4,7 +4,6 @@ from fastapi.testclient import TestClient
 
 from aegis_os.api.app import create_app
 
-
 client = TestClient(create_app())
 
 
@@ -14,12 +13,7 @@ def test_analyze_task_uses_real_research_profile(caplog):
     response = client.post(
         "/analyze-task",
         headers={"X-Request-ID": "research-test-001"},
-        json={
-            "task": (
-                "Research competitors in the "
-                "cognitive systems market"
-            )
-        },
+        json={"task": ("Research competitors in the cognitive systems market")},
     )
 
     assert response.status_code == 200

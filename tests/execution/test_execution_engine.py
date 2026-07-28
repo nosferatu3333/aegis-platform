@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -9,8 +9,7 @@ from aegis_os.execution.models import (
     ExecutionStepStatus,
 )
 
-
-FIXED_TIME = datetime(2026, 1, 1, tzinfo=timezone.utc)
+FIXED_TIME = datetime(2026, 1, 1, tzinfo=UTC)
 
 
 def make_request(descriptions=None):
@@ -32,16 +31,11 @@ def make_request(descriptions=None):
 
 
 def test_successful_execution_is_ordered_and_auditable():
-    receipt = ExecutionEngine(clock=lambda: FIXED_TIME).execute(
-        make_request()
-    )
+    receipt = ExecutionEngine(clock=lambda: FIXED_TIME).execute(make_request())
 
     assert receipt.status is ExecutionStatus.COMPLETED
     assert [step.order for step in receipt.steps] == [1, 2]
-    assert all(
-        step.status is ExecutionStepStatus.COMPLETED
-        for step in receipt.steps
-    )
+    assert all(step.status is ExecutionStepStatus.COMPLETED for step in receipt.steps)
     assert receipt.completed_steps == 2
     assert receipt.failed_steps == 0
     assert receipt.started_at == FIXED_TIME
@@ -49,9 +43,7 @@ def test_successful_execution_is_ordered_and_auditable():
     assert receipt.simulated is True
     assert receipt.logs[0].startswith("request status: pending -> ready")
     assert receipt.logs[1].startswith("request status: ready -> running")
-    assert receipt.logs[-1].startswith(
-        "request status: running -> completed"
-    )
+    assert receipt.logs[-1].startswith("request status: running -> completed")
 
 
 def test_simulated_outputs_are_deterministic():
@@ -62,18 +54,14 @@ def test_simulated_outputs_are_deterministic():
 
     assert first == second
     assert first["steps"][0]["outputs"] == {
-        "message": (
-            "Simulated completion of step 1: Step 1: First action"
-        ),
+        "message": ("Simulated completion of step 1: Step 1: First action"),
         "simulated": True,
     }
 
 
 def test_controlled_failure_skips_remaining_steps():
     receipt = ExecutionEngine(clock=lambda: FIXED_TIME).execute(
-        make_request(
-            ["Complete normally", "[simulate-failure]", "Do not run"]
-        )
+        make_request(["Complete normally", "[simulate-failure]", "Do not run"])
     )
 
     assert receipt.status is ExecutionStatus.FAILED

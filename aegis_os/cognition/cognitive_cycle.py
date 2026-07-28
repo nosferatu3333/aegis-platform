@@ -16,7 +16,7 @@ class CognitiveCycle:
         working_memory,
         long_term_memory,
         reflection_memory,
-        knowledge_context=None
+        knowledge_context=None,
     ):
 
         self.agent = agent
@@ -29,77 +29,38 @@ class CognitiveCycle:
 
         self.knowledge_context = knowledge_context
 
-
-    def execute(
-        self,
-        task,
-        knowledge_topic=None
-    ):
+    def execute(self, task, knowledge_topic=None):
 
         context = None
 
-
         # 1. Retrieve knowledge
 
-        if (
-            self.knowledge_context
-            and knowledge_topic
-        ):
-
-            context = (
-                self.knowledge_context
-                .build_context(
-                    knowledge_topic
-                )
-            )
-
+        if self.knowledge_context and knowledge_topic:
+            context = self.knowledge_context.build_context(knowledge_topic)
 
         # 2. Store active context
 
-        self.working_memory.add(
-            {
-                "task": task,
-                "context": context
-            }
-        )
-
+        self.working_memory.add({"task": task, "context": context})
 
         # 3. Execute agent
 
-        result = self.agent.process(
-            task
-        )
-
+        result = self.agent.process(task)
 
         # 4. Store experience
 
         self.long_term_memory.store(
-            {
-                "task": task,
-                "result": result,
-                "context": context
-            }
+            {"task": task, "result": result, "context": context}
         )
-
 
         # 5. Reflection
 
         reflection = {
-
             "task": task,
-
             "result": result,
-
             "knowledge_used": context,
-
-            "evaluation":
-                "completed successfully"
+            "evaluation": "completed successfully",
         }
 
-
-        self.reflection_memory.record(
-            reflection
-        )
-
+        self.reflection_memory.record(reflection)
 
         return result

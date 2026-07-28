@@ -1,5 +1,5 @@
-from aegis_os.knowledge.concept import Concept
-from aegis_os.knowledge.relationship import Relationship
+from aegis_os.knowledge.concept import Concept as Concept
+from aegis_os.knowledge.relationship import Relationship as Relationship
 
 
 class KnowledgeGraph:
@@ -13,46 +13,25 @@ class KnowledgeGraph:
 
         self.relationships = []
 
+    def add_concept(self, concept):
 
-    def add_concept(
-        self,
-        concept
-    ):
+        self.concepts.append(concept)
 
-        self.concepts.append(
-            concept
-        )
+    def add_relationship(self, relationship):
 
+        self.relationships.append(relationship)
 
-    def add_relationship(
-        self,
-        relationship
-    ):
-
-        self.relationships.append(
-            relationship
-        )
-
-
-    def find_concept(
-        self,
-        name
-    ):
+    def find_concept(self, name):
 
         for concept in self.concepts:
-
             if concept.name == name:
-
                 return concept
 
-
         return None
-
 
     def get_relationships(self):
 
         return self.relationships
-
 
     def __repr__(self):
 

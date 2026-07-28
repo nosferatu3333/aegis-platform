@@ -517,4 +517,3 @@ flowchart LR
 - [Execution Engine](execution-engine.md)
 - [ADR-006](../adr/ADR-006-environment-interaction-layer.md)
 - [Roadmap](../roadmap/ROADMAP.md)
-

@@ -52,18 +52,12 @@ class FakeCapabilitySelector:
 
 
 def test_pipeline_returns_structured_result():
-    pipeline = CognitiveRequestPipeline(
-        capability_selector=FakeCapabilitySelector()
-    )
+    pipeline = CognitiveRequestPipeline(capability_selector=FakeCapabilitySelector())
 
-    result = pipeline.process_task(
-        "Help me build and launch an AI consulting business"
-    )
+    result = pipeline.process_task("Help me build and launch an AI consulting business")
 
     assert result.status is PipelineStatus.READY
-    assert result.task == (
-        "Help me build and launch an AI consulting business"
-    )
+    assert result.task == ("Help me build and launch an AI consulting business")
 
     assert result.intent.primary_intent in {
         "development",
@@ -76,10 +70,7 @@ def test_pipeline_returns_structured_result():
         TaskComplexity.HIGH,
     }
 
-    assert (
-        result.capability.capability_id
-        == "iterative_ai_development"
-    )
+    assert result.capability.capability_id == "iterative_ai_development"
 
     assert result.capability.confidence == 0.91
     assert len(result.workflow) == 5
@@ -87,13 +78,9 @@ def test_pipeline_returns_structured_result():
 
 
 def test_pipeline_result_can_be_serialized():
-    pipeline = CognitiveRequestPipeline(
-        capability_selector=FakeCapabilitySelector()
-    )
+    pipeline = CognitiveRequestPipeline(capability_selector=FakeCapabilitySelector())
 
-    result = pipeline.process_task(
-        "Build a customer support workflow"
-    )
+    result = pipeline.process_task("Build a customer support workflow")
 
     serialized = result.to_dict()
 
@@ -104,9 +91,7 @@ def test_pipeline_result_can_be_serialized():
 
 
 def test_pipeline_rejects_empty_task():
-    pipeline = CognitiveRequestPipeline(
-        capability_selector=FakeCapabilitySelector()
-    )
+    pipeline = CognitiveRequestPipeline(capability_selector=FakeCapabilitySelector())
 
     try:
         pipeline.process_task("   ")
@@ -135,19 +120,14 @@ def test_pipeline_uses_real_registry_and_capability_matcher():
         capability_selector=AgentSelectorAdapter(registry)
     )
 
-    result = pipeline.process_task(
-        "Research autonomous intelligence systems"
-    )
+    result = pipeline.process_task("Research autonomous intelligence systems")
     serialized = result.to_dict()
 
     assert result.intent.required_capabilities == ("research",)
     assert result.capability.name == "Research Agent"
     assert result.capability.capability_id == "Research Agent"
     assert result.workflow
-    assert all(
-        step.capability_id == "Research Agent"
-        for step in result.workflow
-    )
+    assert all(step.capability_id == "Research Agent" for step in result.workflow)
     parsed = json.loads(json.dumps(serialized))
     assert parsed["capability"]["name"] == "Research Agent"
     assert parsed["workflow"]
