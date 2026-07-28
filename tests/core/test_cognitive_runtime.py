@@ -5,12 +5,14 @@ import pytest
 
 import aegis_os.core.cognitive_runtime as runtime_module
 from aegis_os.core.cognitive_runtime import (
+    RUNTIME_SCHEMA_VERSION,
     CanonicalRuntimeResult,
     CanonicalRuntimeStatus,
     CognitiveRuntime,
+    LifecycleStageStatus,
 )
 from aegis_os.execution.execution_engine import ExecutionEngine
-from aegis_os.execution.models import ExecutionStatus
+from aegis_os.execution.models import ExecutionReceipt, ExecutionStatus
 from aegis_os.pipeline.composition import create_default_pipeline
 from aegis_os.pipeline.intent_analyzer import IntentAnalyzer
 from aegis_os.pipeline.models import (
@@ -69,6 +71,142 @@ def make_result(*, ready=True, failure=False):
         status=PipelineStatus.READY if ready else PipelineStatus.FAILED,
         metadata=({} if ready else {"failure_code": "no_capability_match"}),
     )
+
+
+def make_receipt(
+    *,
+    request_id="runtime-result-1",
+    status=ExecutionStatus.COMPLETED,
+    simulated=True,
+):
+    return ExecutionReceipt(
+        request_id=request_id,
+        mission="Research competitors",
+        selected_agent="Research Agent",
+        status=status,
+        simulated=simulated,
+    )
+
+
+@pytest.mark.parametrize(
+    "values",
+    [
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.COMPLETED,
+                "execution": make_receipt(),
+                "execution_requested": False,
+                "execution_performed": True,
+            },
+            id="receipt-without-execution-request",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.COMPLETED,
+                "execution": make_receipt(),
+                "execution_requested": True,
+                "execution_performed": False,
+            },
+            id="receipt-without-performed-state",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.ANALYZED,
+                "execution": None,
+                "execution_requested": False,
+                "execution_performed": True,
+            },
+            id="performed-without-receipt",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.FAILED,
+                "analysis": make_result(ready=False),
+                "execution": make_receipt(),
+                "execution_requested": True,
+                "execution_performed": True,
+            },
+            id="receipt-with-non-ready-analysis",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.COMPLETED,
+                "execution": None,
+                "execution_requested": True,
+                "execution_performed": False,
+            },
+            id="completed-without-receipt",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.COMPLETED,
+                "execution": None,
+                "execution_requested": False,
+                "execution_performed": False,
+            },
+            id="completed-without-request",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.ANALYZED,
+                "execution": make_receipt(),
+                "execution_requested": True,
+                "execution_performed": True,
+            },
+            id="analyzed-with-receipt",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.FAILED,
+                "execution": make_receipt(),
+                "execution_requested": True,
+                "execution_performed": True,
+            },
+            id="failed-with-completed-receipt",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.COMPLETED,
+                "execution": make_receipt(status=ExecutionStatus.FAILED),
+                "execution_requested": True,
+                "execution_performed": True,
+            },
+            id="completed-with-failed-receipt",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.COMPLETED,
+                "execution": make_receipt(request_id="different-request"),
+                "execution_requested": True,
+                "execution_performed": True,
+            },
+            id="receipt-request-id-mismatch",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.COMPLETED,
+                "execution": make_receipt(),
+                "execution_requested": True,
+                "execution_performed": True,
+                "simulated": False,
+            },
+            id="non-simulated-runtime-with-receipt",
+        ),
+    ],
+)
+def test_canonical_result_rejects_contradictory_states(values):
+    arguments = {
+        "request_id": "runtime-result-1",
+        "status": CanonicalRuntimeStatus.ANALYZED,
+        "analysis": make_result(),
+        "execution": None,
+        "execution_requested": False,
+        "execution_performed": False,
+        **values,
+    }
+
+    with pytest.raises(ValueError):
+        CanonicalRuntimeResult(**arguments)
 
 
 def test_analysis_only_runs_once_and_never_constructs_execution(
@@ -130,10 +268,9 @@ def test_execution_uses_same_result_type_and_propagates_request():
         2,
     ]
     assert result.analysis is pipeline.result
-    assert result.governance is None
-    assert result.evaluation is None
-    assert result.learning is None
-    json.dumps(result.to_dict())
+    assert result.governance.status is LifecycleStageStatus.NOT_IMPLEMENTED
+    assert result.evaluation.status is LifecycleStageStatus.NOT_IMPLEMENTED
+    assert result.learning.status is LifecycleStageStatus.NOT_IMPLEMENTED
 
 
 def test_failed_analysis_never_invokes_execution_engine():
@@ -202,6 +339,44 @@ def test_canonical_path_does_not_invoke_future_lifecycle_stages(
         "runtime-no-future-stages-1",
     )
 
-    assert result.governance is None
-    assert result.evaluation is None
-    assert result.learning is None
+    assert result.governance.status is LifecycleStageStatus.NOT_IMPLEMENTED
+    assert result.evaluation.status is LifecycleStageStatus.NOT_IMPLEMENTED
+    assert result.learning.status is LifecycleStageStatus.NOT_IMPLEMENTED
+
+
+def test_complete_canonical_envelope_serializes():
+    runtime = CognitiveRuntime(
+        pipeline=CountingPipeline(result=make_result()),
+        execution_engine=CountingExecutionEngine(),
+    )
+
+    result = runtime.run(
+        "Research competitors",
+        "runtime-envelope-1",
+        execute=True,
+    )
+    payload = result.to_dict()
+
+    assert payload == {
+        "schema_version": RUNTIME_SCHEMA_VERSION,
+        "request_id": "runtime-envelope-1",
+        "status": "completed",
+        "analysis": result.analysis.to_dict(),
+        "execution": result.execution.to_dict(),
+        "execution_requested": True,
+        "execution_performed": True,
+        "simulated": True,
+        "governance": {
+            "status": "not_implemented",
+            "detail": ("Governance is not implemented in the canonical runtime."),
+        },
+        "evaluation": {
+            "status": "not_implemented",
+            "detail": ("Evaluation is not implemented in the canonical runtime."),
+        },
+        "learning": {
+            "status": "not_implemented",
+            "detail": ("Learning is not implemented in the canonical runtime."),
+        },
+    }
+    json.dumps(payload)

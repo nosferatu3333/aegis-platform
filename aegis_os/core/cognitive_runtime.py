@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any
 
@@ -20,6 +20,35 @@ class CanonicalRuntimeStatus(StrEnum):
     ANALYZED = "analyzed"
     COMPLETED = "completed"
     FAILED = "failed"
+
+
+class LifecycleStageStatus(StrEnum):
+    """Availability state for a later canonical lifecycle stage."""
+
+    NOT_IMPLEMENTED = "not_implemented"
+    NOT_REQUESTED = "not_requested"
+    SKIPPED = "skipped"
+
+
+@dataclass(frozen=True)
+class LifecycleStageResult:
+    """Explicit state for a lifecycle stage with no current implementation."""
+
+    status: LifecycleStageStatus
+    detail: str | None = None
+
+    def to_dict(self) -> dict[str, str | None]:
+        return {
+            "status": self.status.value,
+            "detail": self.detail,
+        }
+
+
+def _not_implemented(stage: str) -> LifecycleStageResult:
+    return LifecycleStageResult(
+        status=LifecycleStageStatus.NOT_IMPLEMENTED,
+        detail=f"{stage} is not implemented in the canonical runtime.",
+    )
 
 
 @dataclass(frozen=True)
@@ -42,10 +71,73 @@ class CanonicalRuntimeResult:
     execution_requested: bool
     execution_performed: bool
     simulated: bool = True
-    governance: None = None
-    evaluation: None = None
-    learning: None = None
+    governance: LifecycleStageResult = field(
+        default_factory=lambda: _not_implemented("Governance")
+    )
+    evaluation: LifecycleStageResult = field(
+        default_factory=lambda: _not_implemented("Evaluation")
+    )
+    learning: LifecycleStageResult = field(
+        default_factory=lambda: _not_implemented("Learning")
+    )
     schema_version: str = RUNTIME_SCHEMA_VERSION
+
+    def __post_init__(self) -> None:
+        receipt = self.execution
+
+        if receipt is not None and not self.execution_requested:
+            raise ValueError("Execution receipt requires execution_requested=True.")
+        if receipt is not None and not self.execution_performed:
+            raise ValueError("Execution receipt requires execution_performed=True.")
+        if receipt is None and self.execution_performed:
+            raise ValueError("execution_performed=True requires an execution receipt.")
+        if receipt is not None and self.analysis.status is not PipelineStatus.READY:
+            raise ValueError("Execution receipt requires READY analysis.")
+        if receipt is not None and receipt.request_id != self.request_id:
+            raise ValueError(
+                "Execution receipt request_id must match the runtime result."
+            )
+        if receipt is not None and (not self.simulated or not receipt.simulated):
+            raise ValueError("Current execution receipts require simulated=True.")
+        if self.status is CanonicalRuntimeStatus.ANALYZED:
+            if receipt is not None:
+                raise ValueError(
+                    "ANALYZED runtime results cannot contain execution receipts."
+                )
+            if self.execution_requested:
+                raise ValueError("ANALYZED runtime results cannot request execution.")
+        if self.status is CanonicalRuntimeStatus.COMPLETED:
+            if not self.execution_requested:
+                raise ValueError(
+                    "COMPLETED runtime results require requested execution."
+                )
+            if receipt is None or receipt.status is not ExecutionStatus.COMPLETED:
+                raise ValueError(
+                    "COMPLETED runtime results require a completed receipt."
+                )
+        if (
+            self.status is CanonicalRuntimeStatus.FAILED
+            and receipt is not None
+            and receipt.status is ExecutionStatus.COMPLETED
+        ):
+            raise ValueError(
+                "FAILED runtime results cannot contain a completed receipt."
+            )
+
+        expected_status = self._expected_status()
+        if self.status is not expected_status:
+            raise ValueError(
+                "Runtime status is inconsistent with analysis and execution."
+            )
+
+    def _expected_status(self) -> CanonicalRuntimeStatus:
+        if self.analysis.status is not PipelineStatus.READY:
+            return CanonicalRuntimeStatus.FAILED
+        if self.execution is None:
+            return CanonicalRuntimeStatus.ANALYZED
+        if self.execution.status is ExecutionStatus.COMPLETED:
+            return CanonicalRuntimeStatus.COMPLETED
+        return CanonicalRuntimeStatus.FAILED
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -57,9 +149,9 @@ class CanonicalRuntimeResult:
             "execution_requested": self.execution_requested,
             "execution_performed": self.execution_performed,
             "simulated": self.simulated,
-            "governance": self.governance,
-            "evaluation": self.evaluation,
-            "learning": self.learning,
+            "governance": self.governance.to_dict(),
+            "evaluation": self.evaluation.to_dict(),
+            "learning": self.learning.to_dict(),
         }
 
 

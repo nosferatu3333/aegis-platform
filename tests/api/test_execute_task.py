@@ -41,6 +41,16 @@ def test_execute_task_rejects_invalid_task():
     assert response.status_code == 422
 
 
+def test_execute_task_preserves_non_ready_error_contract():
+    response = client.post(
+        "/execute-task",
+        json={"task": "Plan a product launch roadmap"},
+    )
+
+    assert response.status_code == 422
+    assert response.json()["detail"] == ("Cognitive result is not ready for execution.")
+
+
 def test_analyze_task_contract_remains_analysis_only():
     response = client.post("/analyze-task", json={"task": MISSION})
 
