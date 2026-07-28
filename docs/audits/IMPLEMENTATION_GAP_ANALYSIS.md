@@ -1,4 +1,18 @@
-# AEGIS Implementation Gap Analysis
+# Phase I Implementation Gap Analysis
+
+## Scope
+
+Repository: aegis-platform
+
+Baseline Release: AEGIS Foundation v1.0
+
+Milestone: Phase I — Core Cognitive Runtime
+
+> **Audit Baseline**
+>
+> This gap analysis is derived from the Current State Diagnostic dated 2026-07-26.
+> Subsequent implementation work may have closed individual gaps.
+> Each gap should be revalidated against the current repository before being considered active.
 
 ## Status
 
@@ -65,21 +79,20 @@ Claims without evidence must remain marked as **Not Yet Evaluated**.
 
 ---
 
-## Gap Matrix
+## Phase I Gap Matrix
 
-| ID | Foundation Requirement | Evidence | Current State | Gap | Priority | Proposed Action |
-|---|---|---|---|---|---|---|
-| GAP-001 | Constitutional identity is preserved independently of implementation | Not yet evaluated | Not Yet Evaluated | Unknown | P0 | Review governance and runtime boundaries |
-| GAP-002 | The runtime executes a coherent cognitive cycle | Not yet evaluated | Not Yet Evaluated | Unknown | P1 | Inspect pipeline, orchestration, reflection, and learning |
-| GAP-003 | Capabilities are bounded, reusable, composable, and selectable | Not yet evaluated | Not Yet Evaluated | Unknown | P1 | Inspect capability registry and execution contracts |
-| GAP-004 | Context and memory preserve continuity across cognitive operations | Not yet evaluated | Not Yet Evaluated | Unknown | P1 | Inspect memory and context integration |
-| GAP-005 | Decisions and outputs remain explainable and evidence-backed | Not yet evaluated | Not Yet Evaluated | Unknown | P1 | Inspect evidence, provenance, and result models |
-| GAP-006 | Reflection influences future behavior without uncontrolled self-modification | Not yet evaluated | Not Yet Evaluated | Unknown | P1 | Inspect reflection and learning boundaries |
-| GAP-007 | Architectural responsibilities remain separated and composable | Not yet evaluated | Not Yet Evaluated | Unknown | P2 | Map modules to documented architecture |
-| GAP-008 | Failures are observable, testable, and recoverable | Not yet evaluated | Not Yet Evaluated | Unknown | P2 | Review error handling, diagnostics, and tests |
-| GAP-009 | External interfaces expose the runtime without defining its identity | Not yet evaluated | Not Yet Evaluated | Unknown | P2 | Review API and environment interaction boundaries |
-| GAP-010 | Phase I remains constrained to the minimum viable cognitive runtime | Not yet evaluated | Not Yet Evaluated | Unknown | P0 | Identify and reject premature scope expansion |
-
+| ID | Foundation Requirement | Current State | Evidence | Priority | Action |
+|----|------------------------|---------------|----------|----------|--------|
+| GAP-001 | Constitutional ownership boundaries are enforced | Partial | Platform still implements responsibilities documented as belonging to Core; Governance package exists but has no implementation. :contentReference[oaicite:0]{index=0} | P0 | Define explicit Platform/Core/Ops boundaries and implement governance enforcement. |
+| GAP-002 | One canonical cognitive runtime exists | Partial | Legacy runtime and request pipeline operate in parallel and are not integrated. :contentReference[oaicite:1]{index=1} | P1 | Merge into a single canonical execution path. |
+| GAP-003 | Capability selection uses one deterministic contract | Partial | Pipeline, selector adapter, registry and matcher expose incompatible contracts. :contentReference[oaicite:2]{index=2} | P1 | Define one capability-selection protocol and remove duplicate selection paths. |
+| GAP-004 | Memory provides durable cognitive continuity | Partial | Multiple disconnected memory systems exist; persistence is repository-local and unsafe by default. :contentReference[oaicite:3]{index=3} | P1 | Consolidate memory ownership and externalize runtime state. |
+| GAP-005 | Results are explainable and serializable | Partial | Legacy runtime returns custom Python objects; structured pipeline exists but is disconnected. :contentReference[oaicite:4]{index=4} | P1 | Establish one canonical JSON result contract. |
+| GAP-006 | Reflection and learning are evidence-based | Partial | Learning records a single observation without validation or promotion rules. :contentReference[oaicite:5]{index=5} | P1 | Implement evidence-driven learning after repeatable execution exists. |
+| GAP-007 | Architectural responsibilities remain separated | Partial | Multiple overlapping planning, memory, evaluation and orchestration abstractions coexist. :contentReference[oaicite:6]{index=6} | P2 | Eliminate duplicated subsystems and clarify ownership. |
+| GAP-008 | Runtime is observable and testable | Partial | Characterization tests exist, but the complete suite cannot collect and major execution paths remain uncovered. :contentReference[oaicite:7]{index=7} | P2 | Restore full test collection and add end-to-end integration coverage. |
+| GAP-009 | Product boundary exists | Missing | No complete API/dashboard vertical slice existed in the audited state. :contentReference[oaicite:8]{index=8} | P2 | Deliver one composition root with API, request validation and structured responses. |
+| GAP-010 | Phase I scope remains focused | Implemented | Diagnostic explicitly defers reflection expansion, advanced memory, distributed runtime and other non-MVP features. :contentReference[oaicite:9]{index=9} | P0 | Preserve this scope discipline until the MVP is complete. |
 ---
 
 ## Repository Mapping
@@ -159,4 +172,20 @@ To be completed after repository inspection.
 
 ## Final Assessment
 
-To be completed after repository inspection.
+The repository already demonstrates the architectural direction of AEGIS but has not yet reached architectural coherence.
+
+The primary deficiency is not the absence of components; it is the coexistence of multiple partially overlapping implementations that have not yet converged into a single authoritative runtime.
+
+Phase I should therefore prioritize integration rather than expansion.
+
+No new cognitive subsystems should be introduced until:
+
+- one canonical execution pipeline exists;
+- capability selection uses one contract;
+- execution, evaluation and learning share one runtime path;
+- structured results are the single public interface;
+- governance becomes executable rather than documentary.
+
+The objective of Phase I is not feature growth.
+
+It is architectural convergence.
