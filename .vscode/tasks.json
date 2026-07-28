@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Ruff: Check",
+      "label": "Ruff Check",
       "type": "shell",
       "command": "python -m ruff check .",
       "options": {
@@ -12,7 +12,7 @@
       "group": "build"
     },
     {
-      "label": "Ruff: Format Check",
+      "label": "Ruff Format Check",
       "type": "shell",
       "command": "python -m ruff format --check .",
       "options": {
@@ -22,7 +22,7 @@
       "group": "build"
     },
     {
-      "label": "pytest: All",
+      "label": "Pytest",
       "type": "shell",
       "command": "python -m pytest",
       "options": {
@@ -35,12 +35,23 @@
       }
     },
     {
-      "label": "Validation: Full Local",
+      "label": "Pre-commit All Files",
+      "type": "shell",
+      "command": "python -m pre_commit run --all-files",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Full Local Validation",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "Ruff: Check",
-        "Ruff: Format Check",
-        "pytest: All"
+        "Ruff Check",
+        "Ruff Format Check",
+        "Pytest",
+        "Pre-commit All Files"
       ],
       "problemMatcher": [],
       "group": {
