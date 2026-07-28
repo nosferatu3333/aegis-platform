@@ -209,6 +209,62 @@ def test_canonical_result_rejects_contradictory_states(values):
         CanonicalRuntimeResult(**arguments)
 
 
+@pytest.mark.parametrize("request_id", ["", " ", "   ", "\t", "\n"])
+def test_canonical_result_rejects_blank_request_id(request_id):
+    with pytest.raises(
+        ValueError,
+        match="request_id cannot be empty",
+    ):
+        CanonicalRuntimeResult(
+            request_id=request_id,
+            status=CanonicalRuntimeStatus.ANALYZED,
+            analysis=make_result(),
+            execution=None,
+            execution_requested=False,
+            execution_performed=False,
+        )
+
+
+@pytest.mark.parametrize(
+    "receipt_status",
+    [
+        ExecutionStatus.PENDING,
+        ExecutionStatus.READY,
+        ExecutionStatus.RUNNING,
+        ExecutionStatus.WAITING,
+    ],
+)
+def test_canonical_result_rejects_nonterminal_execution_receipt(
+    receipt_status,
+):
+    with pytest.raises(
+        ValueError,
+        match="terminal status",
+    ):
+        CanonicalRuntimeResult(
+            request_id="runtime-result-1",
+            status=CanonicalRuntimeStatus.FAILED,
+            analysis=make_result(),
+            execution=make_receipt(status=receipt_status),
+            execution_requested=True,
+            execution_performed=True,
+        )
+
+
+def test_cancelled_receipt_is_terminal_and_maps_to_failed():
+    result = CanonicalRuntimeResult(
+        request_id="runtime-result-1",
+        status=CanonicalRuntimeStatus.FAILED,
+        analysis=make_result(),
+        execution=make_receipt(status=ExecutionStatus.CANCELLED),
+        execution_requested=True,
+        execution_performed=True,
+    )
+
+    assert result.execution.status is ExecutionStatus.CANCELLED
+    assert result.status is CanonicalRuntimeStatus.FAILED
+
+
 def test_analysis_only_runs_once_and_never_constructs_execution(
     monkeypatch,
 ):

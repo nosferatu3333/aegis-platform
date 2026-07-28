@@ -12,6 +12,13 @@ from aegis_os.pipeline.models import CognitiveRequestResult, PipelineStatus
 from aegis_os.pipeline.request_pipeline import CognitiveRequestPipeline
 
 RUNTIME_SCHEMA_VERSION = "1.0"
+TERMINAL_EXECUTION_STATUSES = frozenset(
+    {
+        ExecutionStatus.COMPLETED,
+        ExecutionStatus.FAILED,
+        ExecutionStatus.CANCELLED,
+    }
+)
 
 
 class CanonicalRuntimeStatus(StrEnum):
@@ -85,6 +92,8 @@ class CanonicalRuntimeResult:
     def __post_init__(self) -> None:
         receipt = self.execution
 
+        if not self.request_id or not self.request_id.strip():
+            raise ValueError("Canonical runtime result request_id cannot be empty.")
         if receipt is not None and not self.execution_requested:
             raise ValueError("Execution receipt requires execution_requested=True.")
         if receipt is not None and not self.execution_performed:
@@ -97,6 +106,8 @@ class CanonicalRuntimeResult:
             raise ValueError(
                 "Execution receipt request_id must match the runtime result."
             )
+        if receipt is not None and receipt.status not in TERMINAL_EXECUTION_STATUSES:
+            raise ValueError("Execution receipt must have a terminal status.")
         if receipt is not None and (not self.simulated or not receipt.simulated):
             raise ValueError("Current execution receipts require simulated=True.")
         if self.status is CanonicalRuntimeStatus.ANALYZED:
