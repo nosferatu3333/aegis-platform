@@ -1,6 +1,11 @@
+from importlib import import_module
+
 from fastapi.testclient import TestClient
 
 from aegis_os.api.app import create_app
+from aegis_os.pipeline.composition import create_default_runtime
+
+api_app = import_module("aegis_os.api.app")
 
 client = TestClient(create_app())
 MISSION = "Research competitors in the cognitive systems market"
@@ -44,3 +49,30 @@ def test_analyze_task_contract_remains_analysis_only():
     assert payload["capability"]["name"] == "Research Agent"
     assert "analysis" not in payload
     assert "execution" not in payload
+
+
+def test_api_routes_delegate_to_canonical_runtime(monkeypatch):
+    runtime = create_default_runtime()
+    calls = []
+    original_run = runtime.run
+
+    def record_run(task, request_id, *, execute=False):
+        calls.append(execute)
+        return original_run(task, request_id, execute=execute)
+
+    runtime.run = record_run
+    monkeypatch.setattr(api_app, "create_runtime", lambda: runtime)
+    delegated_client = TestClient(api_app.create_app())
+
+    analysis_response = delegated_client.post(
+        "/analyze-task",
+        json={"task": MISSION},
+    )
+    execution_response = delegated_client.post(
+        "/execute-task",
+        json={"task": MISSION},
+    )
+
+    assert analysis_response.status_code == 200
+    assert execution_response.status_code == 200
+    assert calls == [False, True]
