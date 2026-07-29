@@ -24,6 +24,11 @@ def test_dashboard_serves_mission_interface():
     assert 'id="validation-checks"' in response.text
     assert 'id="validation-evidence"' in response.text
     assert "Runtime validation" in response.text
+    assert "CONFORMANCE ONLY" in response.text
+    assert "not mission success" in response.text
+    assert "quality evaluation" in response.text
+    assert "governance approval" in response.text
+    assert "execution authorization" in response.text
 
 
 def test_dashboard_and_api_support_research_mission_flow():
