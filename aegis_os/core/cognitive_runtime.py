@@ -5,11 +5,18 @@ from enum import StrEnum
 from typing import Any
 
 from aegis_os.cognition.orchestrator import CognitiveOrchestrator
+from aegis_os.core.runtime_errors import (
+    CanonicalRuntimeInvariantError,
+    RuntimeConformanceError,
+)
 from aegis_os.execution.adapter import build_execution_request
 from aegis_os.execution.conformance import (
+    ConformanceContractError,
     ConformanceStatus,
     ExecutionConformanceResult,
     ExecutionConformanceValidator,
+    terminal_execution_is_valid,
+    workflow_completion_is_valid,
 )
 from aegis_os.execution.execution_engine import ExecutionEngine
 from aegis_os.execution.models import ExecutionReceipt, ExecutionStatus
@@ -108,29 +115,51 @@ class CanonicalRuntimeResult:
         receipt = self.execution
 
         if not self.request_id or not self.request_id.strip():
-            raise ValueError("Canonical runtime result request_id cannot be empty.")
+            raise CanonicalRuntimeInvariantError(
+                "Canonical runtime result request_id cannot be empty."
+            )
         if receipt is not None and not self.execution_requested:
-            raise ValueError("Execution receipt requires execution_requested=True.")
+            raise CanonicalRuntimeInvariantError(
+                "Execution receipt requires execution_requested=True."
+            )
         if receipt is not None and not self.execution_performed:
-            raise ValueError("Execution receipt requires execution_performed=True.")
+            raise CanonicalRuntimeInvariantError(
+                "Execution receipt requires execution_performed=True."
+            )
         if receipt is None and self.execution_performed:
-            raise ValueError("execution_performed=True requires an execution receipt.")
+            raise CanonicalRuntimeInvariantError(
+                "execution_performed=True requires an execution receipt."
+            )
         if receipt is not None and self.analysis.status is not PipelineStatus.READY:
-            raise ValueError("Execution receipt requires READY analysis.")
+            raise CanonicalRuntimeInvariantError(
+                "Execution receipt requires READY analysis."
+            )
         if receipt is not None and receipt.request_id != self.request_id:
-            raise ValueError(
+            raise CanonicalRuntimeInvariantError(
                 "Execution receipt request_id must match the runtime result."
             )
         if receipt is not None and receipt.status not in TERMINAL_EXECUTION_STATUSES:
-            raise ValueError("Execution receipt must have a terminal status.")
+            raise CanonicalRuntimeInvariantError(
+                "Execution receipt must have a terminal status."
+            )
         if receipt is not None and (not self.simulated or not receipt.simulated):
-            raise ValueError("Current execution receipts require simulated=True.")
+            raise CanonicalRuntimeInvariantError(
+                "Current execution receipts require simulated=True."
+            )
+        if receipt is not None and not terminal_execution_is_valid(receipt):
+            raise CanonicalRuntimeInvariantError(
+                "Execution receipt violates terminal timestamp invariants."
+            )
+        if receipt is not None and not workflow_completion_is_valid(receipt):
+            raise CanonicalRuntimeInvariantError(
+                "Execution receipt violates terminal workflow invariants."
+            )
         if receipt is None:
             if (
                 not isinstance(self.validation, LifecycleStageResult)
                 or self.validation.status is not LifecycleStageStatus.NOT_REQUESTED
             ):
-                raise ValueError(
+                raise CanonicalRuntimeInvariantError(
                     "Analysis-only results require validation not_requested."
                 )
         else:
@@ -138,29 +167,37 @@ class CanonicalRuntimeResult:
                 self.validation,
                 ExecutionConformanceResult,
             ):
-                raise ValueError("Execution receipts require conformance validation.")
+                raise CanonicalRuntimeInvariantError(
+                    "Execution receipts require conformance validation."
+                )
             if self.validation.request_id != self.request_id:
-                raise ValueError("Validation request_id must match the runtime result.")
+                raise CanonicalRuntimeInvariantError(
+                    "Validation request_id must match the runtime result."
+                )
             if self.validation.operation_outcome is not receipt.status:
-                raise ValueError("Validation outcome must match the execution receipt.")
+                raise CanonicalRuntimeInvariantError(
+                    "Validation outcome must match the execution receipt."
+                )
             if self.validation.status is not ConformanceStatus.PASSED:
-                raise ValueError(
+                raise CanonicalRuntimeInvariantError(
                     "Canonical runtime result requires passed conformance."
                 )
         if self.status is CanonicalRuntimeStatus.ANALYZED:
             if receipt is not None:
-                raise ValueError(
+                raise CanonicalRuntimeInvariantError(
                     "ANALYZED runtime results cannot contain execution receipts."
                 )
             if self.execution_requested:
-                raise ValueError("ANALYZED runtime results cannot request execution.")
+                raise CanonicalRuntimeInvariantError(
+                    "ANALYZED runtime results cannot request execution."
+                )
         if self.status is CanonicalRuntimeStatus.COMPLETED:
             if not self.execution_requested:
-                raise ValueError(
+                raise CanonicalRuntimeInvariantError(
                     "COMPLETED runtime results require requested execution."
                 )
             if receipt is None or receipt.status is not ExecutionStatus.COMPLETED:
-                raise ValueError(
+                raise CanonicalRuntimeInvariantError(
                     "COMPLETED runtime results require a completed receipt."
                 )
         if (
@@ -168,13 +205,13 @@ class CanonicalRuntimeResult:
             and receipt is not None
             and receipt.status is ExecutionStatus.COMPLETED
         ):
-            raise ValueError(
+            raise CanonicalRuntimeInvariantError(
                 "FAILED runtime results cannot contain a completed receipt."
             )
 
         expected_status = self._expected_status()
         if self.status is not expected_status:
-            raise ValueError(
+            raise CanonicalRuntimeInvariantError(
                 "Runtime status is inconsistent with analysis and execution."
             )
 
@@ -267,12 +304,35 @@ class CognitiveRuntime:
                 permissions=["simulated_workflow_execution"],
             )
             receipt = self.execution_engine.execute(execution_request)
-            validation = self.conformance_validator.validate(
-                request_id=request.request_id,
-                analysis=analysis,
-                execution_request=execution_request,
-                receipt=receipt,
-            )
+            try:
+                validation = self.conformance_validator.validate(
+                    request_id=request.request_id,
+                    analysis=analysis,
+                    execution_request=execution_request,
+                    receipt=receipt,
+                )
+            except ConformanceContractError as error:
+                raise CanonicalRuntimeInvariantError(
+                    "Conformance validator produced an invalid result contract.",
+                    request_id=request.request_id,
+                ) from error
+            if not isinstance(validation, ExecutionConformanceResult):
+                raise CanonicalRuntimeInvariantError(
+                    "Conformance validator returned an unsupported result.",
+                    request_id=request.request_id,
+                )
+            if validation.request_id != request.request_id:
+                raise CanonicalRuntimeInvariantError(
+                    "Validation request_id must match the runtime request.",
+                    request_id=request.request_id,
+                )
+            if validation.operation_outcome is not receipt.status:
+                raise CanonicalRuntimeInvariantError(
+                    "Validation outcome must match the execution receipt.",
+                    request_id=request.request_id,
+                )
+            if validation.status is ConformanceStatus.FAILED:
+                raise RuntimeConformanceError(validation)
 
         return CanonicalRuntimeResult(
             request_id=request.request_id,

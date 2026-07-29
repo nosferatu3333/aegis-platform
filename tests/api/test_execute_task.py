@@ -3,12 +3,53 @@ from importlib import import_module
 from fastapi.testclient import TestClient
 
 from aegis_os.api.app import create_app
+from aegis_os.core.runtime_errors import (
+    CanonicalRuntimeInvariantError,
+    RuntimeConformanceError,
+)
+from aegis_os.execution.conformance import (
+    ConformanceCheck,
+    ConformanceCheckName,
+    ConformanceStatus,
+    ExecutionConformanceResult,
+)
+from aegis_os.execution.models import ExecutionStatus
 from aegis_os.pipeline.composition import create_default_runtime
 
 api_app = import_module("aegis_os.api.app")
 
 client = TestClient(create_app())
 MISSION = "Research competitors in the cognitive systems market"
+
+
+class FaultingRuntime:
+    pipeline = object()
+
+    def __init__(self, error):
+        self.error = error
+
+    def run(self, task, request_id, *, execute=False):
+        raise self.error
+
+
+def make_failed_validation(request_id):
+    return ExecutionConformanceResult(
+        request_id=request_id,
+        status=ConformanceStatus.FAILED,
+        operation_outcome=ExecutionStatus.COMPLETED,
+        checks=tuple(
+            ConformanceCheck(
+                name=name,
+                status=(
+                    ConformanceStatus.FAILED
+                    if name is ConformanceCheckName.MISSION_PRESERVATION
+                    else ConformanceStatus.PASSED
+                ),
+                evidence=f"{name.value} API test evidence.",
+            )
+            for name in ConformanceCheckName
+        ),
+    )
 
 
 def test_execute_task_runs_simulated_workflow():
@@ -94,3 +135,57 @@ def test_api_routes_delegate_to_canonical_runtime(monkeypatch):
     assert analysis_response.status_code == 200
     assert execution_response.status_code == 200
     assert calls == [False, True]
+
+
+def test_internal_conformance_failure_returns_typed_http_500(monkeypatch):
+    request_id = "api-conformance-failure-1"
+    error = RuntimeConformanceError(
+        make_failed_validation(request_id),
+    )
+    monkeypatch.setattr(
+        api_app,
+        "create_runtime",
+        lambda: FaultingRuntime(error),
+    )
+    fault_client = TestClient(api_app.create_app())
+
+    response = fault_client.post(
+        "/execute-task",
+        json={"task": MISSION},
+        headers={"X-Request-ID": request_id},
+    )
+
+    assert response.status_code == 500
+    assert response.headers["X-Request-ID"] == request_id
+    payload = response.json()
+    assert payload["schema_version"] == "1.0"
+    assert payload["request_id"] == request_id
+    assert payload["detail"]["code"] == "execution_conformance_failure"
+    assert payload["detail"]["validation"]["status"] == "failed"
+    assert payload["detail"]["validation"]["operation_outcome"] == "completed"
+
+
+def test_canonical_invariant_failure_returns_typed_http_500(monkeypatch):
+    request_id = "api-invariant-failure-1"
+    error = CanonicalRuntimeInvariantError(
+        "Internal canonical contradiction.",
+        request_id=request_id,
+    )
+    monkeypatch.setattr(
+        api_app,
+        "create_runtime",
+        lambda: FaultingRuntime(error),
+    )
+    fault_client = TestClient(api_app.create_app())
+
+    response = fault_client.post(
+        "/execute-task",
+        json={"task": MISSION},
+        headers={"X-Request-ID": request_id},
+    )
+
+    assert response.status_code == 500
+    payload = response.json()
+    assert payload["request_id"] == request_id
+    assert payload["detail"]["code"] == "canonical_runtime_invariant_failure"
+    assert "validation" not in payload["detail"]

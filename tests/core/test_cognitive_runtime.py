@@ -11,6 +11,10 @@ from aegis_os.core.cognitive_runtime import (
     CognitiveRuntime,
     LifecycleStageStatus,
 )
+from aegis_os.core.runtime_errors import (
+    CanonicalRuntimeInvariantError,
+    RuntimeConformanceError,
+)
 from aegis_os.execution.conformance import (
     ConformanceCheck,
     ConformanceCheckName,
@@ -19,7 +23,12 @@ from aegis_os.execution.conformance import (
     ExecutionConformanceValidator,
 )
 from aegis_os.execution.execution_engine import ExecutionEngine
-from aegis_os.execution.models import ExecutionReceipt, ExecutionStatus
+from aegis_os.execution.models import (
+    ExecutionReceipt,
+    ExecutionStatus,
+    ExecutionStep,
+    ExecutionStepStatus,
+)
 from aegis_os.pipeline.composition import create_default_pipeline
 from aegis_os.pipeline.intent_analyzer import IntentAnalyzer
 from aegis_os.pipeline.models import (
@@ -69,6 +78,37 @@ class CountingConformanceValidator:
         return self.delegate.validate(**arguments)
 
 
+class FailedConformanceValidator:
+    def validate(self, **arguments):
+        validation = ExecutionConformanceValidator().validate(**arguments)
+        checks = tuple(
+            ConformanceCheck(
+                name=check.name,
+                status=(
+                    ConformanceStatus.FAILED
+                    if check.name is ConformanceCheckName.MISSION_PRESERVATION
+                    else check.status
+                ),
+                evidence=check.evidence,
+            )
+            for check in validation.checks
+        )
+        return ExecutionConformanceResult(
+            request_id=validation.request_id,
+            status=ConformanceStatus.FAILED,
+            operation_outcome=validation.operation_outcome,
+            checks=checks,
+        )
+
+
+class MismatchedConformanceValidator:
+    def validate(self, **arguments):
+        return make_validation(
+            request_id="different-request",
+            operation_outcome=arguments["receipt"].status,
+        )
+
+
 def make_result(*, ready=True, failure=False):
     return CognitiveRequestResult(
         task="Research competitors",
@@ -108,11 +148,39 @@ def make_receipt(
     status=ExecutionStatus.COMPLETED,
     simulated=True,
 ):
+    step_status = ExecutionStepStatus.PENDING
+    completed_steps = 0
+    failed_steps = 0
+    if status is ExecutionStatus.COMPLETED:
+        step_status = ExecutionStepStatus.COMPLETED
+        completed_steps = 1
+    elif status is ExecutionStatus.FAILED:
+        step_status = ExecutionStepStatus.FAILED
+        failed_steps = 1
+    elif status is ExecutionStatus.CANCELLED:
+        step_status = ExecutionStepStatus.SKIPPED
+    terminal = status in {
+        ExecutionStatus.COMPLETED,
+        ExecutionStatus.FAILED,
+        ExecutionStatus.CANCELLED,
+    }
     return ExecutionReceipt(
         request_id=request_id,
         mission="Research competitors",
         selected_agent="Research Agent",
         status=status,
+        steps=[
+            ExecutionStep(
+                step_id="step-1",
+                order=1,
+                description="Collect: Collect findings",
+                status=step_status,
+            )
+        ],
+        started_at=FIXED_TIME if terminal else None,
+        finished_at=FIXED_TIME if terminal else None,
+        completed_steps=completed_steps,
+        failed_steps=failed_steps,
         simulated=simulated,
     )
 
@@ -255,14 +323,14 @@ def test_canonical_result_rejects_contradictory_states(values):
         **values,
     }
 
-    with pytest.raises(ValueError):
+    with pytest.raises(CanonicalRuntimeInvariantError):
         CanonicalRuntimeResult(**arguments)
 
 
 @pytest.mark.parametrize("request_id", ["", " ", "   ", "\t", "\n"])
 def test_canonical_result_rejects_blank_request_id(request_id):
     with pytest.raises(
-        ValueError,
+        CanonicalRuntimeInvariantError,
         match="request_id cannot be empty",
     ):
         CanonicalRuntimeResult(
@@ -288,7 +356,7 @@ def test_canonical_result_rejects_nonterminal_execution_receipt(
     receipt_status,
 ):
     with pytest.raises(
-        ValueError,
+        CanonicalRuntimeInvariantError,
         match="terminal status",
     ):
         CanonicalRuntimeResult(
@@ -511,7 +579,7 @@ def test_complete_canonical_envelope_serializes():
 
 def test_canonical_result_rejects_execution_without_validation():
     with pytest.raises(
-        ValueError,
+        CanonicalRuntimeInvariantError,
         match="require conformance validation",
     ):
         CanonicalRuntimeResult(
@@ -526,7 +594,7 @@ def test_canonical_result_rejects_execution_without_validation():
 
 def test_canonical_result_rejects_validation_without_execution():
     with pytest.raises(
-        ValueError,
+        CanonicalRuntimeInvariantError,
         match="require validation not_requested",
     ):
         CanonicalRuntimeResult(
@@ -564,7 +632,7 @@ def test_canonical_result_rejects_contradictory_validation(
     validation,
     message,
 ):
-    with pytest.raises(ValueError, match=message):
+    with pytest.raises(CanonicalRuntimeInvariantError, match=message):
         CanonicalRuntimeResult(
             request_id="runtime-result-1",
             status=CanonicalRuntimeStatus.COMPLETED,
@@ -573,4 +641,43 @@ def test_canonical_result_rejects_contradictory_validation(
             execution_requested=True,
             execution_performed=True,
             validation=validation,
+        )
+
+
+def test_runtime_raises_typed_error_with_failed_conformance_result():
+    runtime = CognitiveRuntime(
+        pipeline=CountingPipeline(result=make_result()),
+        execution_engine=ExecutionEngine(clock=lambda: FIXED_TIME),
+        conformance_validator=FailedConformanceValidator(),
+    )
+
+    with pytest.raises(RuntimeConformanceError) as captured:
+        runtime.run(
+            "Research competitors",
+            "runtime-conformance-failure-1",
+            execute=True,
+        )
+
+    error = captured.value
+    assert error.request_id == "runtime-conformance-failure-1"
+    assert error.validation.status is ConformanceStatus.FAILED
+    assert error.validation.operation_outcome is ExecutionStatus.COMPLETED
+    assert error.to_dict()["code"] == "execution_conformance_failure"
+
+
+def test_runtime_rejects_validation_request_correlation_mismatch():
+    runtime = CognitiveRuntime(
+        pipeline=CountingPipeline(result=make_result()),
+        execution_engine=ExecutionEngine(clock=lambda: FIXED_TIME),
+        conformance_validator=MismatchedConformanceValidator(),
+    )
+
+    with pytest.raises(
+        CanonicalRuntimeInvariantError,
+        match="request_id must match",
+    ):
+        runtime.run(
+            "Research competitors",
+            "runtime-correlation-1",
+            execute=True,
         )

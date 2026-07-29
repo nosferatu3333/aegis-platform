@@ -11,6 +11,8 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
+from aegis_os.core.cognitive_runtime import RUNTIME_SCHEMA_VERSION
+from aegis_os.core.runtime_errors import RuntimeIntegrityError
 from aegis_os.pipeline.composition import (
     create_default_pipeline,
     create_default_runtime,
@@ -92,6 +94,26 @@ def create_app() -> FastAPI:
                 "schema_version": SCHEMA_VERSION,
                 "request_id": request_id,
                 "detail": jsonable_encoder(error.errors()),
+            },
+        )
+
+    @application.exception_handler(RuntimeIntegrityError)
+    async def runtime_integrity_error(
+        request: Request,
+        error: RuntimeIntegrityError,
+    ) -> JSONResponse:
+        request_id = request.state.request_id
+        logger.error(
+            "event=runtime_integrity_failure request_id=%s code=%s",
+            request_id,
+            error.error_code,
+        )
+        return JSONResponse(
+            status_code=500,
+            content={
+                "schema_version": RUNTIME_SCHEMA_VERSION,
+                "request_id": request_id,
+                "detail": error.to_dict(),
             },
         )
 
