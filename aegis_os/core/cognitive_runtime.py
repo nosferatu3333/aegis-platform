@@ -5,10 +5,7 @@ from enum import StrEnum
 from typing import Any
 
 from aegis_os.cognition.orchestrator import CognitiveOrchestrator
-from aegis_os.core.runtime_errors import (
-    CanonicalRuntimeInvariantError,
-    RuntimeConformanceError,
-)
+from aegis_os.core.runtime_errors import CanonicalRuntimeInvariantError
 from aegis_os.execution.adapter import build_execution_request
 from aegis_os.execution.conformance import (
     ConformanceContractError,
@@ -42,6 +39,7 @@ class CanonicalRuntimeStatus(StrEnum):
 
     ANALYZED = "analyzed"
     COMPLETED = "completed"
+    CONFORMANCE_FAILED = "conformance_failed"
     FAILED = "failed"
 
 
@@ -186,10 +184,6 @@ class CanonicalRuntimeResult:
                 raise CanonicalRuntimeInvariantError(
                     "Validation outcome must match the execution receipt."
                 )
-            if self.validation.status is not ConformanceStatus.PASSED:
-                raise CanonicalRuntimeInvariantError(
-                    "Canonical runtime result requires passed conformance."
-                )
         if self.status is CanonicalRuntimeStatus.ANALYZED:
             if receipt is not None:
                 raise CanonicalRuntimeInvariantError(
@@ -207,6 +201,19 @@ class CanonicalRuntimeResult:
             if receipt is None or receipt.status is not ExecutionStatus.COMPLETED:
                 raise CanonicalRuntimeInvariantError(
                     "COMPLETED runtime results require a completed receipt."
+                )
+        if self.status is CanonicalRuntimeStatus.CONFORMANCE_FAILED:
+            if (
+                receipt is None
+                or not isinstance(
+                    self.validation,
+                    ExecutionConformanceResult,
+                )
+                or self.validation.status is not ConformanceStatus.FAILED
+            ):
+                raise CanonicalRuntimeInvariantError(
+                    "CONFORMANCE_FAILED runtime results require failed "
+                    "execution conformance."
                 )
         if (
             self.status is CanonicalRuntimeStatus.FAILED
@@ -228,6 +235,11 @@ class CanonicalRuntimeResult:
             return CanonicalRuntimeStatus.FAILED
         if self.execution is None:
             return CanonicalRuntimeStatus.ANALYZED
+        if (
+            isinstance(self.validation, ExecutionConformanceResult)
+            and self.validation.status is ConformanceStatus.FAILED
+        ):
+            return CanonicalRuntimeStatus.CONFORMANCE_FAILED
         if self.execution.status is ExecutionStatus.COMPLETED:
             return CanonicalRuntimeStatus.COMPLETED
         return CanonicalRuntimeStatus.FAILED
@@ -339,12 +351,9 @@ class CognitiveRuntime:
                     "Validation outcome must match the execution receipt.",
                     request_id=request.request_id,
                 )
-            if validation.status is ConformanceStatus.FAILED:
-                raise RuntimeConformanceError(validation)
-
         return CanonicalRuntimeResult(
             request_id=request.request_id,
-            status=self._result_status(analysis, receipt),
+            status=self._result_status(analysis, receipt, validation),
             analysis=analysis,
             execution=receipt,
             execution_requested=request.execute,
@@ -356,11 +365,17 @@ class CognitiveRuntime:
     def _result_status(
         analysis: CognitiveRequestResult,
         receipt: ExecutionReceipt | None,
+        validation: ExecutionConformanceResult | LifecycleStageResult,
     ) -> CanonicalRuntimeStatus:
         if analysis.status is not PipelineStatus.READY:
             return CanonicalRuntimeStatus.FAILED
         if receipt is None:
             return CanonicalRuntimeStatus.ANALYZED
+        if (
+            isinstance(validation, ExecutionConformanceResult)
+            and validation.status is ConformanceStatus.FAILED
+        ):
+            return CanonicalRuntimeStatus.CONFORMANCE_FAILED
         if receipt.status is ExecutionStatus.COMPLETED:
             return CanonicalRuntimeStatus.COMPLETED
         return CanonicalRuntimeStatus.FAILED
