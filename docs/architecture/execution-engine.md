@@ -12,22 +12,31 @@ CognitiveRequestResult
   -> ExecutionRequest
   -> ExecutionEngine
   -> ExecutionReceipt
+  -> ExecutionConformanceValidator
 ```
 
 ## Contracts
 
 `aegis_os.execution.models` defines schema version `1.0` contracts:
 
-- `ExecutionRequest`: request ID, mission, selected agent, capabilities,
-  workflow steps, constraints, permissions, and metadata.
+- `ExecutionRequest`: request ID, mission, selected agent, typed execution
+  mode, capabilities, workflow steps, constraints, permissions, and metadata.
 - `ExecutionStep`: stable step ID, order, description, status, inputs, outputs,
   and optional error.
-- `ExecutionReceipt`: request identity, mission, agent, final status, all
-  steps, timestamps, counts, audit logs, `simulated`, and schema version.
+- `ExecutionReceipt`: request identity, mission, agent, typed execution mode,
+  final status, all steps, timestamps, counts, audit logs, the compatibility
+  `simulated` flag, and schema version.
+- `ExecutionConformanceResult`: request correlation, terminal operation
+  outcome, aggregate conformance status, all required checks, evidence, and
+  conformance schema version.
 
 Request statuses are `pending`, `ready`, `running`, `waiting`, `completed`,
 `failed`, and `cancelled`. Step statuses are `pending`, `running`, `completed`,
 `failed`, and `skipped`.
+
+`ExecutionMode.SIMULATED` is the only supported execution mode. It is the
+machine-readable simulation boundary. Descriptive constraints and permission
+labels do not establish execution mode.
 
 ## Adapter and eligibility
 
@@ -36,8 +45,8 @@ Request statuses are `pending`, `ready`, `running`, `waiting`, `completed`,
 capabilities, and workflow order. Failed/no-match analyses are rejected before
 execution.
 
-The `constraints` and `permissions` fields are descriptive inputs in v0.3.0;
-there is no policy engine that enforces their contents.
+The `constraints` and `permissions` fields remain descriptive inputs; there is
+no policy engine that enforces their contents.
 
 ## Deterministic lifecycle
 
@@ -58,7 +67,8 @@ engine does not sleep. A clock can be injected for repeatable tests and
 benchmarks.
 
 Malformed requests are rejected for missing identity, mission, selected agent,
-workflow, descriptions, or valid unique positive orders.
+typed simulated execution mode, workflow, descriptions, or valid unique
+positive orders.
 
 ## Controlled failure
 
@@ -68,30 +78,100 @@ become `skipped`, the receipt becomes `failed`, counts are updated, and the
 failure is recorded in audit logs. Ordinary mission text does not randomly
 fail.
 
+## Cancellation invariants
+
+There is no cancellation API or engine cancellation transition. A
+`CANCELLED` receipt can nevertheless be validated as an imported terminal
+receipt when all of these invariants hold:
+
+- the receipt has ordered workflow steps and both start and finish timestamps;
+- the finish timestamp is not earlier than the start timestamp;
+- zero or more leading steps are `completed`;
+- every remaining step is `skipped`;
+- at least one step is skipped, so an all-completed receipt is not cancelled;
+- `completed_steps` matches the completed prefix and `failed_steps` is zero;
+- no `pending`, `running`, or `failed` step appears.
+
+A failed step belongs only to a `FAILED` receipt. A failed receipt has exactly
+one failed step, completed steps before it, and skipped steps after it.
+
+## Execution conformance
+
+`ExecutionConformanceValidator` runs once after simulated execution. It checks
+request identity, mission and capability preservation, planned workflow,
+ordering, completeness, terminal state, and the typed simulation boundary.
+It performs no quality assessment, evaluation, governance decision, or
+authorization.
+
+Conformance status and operation outcome are independent. A controlled
+execution failure can therefore return operation outcome `failed` with
+conformance status `passed`.
+
+Failed conformance is represented by `RuntimeConformanceError`, a typed
+internal exception that retains the complete failed
+`ExecutionConformanceResult`. A contradictory canonical envelope raises
+`CanonicalRuntimeInvariantError`.
+
 ## Receipt and audit evidence
 
 Receipts contain start/finish timestamps, final request status, ordered step
-states, deterministic outputs or errors, completed/failed counts, lifecycle log
-entries, and `simulated: true`. Standard Python logging records request
-creation, request and step transitions, agent identity, completion/failure, and
-the simulation flag. Receipts are returned but not persisted.
+states, deterministic outputs or errors, completed/failed counts, lifecycle
+log entries, `execution_mode: simulated`, and `simulated: true`. Standard
+Python logging records request creation, request and step transitions, agent
+identity, completion/failure, and the simulation flag. Receipts are returned
+but not persisted.
 
 ## API integration
 
 `POST /execute-task` validates the same task body as `/analyze-task`, runs the
 existing cognitive pipeline, adapts a ready result, executes the simulation,
-and returns:
+validates conformance, and returns:
 
 ```json
 {
   "analysis": {},
-  "execution": {},
+  "execution": {
+    "schema_version": "1.0",
+    "execution_mode": "simulated",
+    "simulated": true
+  },
+  "validation": {
+    "schema_version": "1.0",
+    "status": "passed",
+    "operation_outcome": "completed",
+    "checks": [],
+    "evidence": []
+  },
   "simulated": true
 }
 ```
 
-The dashboard exposes a separate **Simulate Execution** control and explicit
-simulation warning. `/analyze-task` remains analysis-only.
+The dashboard exposes separate simulated-execution and validation stages.
+`/analyze-task` remains analysis-only.
+
+API failure classification is:
+
+| Condition | HTTP status | Contract |
+|---|---:|---|
+| Invalid request body or blank task | 422 | Request-validation detail |
+| Analysis not ready for execution | 422 | Existing analysis-rejection detail |
+| Faithfully represented execution failure | 200 | Execution `failed`, conformance `passed` |
+| Failed execution conformance | 500 | `execution_conformance_failure` with validation |
+| Canonical runtime contradiction | 500 | `canonical_runtime_invariant_failure` |
+
+## API compatibility decision
+
+The `validation` response member and `execution.execution_mode` member are
+classified as backward-compatible additive fields under existing schema
+version `1.0`. Existing response members retain their names and meanings,
+`/analyze-task` is unchanged, both additions have deterministic defaults or
+successful-response values, and repository contract policy requires readers
+to preserve or ignore safe unknown fields.
+
+Consumers that reject unknown JSON members are stricter than this
+compatibility policy and must update their decoders. Removing or renaming an
+existing field, changing its meaning, or changing an existing value type would
+require a new schema version and migration rules.
 
 ## Limitations
 
@@ -99,7 +179,8 @@ simulation warning. `/analyze-task` remains analysis-only.
 - No retries, queues, workers, cancellation API, or waiting transition.
 - Single-agent, synchronous, in-memory operation.
 - No durable receipt or audit store.
-- Outputs do not establish mission quality or external completion.
+- Outputs and conformance do not establish mission quality or external
+  completion.
 
 See [ADR-002](../adr/ADR-002-governed-execution.md),
 [governance](governance.md), and the
