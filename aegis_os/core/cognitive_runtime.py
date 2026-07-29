@@ -6,6 +6,11 @@ from typing import Any
 
 from aegis_os.cognition.orchestrator import CognitiveOrchestrator
 from aegis_os.execution.adapter import build_execution_request
+from aegis_os.execution.conformance import (
+    ConformanceStatus,
+    ExecutionConformanceResult,
+    ExecutionConformanceValidator,
+)
 from aegis_os.execution.execution_engine import ExecutionEngine
 from aegis_os.execution.models import ExecutionReceipt, ExecutionStatus
 from aegis_os.pipeline.models import CognitiveRequestResult, PipelineStatus
@@ -58,6 +63,13 @@ def _not_implemented(stage: str) -> LifecycleStageResult:
     )
 
 
+def _not_requested(stage: str) -> LifecycleStageResult:
+    return LifecycleStageResult(
+        status=LifecycleStageStatus.NOT_REQUESTED,
+        detail=f"{stage} was not requested for this runtime operation.",
+    )
+
+
 @dataclass(frozen=True)
 class CanonicalRuntimeRequest:
     """Typed input accepted by the canonical runtime boundary."""
@@ -78,6 +90,9 @@ class CanonicalRuntimeResult:
     execution_requested: bool
     execution_performed: bool
     simulated: bool = True
+    validation: ExecutionConformanceResult | LifecycleStageResult = field(
+        default_factory=lambda: _not_requested("Execution conformance validation")
+    )
     governance: LifecycleStageResult = field(
         default_factory=lambda: _not_implemented("Governance")
     )
@@ -110,6 +125,28 @@ class CanonicalRuntimeResult:
             raise ValueError("Execution receipt must have a terminal status.")
         if receipt is not None and (not self.simulated or not receipt.simulated):
             raise ValueError("Current execution receipts require simulated=True.")
+        if receipt is None:
+            if (
+                not isinstance(self.validation, LifecycleStageResult)
+                or self.validation.status is not LifecycleStageStatus.NOT_REQUESTED
+            ):
+                raise ValueError(
+                    "Analysis-only results require validation not_requested."
+                )
+        else:
+            if not isinstance(
+                self.validation,
+                ExecutionConformanceResult,
+            ):
+                raise ValueError("Execution receipts require conformance validation.")
+            if self.validation.request_id != self.request_id:
+                raise ValueError("Validation request_id must match the runtime result.")
+            if self.validation.operation_outcome is not receipt.status:
+                raise ValueError("Validation outcome must match the execution receipt.")
+            if self.validation.status is not ConformanceStatus.PASSED:
+                raise ValueError(
+                    "Canonical runtime result requires passed conformance."
+                )
         if self.status is CanonicalRuntimeStatus.ANALYZED:
             if receipt is not None:
                 raise ValueError(
@@ -160,6 +197,7 @@ class CanonicalRuntimeResult:
             "execution_requested": self.execution_requested,
             "execution_performed": self.execution_performed,
             "simulated": self.simulated,
+            "validation": self.validation.to_dict(),
             "governance": self.governance.to_dict(),
             "evaluation": self.evaluation.to_dict(),
             "learning": self.learning.to_dict(),
@@ -176,10 +214,14 @@ class CognitiveRuntime:
         self,
         pipeline: CognitiveRequestPipeline | None = None,
         execution_engine: ExecutionEngine | None = None,
+        conformance_validator: ExecutionConformanceValidator | None = None,
         orchestrator: CognitiveOrchestrator | None = None,
     ):
         self.pipeline = pipeline
         self.execution_engine = execution_engine or ExecutionEngine()
+        self.conformance_validator = (
+            conformance_validator or ExecutionConformanceValidator()
+        )
         self.orchestrator = orchestrator
         if self.orchestrator is None and pipeline is None:
             self.orchestrator = CognitiveOrchestrator()
@@ -213,6 +255,9 @@ class CognitiveRuntime:
 
         analysis = self.pipeline.process_task(request.task)
         receipt = None
+        validation: ExecutionConformanceResult | LifecycleStageResult = _not_requested(
+            "Execution conformance validation"
+        )
 
         if request.execute and analysis.status is PipelineStatus.READY:
             execution_request = build_execution_request(
@@ -222,6 +267,12 @@ class CognitiveRuntime:
                 permissions=["simulated_workflow_execution"],
             )
             receipt = self.execution_engine.execute(execution_request)
+            validation = self.conformance_validator.validate(
+                request_id=request.request_id,
+                analysis=analysis,
+                execution_request=execution_request,
+                receipt=receipt,
+            )
 
         return CanonicalRuntimeResult(
             request_id=request.request_id,
@@ -230,6 +281,7 @@ class CognitiveRuntime:
             execution=receipt,
             execution_requested=request.execute,
             execution_performed=receipt is not None,
+            validation=validation,
         )
 
     @staticmethod

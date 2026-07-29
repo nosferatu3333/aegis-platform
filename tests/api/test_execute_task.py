@@ -18,6 +18,7 @@ def test_execute_task_runs_simulated_workflow():
     payload = response.json()
     analysis = payload["analysis"]
     execution = payload["execution"]
+    validation = payload["validation"]
 
     assert analysis["capability"]["name"] == "Research Agent"
     assert execution["selected_agent"] == "Research Agent"
@@ -33,6 +34,12 @@ def test_execute_task_runs_simulated_workflow():
     assert execution["completed_steps"] == 5
     assert execution["simulated"] is True
     assert payload["simulated"] is True
+    assert validation["request_id"] == execution["request_id"]
+    assert validation["status"] == "passed"
+    assert validation["operation_outcome"] == "completed"
+    assert len(validation["checks"]) == 8
+    assert all(check["status"] == "passed" for check in validation["checks"])
+    assert len(validation["evidence"]) == 8
 
 
 def test_execute_task_rejects_invalid_task():
@@ -59,6 +66,7 @@ def test_analyze_task_contract_remains_analysis_only():
     assert payload["capability"]["name"] == "Research Agent"
     assert "analysis" not in payload
     assert "execution" not in payload
+    assert "validation" not in payload
 
 
 def test_api_routes_delegate_to_canonical_runtime(monkeypatch):

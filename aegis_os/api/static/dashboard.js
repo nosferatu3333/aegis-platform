@@ -7,6 +7,7 @@ const executeButtonLabel = executeButton.querySelector(".button-label");
 const errorMessage = document.querySelector("#error-message");
 const resultPanel = document.querySelector("#result-panel");
 const executionPanel = document.querySelector("#execution-panel");
+const validationPanel = document.querySelector("#validation-panel");
 
 function setText(selector, value, fallback = "Not available") {
   const element = document.querySelector(selector);
@@ -139,6 +140,46 @@ function renderExecution(receipt) {
   executionPanel.hidden = false;
 }
 
+function renderValidation(validation) {
+  const checks = validation.checks || [];
+  const checkList = document.querySelector("#validation-checks");
+  const evidenceList = document.querySelector("#validation-evidence");
+  checkList.replaceChildren();
+  evidenceList.replaceChildren();
+
+  setText("#validation-status", validation.status);
+  setText("#operation-outcome", validation.operation_outcome);
+  setText("#validation-count", `${checks.length} checks`);
+
+  checks.forEach((check) => {
+    const item = document.createElement("li");
+    item.className = "workflow-step";
+    const content = document.createElement("div");
+    const title = document.createElement("h4");
+    const evidence = document.createElement("p");
+    const status = document.createElement("span");
+
+    title.textContent = check.name.replaceAll("_", " ");
+    evidence.textContent = check.evidence;
+    status.className = "step-status";
+    status.textContent = check.status;
+    content.append(title, evidence);
+    item.append(content, status);
+    checkList.append(item);
+
+    const evidenceItem = document.createElement("li");
+    evidenceItem.textContent = check.evidence;
+    evidenceList.append(evidenceItem);
+  });
+
+  document.querySelector("#validation-json").textContent = JSON.stringify(
+    validation,
+    null,
+    2,
+  );
+  validationPanel.hidden = false;
+}
+
 function describeError(payload, status) {
   if (payload && typeof payload.detail === "string") {
     return payload.detail;
@@ -158,6 +199,7 @@ form.addEventListener("submit", async (event) => {
 
   errorMessage.hidden = true;
   resultPanel.hidden = true;
+  validationPanel.hidden = true;
   analyzeButton.disabled = true;
   buttonLabel.textContent = "Analyzing…";
 
@@ -192,6 +234,7 @@ executeButton.addEventListener("click", async () => {
   errorMessage.hidden = true;
   resultPanel.hidden = true;
   executionPanel.hidden = true;
+  validationPanel.hidden = true;
   executeButton.disabled = true;
   analyzeButton.disabled = true;
   executeButtonLabel.textContent = "Simulating…";
@@ -210,7 +253,8 @@ executeButton.addEventListener("click", async () => {
 
     renderResult(payload.analysis);
     renderExecution(payload.execution);
-    executionPanel.scrollIntoView({behavior: "smooth", block: "start"});
+    renderValidation(payload.validation);
+    validationPanel.scrollIntoView({behavior: "smooth", block: "start"});
   } catch (error) {
     errorMessage.textContent =
       error instanceof Error

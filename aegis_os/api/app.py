@@ -189,6 +189,7 @@ def create_app() -> FastAPI:
         return {
             "analysis": analysis_payload,
             "execution": receipt.to_dict(),
+            "validation": runtime_result.validation.to_dict(),
             "simulated": runtime_result.simulated,
         }
 

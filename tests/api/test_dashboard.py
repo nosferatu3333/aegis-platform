@@ -18,6 +18,12 @@ def test_dashboard_serves_mission_interface():
     assert 'data-endpoint="/execute-task"' in response.text
     assert "SIMULATED EXECUTION ONLY" in response.text
     assert "not yet autonomously" in response.text
+    assert 'id="validation-panel"' in response.text
+    assert 'id="validation-status"' in response.text
+    assert 'id="operation-outcome"' in response.text
+    assert 'id="validation-checks"' in response.text
+    assert 'id="validation-evidence"' in response.text
+    assert "Runtime validation" in response.text
 
 
 def test_dashboard_and_api_support_research_mission_flow():
@@ -37,3 +43,15 @@ def test_dashboard_and_api_support_research_mission_flow():
     assert [step["order"] for step in payload["workflow"]] == sorted(
         step["order"] for step in payload["workflow"]
     )
+
+
+def test_dashboard_script_renders_validation_separately_from_execution():
+    response = client.get("/static/dashboard.js")
+
+    assert response.status_code == 200
+    assert "function renderExecution(receipt)" in response.text
+    assert "function renderValidation(validation)" in response.text
+    assert "payload.validation" in response.text
+    assert '"#operation-outcome"' in response.text
+    assert '"#validation-checks"' in response.text
+    assert '"#validation-evidence"' in response.text

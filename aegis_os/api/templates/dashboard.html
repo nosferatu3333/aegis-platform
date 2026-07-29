@@ -166,6 +166,44 @@
         <pre id="execution-json"></pre>
       </details>
     </section>
+
+    <section id="validation-panel" class="result-panel" aria-live="polite" hidden>
+      <div class="section-heading result-heading">
+        <div>
+          <p class="step-label">04 / Execution conformance</p>
+          <h2>Runtime validation</h2>
+        </div>
+        <span id="validation-status" class="status-badge"></span>
+      </div>
+
+      <div class="result-grid">
+        <article class="card">
+          <p class="field-label">Operation outcome</p>
+          <p id="operation-outcome" class="primary-value"></p>
+        </article>
+
+        <article class="card workflow-card">
+          <div class="workflow-heading">
+            <div>
+              <p class="field-label">Validation checks</p>
+              <h3>Execution conformance</h3>
+            </div>
+            <span id="validation-count" class="workflow-count"></span>
+          </div>
+          <ol id="validation-checks" class="workflow-list"></ol>
+        </article>
+
+        <article class="card card-wide">
+          <p class="field-label">Validation evidence</p>
+          <ul id="validation-evidence"></ul>
+        </article>
+      </div>
+
+      <details class="raw-panel">
+        <summary>Raw validation result</summary>
+        <pre id="validation-json"></pre>
+      </details>
+    </section>
   </main>
 </body>
 </html>

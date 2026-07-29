@@ -11,6 +11,13 @@ from aegis_os.core.cognitive_runtime import (
     CognitiveRuntime,
     LifecycleStageStatus,
 )
+from aegis_os.execution.conformance import (
+    ConformanceCheck,
+    ConformanceCheckName,
+    ConformanceStatus,
+    ExecutionConformanceResult,
+    ExecutionConformanceValidator,
+)
 from aegis_os.execution.execution_engine import ExecutionEngine
 from aegis_os.execution.models import ExecutionReceipt, ExecutionStatus
 from aegis_os.pipeline.composition import create_default_pipeline
@@ -37,13 +44,29 @@ class CountingPipeline:
 
 
 class CountingExecutionEngine:
-    def __init__(self):
+    def __init__(self, events=None):
         self.delegate = ExecutionEngine(clock=lambda: FIXED_TIME)
         self.requests = []
+        self.events = events
 
     def execute(self, request):
         self.requests.append(request)
+        if self.events is not None:
+            self.events.append("execution")
         return self.delegate.execute(request)
+
+
+class CountingConformanceValidator:
+    def __init__(self, events=None):
+        self.delegate = ExecutionConformanceValidator()
+        self.calls = []
+        self.events = events
+
+    def validate(self, **arguments):
+        self.calls.append(arguments)
+        if self.events is not None:
+            self.events.append("validation")
+        return self.delegate.validate(**arguments)
 
 
 def make_result(*, ready=True, failure=False):
@@ -62,8 +85,14 @@ def make_result(*, ready=True, failure=False):
                     2,
                     "Compare",
                     ("[simulate-failure]" if failure else "Compare findings"),
+                    "research-agent",
                 ),
-                WorkflowStep(1, "Collect", "Collect findings"),
+                WorkflowStep(
+                    1,
+                    "Collect",
+                    "Collect findings",
+                    "research-agent",
+                ),
             ]
             if ready
             else []
@@ -85,6 +114,27 @@ def make_receipt(
         selected_agent="Research Agent",
         status=status,
         simulated=simulated,
+    )
+
+
+def make_validation(
+    *,
+    request_id="runtime-result-1",
+    operation_outcome=ExecutionStatus.COMPLETED,
+    status=ConformanceStatus.PASSED,
+):
+    return ExecutionConformanceResult(
+        request_id=request_id,
+        status=status,
+        operation_outcome=operation_outcome,
+        checks=tuple(
+            ConformanceCheck(
+                name=name,
+                status=status,
+                evidence=f"{name.value} test evidence.",
+            )
+            for name in ConformanceCheckName
+        ),
     )
 
 
@@ -259,6 +309,9 @@ def test_cancelled_receipt_is_terminal_and_maps_to_failed():
         execution=make_receipt(status=ExecutionStatus.CANCELLED),
         execution_requested=True,
         execution_performed=True,
+        validation=make_validation(
+            operation_outcome=ExecutionStatus.CANCELLED,
+        ),
     )
 
     assert result.execution.status is ExecutionStatus.CANCELLED
@@ -270,9 +323,11 @@ def test_analysis_only_runs_once_and_never_constructs_execution(
 ):
     pipeline = CountingPipeline()
     engine = CountingExecutionEngine()
+    validator = CountingConformanceValidator()
     runtime = CognitiveRuntime(
         pipeline=pipeline,
         execution_engine=engine,
+        conformance_validator=validator,
     )
 
     def fail_if_adapted(*args, **kwargs):
@@ -295,16 +350,21 @@ def test_analysis_only_runs_once_and_never_constructs_execution(
     assert result.execution_requested is False
     assert result.execution_performed is False
     assert result.execution is None
+    assert result.validation.status is LifecycleStageStatus.NOT_REQUESTED
     assert pipeline.calls == 1
     assert engine.requests == []
+    assert validator.calls == []
 
 
 def test_execution_uses_same_result_type_and_propagates_request():
     pipeline = CountingPipeline(result=make_result())
-    engine = CountingExecutionEngine()
+    events = []
+    engine = CountingExecutionEngine(events)
+    validator = CountingConformanceValidator(events)
     runtime = CognitiveRuntime(
         pipeline=pipeline,
         execution_engine=engine,
+        conformance_validator=validator,
     )
 
     result = runtime.run(
@@ -317,8 +377,12 @@ def test_execution_uses_same_result_type_and_propagates_request():
     assert result.status is CanonicalRuntimeStatus.COMPLETED
     assert result.request_id == "runtime-execution-1"
     assert result.execution.request_id == "runtime-execution-1"
+    assert result.validation.status is ConformanceStatus.PASSED
     assert engine.requests[0].request_id == "runtime-execution-1"
     assert pipeline.calls == 1
+    assert len(validator.calls) == 1
+    assert validator.calls[0]["receipt"] is result.execution
+    assert events == ["execution", "validation"]
     assert [step.order for step in engine.requests[0].workflow_steps] == [
         1,
         2,
@@ -332,9 +396,11 @@ def test_execution_uses_same_result_type_and_propagates_request():
 def test_failed_analysis_never_invokes_execution_engine():
     pipeline = CountingPipeline(result=make_result(ready=False))
     engine = CountingExecutionEngine()
+    validator = CountingConformanceValidator()
     runtime = CognitiveRuntime(
         pipeline=pipeline,
         execution_engine=engine,
+        conformance_validator=validator,
     )
 
     result = runtime.run(
@@ -348,8 +414,10 @@ def test_failed_analysis_never_invokes_execution_engine():
     assert result.execution_performed is False
     assert result.execution is None
     assert result.analysis.metadata["failure_code"] == "no_capability_match"
+    assert result.validation.status is LifecycleStageStatus.NOT_REQUESTED
     assert pipeline.calls == 1
     assert engine.requests == []
+    assert validator.calls == []
 
 
 def test_execution_failure_remains_structured():
@@ -367,6 +435,8 @@ def test_execution_failure_remains_structured():
 
     assert result.status is CanonicalRuntimeStatus.FAILED
     assert result.execution.status is ExecutionStatus.FAILED
+    assert result.validation.status is ConformanceStatus.PASSED
+    assert result.validation.operation_outcome is ExecutionStatus.FAILED
     assert result.execution.failed_steps == 1
     assert result.execution.steps[1].error
     assert result.to_dict()["execution"]["status"] == "failed"
@@ -422,6 +492,7 @@ def test_complete_canonical_envelope_serializes():
         "execution_requested": True,
         "execution_performed": True,
         "simulated": True,
+        "validation": result.validation.to_dict(),
         "governance": {
             "status": "not_implemented",
             "detail": ("Governance is not implemented in the canonical runtime."),
@@ -436,3 +507,70 @@ def test_complete_canonical_envelope_serializes():
         },
     }
     json.dumps(payload)
+
+
+def test_canonical_result_rejects_execution_without_validation():
+    with pytest.raises(
+        ValueError,
+        match="require conformance validation",
+    ):
+        CanonicalRuntimeResult(
+            request_id="runtime-result-1",
+            status=CanonicalRuntimeStatus.COMPLETED,
+            analysis=make_result(),
+            execution=make_receipt(),
+            execution_requested=True,
+            execution_performed=True,
+        )
+
+
+def test_canonical_result_rejects_validation_without_execution():
+    with pytest.raises(
+        ValueError,
+        match="require validation not_requested",
+    ):
+        CanonicalRuntimeResult(
+            request_id="runtime-result-1",
+            status=CanonicalRuntimeStatus.ANALYZED,
+            analysis=make_result(),
+            execution=None,
+            execution_requested=False,
+            execution_performed=False,
+            validation=make_validation(),
+        )
+
+
+@pytest.mark.parametrize(
+    ("validation", "message"),
+    [
+        pytest.param(
+            make_validation(request_id="different-request"),
+            "request_id must match",
+            id="validation-request-id-mismatch",
+        ),
+        pytest.param(
+            make_validation(operation_outcome=ExecutionStatus.FAILED),
+            "outcome must match",
+            id="validation-outcome-mismatch",
+        ),
+        pytest.param(
+            make_validation(status=ConformanceStatus.FAILED),
+            "requires passed conformance",
+            id="failed-conformance",
+        ),
+    ],
+)
+def test_canonical_result_rejects_contradictory_validation(
+    validation,
+    message,
+):
+    with pytest.raises(ValueError, match=message):
+        CanonicalRuntimeResult(
+            request_id="runtime-result-1",
+            status=CanonicalRuntimeStatus.COMPLETED,
+            analysis=make_result(),
+            execution=make_receipt(),
+            execution_requested=True,
+            execution_performed=True,
+            validation=validation,
+        )
