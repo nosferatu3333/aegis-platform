@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from aegis_os.execution.models import (
+    ExecutionMode,
     ExecutionReceipt,
     ExecutionRequest,
     ExecutionStatus,
@@ -31,6 +32,7 @@ class ExecutionEngine:
             request_id=request.request_id,
             mission=request.mission,
             selected_agent=request.selected_agent,
+            execution_mode=request.execution_mode,
             steps=steps,
         )
 
@@ -106,6 +108,8 @@ class ExecutionEngine:
             raise ValueError("Execution mission cannot be empty.")
         if not request.selected_agent or not request.selected_agent.strip():
             raise ValueError("Execution selected_agent cannot be empty.")
+        if request.execution_mode is not ExecutionMode.SIMULATED:
+            raise ValueError("Execution requires the typed simulated execution mode.")
         if not request.workflow_steps:
             raise ValueError("Execution workflow_steps cannot be empty.")
 

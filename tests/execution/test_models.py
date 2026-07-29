@@ -1,4 +1,5 @@
 from aegis_os.execution.models import (
+    ExecutionMode,
     ExecutionReceipt,
     ExecutionRequest,
     ExecutionStep,
@@ -27,10 +28,14 @@ def test_execution_models_construct_and_serialize():
     )
 
     assert request.to_dict()["required_capabilities"] == ["research"]
+    assert request.to_dict()["execution_mode"] == "simulated"
     assert receipt.to_dict()["status"] == "pending"
     assert receipt.to_dict()["steps"][0]["status"] == "pending"
     assert receipt.to_dict()["schema_version"] == "1.0"
     assert receipt.to_dict()["simulated"] is True
+    assert receipt.to_dict()["execution_mode"] == "simulated"
+    assert request.execution_mode is ExecutionMode.SIMULATED
+    assert receipt.execution_mode is ExecutionMode.SIMULATED
 
 
 def test_execution_models_have_safe_mutable_defaults():

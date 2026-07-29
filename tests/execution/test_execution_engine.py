@@ -4,6 +4,7 @@ import pytest
 
 from aegis_os.execution.execution_engine import ExecutionEngine
 from aegis_os.execution.models import (
+    ExecutionMode,
     ExecutionRequest,
     ExecutionStatus,
     ExecutionStepStatus,
@@ -41,6 +42,7 @@ def test_successful_execution_is_ordered_and_auditable():
     assert receipt.started_at == FIXED_TIME
     assert receipt.finished_at == FIXED_TIME
     assert receipt.simulated is True
+    assert receipt.execution_mode is ExecutionMode.SIMULATED
     assert receipt.logs[0].startswith("request status: pending -> ready")
     assert receipt.logs[1].startswith("request status: ready -> running")
     assert receipt.logs[-1].startswith("request status: running -> completed")
@@ -103,3 +105,11 @@ def test_malformed_requests_are_rejected(execution_request, message):
 def test_non_execution_request_is_rejected():
     with pytest.raises(TypeError, match="ExecutionRequest"):
         ExecutionEngine().execute({})  # type: ignore[arg-type]
+
+
+def test_execution_rejects_untyped_simulation_mode():
+    request = make_request()
+    request.execution_mode = "simulated"  # type: ignore[assignment]
+
+    with pytest.raises(ValueError, match="typed simulated execution mode"):
+        ExecutionEngine().execute(request)

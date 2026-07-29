@@ -4,12 +4,16 @@ import pytest
 
 from aegis_os.execution.adapter import build_execution_request
 from aegis_os.execution.conformance import (
+    CONFORMANCE_SCHEMA_VERSION,
+    ConformanceCheck,
     ConformanceCheckName,
+    ConformanceContractError,
     ConformanceStatus,
+    ExecutionConformanceResult,
     ExecutionConformanceValidator,
 )
 from aegis_os.execution.execution_engine import ExecutionEngine
-from aegis_os.execution.models import ExecutionStatus
+from aegis_os.execution.models import ExecutionMode, ExecutionStatus
 from aegis_os.pipeline.composition import create_default_pipeline
 from aegis_os.pipeline.intent_analyzer import IntentAnalyzer
 from aegis_os.pipeline.models import (
@@ -51,7 +55,7 @@ def execute_analysis(analysis, request_id="conformance-1"):
     execution_request = build_execution_request(
         analysis,
         request_id,
-        constraints=["Simulation only; no external actions are permitted."],
+        constraints=["No external actions are permitted."],
         permissions=["simulated_workflow_execution"],
     )
     receipt = ExecutionEngine(clock=lambda: FIXED_TIME).execute(execution_request)
@@ -73,6 +77,8 @@ def test_successful_execution_passes_all_conformance_checks():
 
     assert validation.status is ConformanceStatus.PASSED
     assert validation.operation_outcome is ExecutionStatus.COMPLETED
+    assert execution_request.execution_mode is ExecutionMode.SIMULATED
+    assert receipt.execution_mode is ExecutionMode.SIMULATED
     assert {check.name for check in validation.checks} == set(ConformanceCheckName)
     assert all(check.passed for check in validation.checks)
 
@@ -179,7 +185,6 @@ def test_conformance_detects_each_required_mismatch(
     elif mutation == "workflow_completeness":
         receipt.completed_steps = 0
     elif mutation == "terminal_execution":
-        receipt.status = ExecutionStatus.RUNNING
         receipt.finished_at = None
     elif mutation == "simulation_boundary":
         receipt.simulated = False
@@ -221,3 +226,105 @@ def test_conformance_is_deterministic_and_does_not_mutate_inputs():
     assert analysis.to_dict() == analysis_before
     assert execution_request.to_dict() == request_before
     assert receipt.to_dict() == receipt_before
+
+
+def make_checks(
+    *,
+    failed_check: ConformanceCheckName | None = None,
+):
+    return tuple(
+        ConformanceCheck(
+            name=name,
+            status=(
+                ConformanceStatus.FAILED
+                if name is failed_check
+                else ConformanceStatus.PASSED
+            ),
+            evidence=f"{name.value} evidence.",
+        )
+        for name in ConformanceCheckName
+    )
+
+
+def test_conformance_result_rejects_unsupported_schema_version():
+    with pytest.raises(
+        ConformanceContractError,
+        match="Unsupported conformance schema version",
+    ):
+        ExecutionConformanceResult(
+            request_id="conformance-1",
+            status=ConformanceStatus.PASSED,
+            operation_outcome=ExecutionStatus.COMPLETED,
+            checks=make_checks(),
+            schema_version="2.0",
+        )
+
+
+def test_conformance_result_rejects_nonterminal_operation_outcome():
+    with pytest.raises(
+        ConformanceContractError,
+        match="terminal operation outcome",
+    ):
+        ExecutionConformanceResult(
+            request_id="conformance-1",
+            status=ConformanceStatus.PASSED,
+            operation_outcome=ExecutionStatus.RUNNING,
+            checks=make_checks(),
+        )
+
+
+def test_conformance_result_requires_canonical_check_completeness():
+    with pytest.raises(
+        ConformanceContractError,
+        match="every defined check once in canonical order",
+    ):
+        ExecutionConformanceResult(
+            request_id="conformance-1",
+            status=ConformanceStatus.PASSED,
+            operation_outcome=ExecutionStatus.COMPLETED,
+            checks=tuple(reversed(make_checks())),
+        )
+
+
+def test_conformance_result_rejects_inconsistent_aggregate_status():
+    with pytest.raises(
+        ConformanceContractError,
+        match="status must match",
+    ):
+        ExecutionConformanceResult(
+            request_id="conformance-1",
+            status=ConformanceStatus.PASSED,
+            operation_outcome=ExecutionStatus.COMPLETED,
+            checks=make_checks(
+                failed_check=ConformanceCheckName.MISSION_PRESERVATION,
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "target",
+    ["request", "receipt"],
+)
+def test_simulation_boundary_requires_typed_execution_mode(target):
+    analysis = make_analysis()
+    execution_request, receipt = execute_analysis(analysis)
+    if target == "request":
+        execution_request.execution_mode = "simulated"  # type: ignore[assignment]
+    else:
+        receipt.execution_mode = "simulated"  # type: ignore[assignment]
+
+    validation = ExecutionConformanceValidator().validate(
+        request_id="conformance-1",
+        analysis=analysis,
+        execution_request=execution_request,
+        receipt=receipt,
+    )
+    simulation_check = next(
+        check
+        for check in validation.checks
+        if check.name is ConformanceCheckName.SIMULATION_BOUNDARY
+    )
+
+    assert validation.schema_version == CONFORMANCE_SCHEMA_VERSION
+    assert validation.status is ConformanceStatus.FAILED
+    assert simulation_check.status is ConformanceStatus.FAILED

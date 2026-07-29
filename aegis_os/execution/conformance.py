@@ -5,6 +5,7 @@ from enum import StrEnum
 from typing import Any
 
 from aegis_os.execution.models import (
+    ExecutionMode,
     ExecutionReceipt,
     ExecutionRequest,
     ExecutionStatus,
@@ -34,6 +35,10 @@ class ConformanceStatus(StrEnum):
     FAILED = "failed"
 
 
+class ConformanceContractError(ValueError):
+    """Raised when a conformance result violates its typed contract."""
+
+
 class ConformanceCheckName(StrEnum):
     REQUEST_IDENTITY = "request_identity"
     MISSION_PRESERVATION = "mission_preservation"
@@ -52,8 +57,18 @@ class ConformanceCheck:
     evidence: str
 
     def __post_init__(self) -> None:
+        if not isinstance(self.name, ConformanceCheckName):
+            raise ConformanceContractError(
+                "Conformance check name must use ConformanceCheckName."
+            )
+        if not isinstance(self.status, ConformanceStatus):
+            raise ConformanceContractError(
+                "Conformance check status must use ConformanceStatus."
+            )
         if not self.evidence or not self.evidence.strip():
-            raise ValueError("Conformance check evidence cannot be empty.")
+            raise ConformanceContractError(
+                "Conformance check evidence cannot be empty."
+            )
 
     @property
     def passed(self) -> bool:
@@ -76,16 +91,21 @@ class ExecutionConformanceResult:
     schema_version: str = CONFORMANCE_SCHEMA_VERSION
 
     def __post_init__(self) -> None:
+        if self.schema_version != CONFORMANCE_SCHEMA_VERSION:
+            raise ConformanceContractError("Unsupported conformance schema version.")
         if not self.request_id or not self.request_id.strip():
-            raise ValueError("Conformance request_id cannot be empty.")
+            raise ConformanceContractError("Conformance request_id cannot be empty.")
+        if self.operation_outcome not in TERMINAL_EXECUTION_STATUSES:
+            raise ConformanceContractError(
+                "Conformance requires a terminal operation outcome."
+            )
         if not self.checks:
-            raise ValueError("Conformance result requires checks.")
+            raise ConformanceContractError("Conformance result requires checks.")
         names = [check.name for check in self.checks]
-        if len(names) != len(set(names)):
-            raise ValueError("Conformance check names must be unique.")
-        if set(names) != set(ConformanceCheckName):
-            raise ValueError(
-                "Conformance result requires every defined check exactly once."
+        if names != list(ConformanceCheckName):
+            raise ConformanceContractError(
+                "Conformance result requires every defined check once "
+                "in canonical order."
             )
         expected = (
             ConformanceStatus.PASSED
@@ -93,7 +113,9 @@ class ExecutionConformanceResult:
             else ConformanceStatus.FAILED
         )
         if self.status is not expected:
-            raise ValueError("Conformance status must match its check outcomes.")
+            raise ConformanceContractError(
+                "Conformance status must match its check outcomes."
+            )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -162,14 +184,13 @@ class ExecutionConformanceValidator:
             ),
             self._check(
                 ConformanceCheckName.WORKFLOW_COMPLETENESS,
-                self._workflow_is_complete(receipt),
+                workflow_completion_is_valid(receipt),
                 "Receipt counts and terminal step states are complete.",
                 "Receipt counts or terminal step states are incomplete.",
             ),
             self._check(
                 ConformanceCheckName.TERMINAL_EXECUTION,
-                receipt.status in TERMINAL_EXECUTION_STATUSES
-                and receipt.finished_at is not None,
+                terminal_execution_is_valid(receipt),
                 "Execution reached a recorded terminal outcome.",
                 "Execution did not reach a recorded terminal outcome.",
             ),
@@ -287,45 +308,6 @@ class ExecutionConformanceValidator:
         return planned_orders == requested_orders == executed_orders == expected
 
     @staticmethod
-    def _workflow_is_complete(receipt: ExecutionReceipt) -> bool:
-        completed = sum(
-            step.status is ExecutionStepStatus.COMPLETED for step in receipt.steps
-        )
-        failed = sum(
-            step.status is ExecutionStepStatus.FAILED for step in receipt.steps
-        )
-        if (
-            completed != receipt.completed_steps
-            or failed != receipt.failed_steps
-            or any(step.status not in TERMINAL_STEP_STATUSES for step in receipt.steps)
-        ):
-            return False
-        if receipt.status is ExecutionStatus.COMPLETED:
-            return completed == len(receipt.steps) and failed == 0
-        if receipt.status is ExecutionStatus.FAILED:
-            failed_indexes = [
-                index
-                for index, step in enumerate(receipt.steps)
-                if step.status is ExecutionStepStatus.FAILED
-            ]
-            if len(failed_indexes) != 1:
-                return False
-            failed_index = failed_indexes[0]
-            return (
-                receipt.completed_steps == failed_index
-                and receipt.failed_steps == 1
-                and all(
-                    step.status is ExecutionStepStatus.COMPLETED
-                    for step in receipt.steps[:failed_index]
-                )
-                and all(
-                    step.status is ExecutionStepStatus.SKIPPED
-                    for step in receipt.steps[failed_index + 1 :]
-                )
-            )
-        return receipt.status is ExecutionStatus.CANCELLED
-
-    @staticmethod
     def _simulation_boundary_is_intact(
         execution_request: ExecutionRequest,
         receipt: ExecutionReceipt,
@@ -336,12 +318,9 @@ class ExecutionConformanceValidator:
             if step.status is ExecutionStepStatus.COMPLETED
         )
         return (
-            receipt.simulated is True
-            and "simulated_workflow_execution" in execution_request.permissions
-            and any(
-                "simulation only" in constraint.lower()
-                for constraint in execution_request.constraints
-            )
+            execution_request.execution_mode is ExecutionMode.SIMULATED
+            and receipt.execution_mode is ExecutionMode.SIMULATED
+            and receipt.simulated is True
             and completed_outputs_are_simulated
         )
 
@@ -354,3 +333,69 @@ class ExecutionConformanceValidator:
         if isinstance(source, dict):
             return source.get(key, default)
         return getattr(source, key, default)
+
+
+def terminal_execution_is_valid(receipt: ExecutionReceipt) -> bool:
+    if (
+        receipt.status not in TERMINAL_EXECUTION_STATUSES
+        or receipt.started_at is None
+        or receipt.finished_at is None
+    ):
+        return False
+    try:
+        return receipt.finished_at >= receipt.started_at
+    except TypeError:
+        return False
+
+
+def workflow_completion_is_valid(receipt: ExecutionReceipt) -> bool:
+    if not receipt.steps:
+        return False
+
+    completed = sum(
+        step.status is ExecutionStepStatus.COMPLETED for step in receipt.steps
+    )
+    failed = sum(step.status is ExecutionStepStatus.FAILED for step in receipt.steps)
+    if (
+        completed != receipt.completed_steps
+        or failed != receipt.failed_steps
+        or any(step.status not in TERMINAL_STEP_STATUSES for step in receipt.steps)
+    ):
+        return False
+
+    if receipt.status is ExecutionStatus.COMPLETED:
+        return completed == len(receipt.steps) and failed == 0
+
+    if receipt.status is ExecutionStatus.FAILED:
+        failed_indexes = [
+            index
+            for index, step in enumerate(receipt.steps)
+            if step.status is ExecutionStepStatus.FAILED
+        ]
+        if len(failed_indexes) != 1:
+            return False
+        failed_index = failed_indexes[0]
+        return (
+            receipt.completed_steps == failed_index
+            and receipt.failed_steps == 1
+            and all(
+                step.status is ExecutionStepStatus.COMPLETED
+                for step in receipt.steps[:failed_index]
+            )
+            and all(
+                step.status is ExecutionStepStatus.SKIPPED
+                for step in receipt.steps[failed_index + 1 :]
+            )
+        )
+
+    if receipt.status is ExecutionStatus.CANCELLED:
+        expected = [ExecutionStepStatus.COMPLETED] * receipt.completed_steps + [
+            ExecutionStepStatus.SKIPPED
+        ] * (len(receipt.steps) - receipt.completed_steps)
+        return (
+            receipt.failed_steps == 0
+            and 0 <= receipt.completed_steps < len(receipt.steps)
+            and [step.status for step in receipt.steps] == expected
+        )
+
+    return False
