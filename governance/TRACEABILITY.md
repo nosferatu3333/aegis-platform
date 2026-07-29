@@ -66,6 +66,7 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | 5 | Work Order — Runtime Execution-Conformance Validation | Defines the authorized files, blocking correction, acceptance criteria, non-goals, role gates, and roadmap placement. | [`work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md`](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md) |
 | 6 | Architecture Auditor — WO-003 Architectural Scope Reconciliation | Issued `AMEND WO-003 AND RECONSTRUCT`, accepted the final runtime architecture, rejected the contaminated branch as a candidate, and fixed the bounded reconstruction scope. | Reconciliation decision received 2026-07-29; canonical repository location not recorded at the time of this entry. |
 | 7 | Engineering Director — GOV-003-A1 | Authorized the governance amendment and direct handoff to Release & Integration for bounded reconstruction. | Amendment assignment received 2026-07-29; implemented by the amended work-order record. |
+| 8 | Formal Amendment — WO-GOV-003 | Formalized the authoritative base, exact typed-simulation path scope, non-exception `conformance_failed` semantics, reconstruction limitations, and candidate evidence package. | Recorded in the authoritative amended work order on 2026-07-29. |
 
 #### Initial Governance State
 
@@ -88,8 +89,10 @@ WO-003 governs only the files and behavior identified in the amended authoritati
 
 The reconstructed candidate must begin at exact base `4d1842087289336675d43d7cd650bd80f57b8c8d`, differ only in the amended authorized paths, exclude `aegis_os/core/runtime_errors.py`, and prove that infrastructure commit `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` is not an ancestor.
 
-The candidate must implement the locked canonical-result semantics, including valid `conformance_failed` results, preserved evidence and four-way request correlation, structured HTTP 500 for failed conformance, HTTP 200 for passed conformance, HTTP 422 for invalid or non-ready requests, additive schema-version-1 compatibility, and no normal `RuntimeConformanceError`.
+The candidate must implement the locked canonical-result semantics, including valid typed `conformance_failed` results without exception-based control flow, preserved evidence and four-way request correlation, structured HTTP 500 for failed conformance, HTTP 200 for passed conformance, HTTP 422 for invalid or non-ready requests, additive schema-version-1 compatibility, and complete exclusion of superseded `RuntimeConformanceError`.
 
-Required pre-freeze evidence includes focused and complete tests, Ruff lint and formatting, dependency-integrity and pre-commit validation, whitespace and authorized-path checks, clean state, immutable candidate identity, and independent QA and Architecture verdicts against the same candidate.
+Required pre-freeze evidence includes focused and complete tests, Ruff lint and formatting, dependency-integrity and pre-commit validation, whitespace and exact authorized-path checks, commit-range and ancestry evidence, proof that infrastructure ancestry and `RuntimeConformanceError` are absent, clean state, exact candidate SHA, complete candidate-tied validation, and candidate-specific QA and Architecture evidence.
+
+This amendment does not authorize pushing, merging, tagging, rebasing shared branches, deleting branches or preserved references, modifying `main`, applying preserved work, or implementing infrastructure controls. Creation of an immutable review target remains subject to separately approved release controls.
 
 WO-003 must close before kernel/main convergence begins. Kernel/main convergence remains the next Phase I slice and is not opened or authorized by this entry.

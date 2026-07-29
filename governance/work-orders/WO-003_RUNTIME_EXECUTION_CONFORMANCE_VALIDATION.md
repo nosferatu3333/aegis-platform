@@ -5,6 +5,7 @@
 **Accountable role:** Release & Integration Engineer
 **Date authorized:** 2026-07-29
 **Date amended:** 2026-07-29
+**Formal amendment:** `WO-GOV-003`
 **Architecture verdict:** AMEND WO-003 AND RECONSTRUCT
 **Authoritative base:** `4d1842087289336675d43d7cd650bd80f57b8c8d`
 **Implementation:** NOT ACCEPTED; BOUNDED RECONSTRUCTION REQUIRED
@@ -44,6 +45,21 @@ The current branch must not be used as the WO-003 candidate because it contains 
 The final runtime architecture is acceptable. Candidate composition and authorization require bounded reconstruction under this amended work order.
 
 WO-002 remains closed. WO-003 does not reopen or expand WO-002.
+
+## Formal Amendment Record
+
+`WO-GOV-003 — Amend WO-003 reconstruction authority` formalizes the bounded reconstruction authority established by the Architecture Assessment.
+
+This amendment:
+
+- Fixes the authoritative reconstruction base.
+- Enumerates the exact authorized paths required for the typed simulation boundary.
+- Locks typed `conformance_failed` semantics without exception-based control flow.
+- Excludes infrastructure ancestry, superseded corrections, unowned preserved work, and every unauthorized path.
+- Defines the candidate evidence package required before independent review.
+- Limits Release & Integration authority to manual bounded reconstruction.
+
+This amendment does not approve implementation, release, integration, publication, or destructive repository operations.
 
 ## Authoritative Reconstruction Base
 
@@ -117,28 +133,29 @@ The following decisions are non-negotiable for WO-003 candidate 1:
 5. Conformance does not evaluate mission quality, governance, approval, learning, or real execution.
 6. Failed conformance produces a valid `CanonicalRuntimeResult`.
 7. Canonical runtime status for failed conformance is `conformance_failed`.
-8. Normal conformance failure does not raise `RuntimeConformanceError`.
-9. Execution receipt outcome remains independent from conformance outcome.
-10. Validation preserves checks, evidence, operation outcome, and request identity.
-11. `/execute-task` returns:
+8. Normal execution-conformance failure is represented by the typed `conformance_failed` result and does not use exception-based control flow.
+9. `RuntimeConformanceError` is superseded and must not be included in the reconstructed candidate.
+10. Execution receipt outcome remains independent from conformance outcome.
+11. Validation preserves checks, evidence, operation outcome, and request identity.
+12. `/execute-task` returns:
     - HTTP 200 for passed conformance.
     - Structured HTTP 500 for failed conformance.
     - HTTP 422 for invalid input and non-ready execution.
-12. Failed HTTP 500 responses preserve:
+13. Failed HTTP 500 responses preserve:
     - Analysis.
     - Execution receipt.
     - Validation.
     - Evidence.
     - Runtime status.
     - Request identifiers.
-13. Request IDs match across:
+14. Request IDs match across:
     - Top-level result.
     - Analysis.
     - Execution.
     - Validation.
-14. `/analyze-task` remains behaviorally unchanged.
-15. `validation` and typed `execution_mode` are additive schema-version-1 fields.
-16. Only simulated execution is authorized.
+15. `/analyze-task` remains behaviorally unchanged.
+16. `validation` and typed `execution_mode` are additive schema-version-1 fields.
+17. Only simulated execution is authorized.
 
 ## Compatibility Guarantees
 
@@ -171,6 +188,10 @@ WO-003 does not authorize:
 - Repository cleanup.
 - Generated-artifact removal.
 - Branch-protection changes.
+- Unowned stash content.
+- Unrelated WO-002 changes.
+- Unrelated product changes.
+- Any path not specifically authorized by this amended work order.
 
 Cancellation tests are authorized only as terminal-lifecycle validation.
 
@@ -197,13 +218,15 @@ Commit `4dd7c8e` may be used only for its additive API compatibility test concep
 
 These references are evidence sources, not authorization to cherry-pick or replay contaminated history.
 
+All WO-INF infrastructure changes, superseded semantic corrections, unowned stash content, unrelated WO-002 or product changes, and changes outside the exact authorized path list are excluded from candidate 1.
+
 ## Reconstruction Authorization Record
 
 The Release & Integration Engineer is authorized and required to:
 
 1. Create a new bounded branch from exact base `4d1842087289336675d43d7cd650bd80f57b8c8d`.
 2. Manually reconstruct the accepted final behavior.
-3. Avoid merging, rebasing, or cherry-picking the contaminated branch wholesale.
+3. Do not reconstruct by merging the current branch, copying its complete ancestry, applying preserved stashes, or transplanting unreviewed commits wholesale.
 4. Ensure only amended authorized paths differ from the base.
 5. Ensure infrastructure commit `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` is not an ancestor.
 6. Correct `docs/architecture/execution-engine.md` so it describes canonical-result failure rather than `RuntimeConformanceError`.
@@ -225,7 +248,7 @@ WO-003 is accepted only when:
 7. All defined checks return typed, serializable evidence.
 8. Passed and failed conformance results are valid canonical outcomes.
 9. Failed conformance uses canonical runtime status `conformance_failed`.
-10. Normal failed conformance does not raise `RuntimeConformanceError`.
+10. Normal failed conformance uses no exception-based control flow, and `RuntimeConformanceError` is absent from the candidate.
 11. Failed conformance evidence survives the runtime and API boundaries.
 12. Failed conformance returns structured HTTP 500, not HTTP 422.
 13. Operation outcome remains distinct from conformance outcome.
@@ -248,11 +271,16 @@ Candidate 1 must not be frozen until all of the following pass:
 - Dependency-integrity validation.
 - Pre-commit validation.
 - `git diff --check`.
-- Authorized-path verification against the authoritative base.
+- Exact authorized-path inventory against the authoritative base.
+- Commit-range and ancestry evidence from the authoritative base through candidate HEAD.
 - Proof that `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` is not an ancestor.
+- Proof that `RuntimeConformanceError` is absent.
 - Clean worktree.
-- Immutable candidate SHA or annotated candidate tag.
-- QA & Verification and Architecture Auditor verdicts against the same candidate.
+- Exact candidate SHA.
+- Complete validation results tied to the exact candidate SHA.
+- Candidate-specific QA & Verification evidence.
+- Candidate-specific Architecture Auditor evidence.
+- An immutable review target created only under separately approved release controls.
 
 ### Focused Validation Coverage
 
@@ -273,6 +301,21 @@ Focused validation must cover:
 - Typed simulation boundary.
 - Dashboard terminology and safe rendering.
 - Absence of normal `RuntimeConformanceError`.
+
+## Governance Limitations
+
+This amendment does not authorize:
+
+- Pushing.
+- Merging.
+- Tagging.
+- Rebasing shared branches.
+- Deleting branches, stashes, or tags.
+- Modifying `main`.
+- Applying preserved work.
+- Implementing infrastructure controls.
+
+Release & Integration may prepare the bounded implementation and evidence package, but any immutable review-target operation that requires publication, tagging, integration, or another release mutation requires separate approval.
 
 ## Required Roles and Gates
 
