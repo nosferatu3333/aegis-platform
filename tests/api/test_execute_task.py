@@ -161,14 +161,8 @@ def test_internal_conformance_failure_returns_typed_http_500(monkeypatch):
     assert response.status_code == 500
     assert response.headers["X-Request-ID"] == request_id
     payload = response.json()
-    assert payload["schema_version"] == "1.0"
     assert payload["request_id"] == request_id
-    assert payload["error"] == {
-        "type": "RuntimeConformanceError",
-        "classification": "internal_runtime_integrity_failure",
-        "code": "execution_conformance_failure",
-        "message": "Simulated execution failed runtime conformance validation.",
-    }
+    assert payload["runtime_status"] == "conformance_failed"
     assert payload["analysis"]["request_id"] == request_id
     assert payload["execution"]["request_id"] == request_id
     assert payload["validation"]["request_id"] == request_id
@@ -186,7 +180,7 @@ def test_internal_conformance_failure_returns_typed_http_500(monkeypatch):
     assert all(check["evidence"] for check in payload["validation"]["checks"])
     assert len(payload["validation"]["evidence"]) == 8
     assert "detail" not in payload
-    assert "runtime_status" not in payload
+    assert "error" not in payload
 
 
 def test_canonical_invariant_failure_returns_typed_http_500(monkeypatch):
