@@ -93,14 +93,27 @@ class ExecutionConformanceResult:
     def __post_init__(self) -> None:
         if self.schema_version != CONFORMANCE_SCHEMA_VERSION:
             raise ConformanceContractError("Unsupported conformance schema version.")
-        if not self.request_id or not self.request_id.strip():
+        if not isinstance(self.request_id, str) or not self.request_id.strip():
             raise ConformanceContractError("Conformance request_id cannot be empty.")
-        if self.operation_outcome not in TERMINAL_EXECUTION_STATUSES:
+        if not isinstance(self.status, ConformanceStatus):
+            raise ConformanceContractError(
+                "Conformance status must use ConformanceStatus."
+            )
+        if (
+            not isinstance(self.operation_outcome, ExecutionStatus)
+            or self.operation_outcome not in TERMINAL_EXECUTION_STATUSES
+        ):
             raise ConformanceContractError(
                 "Conformance requires a terminal operation outcome."
             )
-        if not self.checks:
-            raise ConformanceContractError("Conformance result requires checks.")
+        if (
+            not isinstance(self.checks, tuple)
+            or not self.checks
+            or any(not isinstance(check, ConformanceCheck) for check in self.checks)
+        ):
+            raise ConformanceContractError(
+                "Conformance result requires a tuple of typed checks."
+            )
         names = [check.name for check in self.checks]
         if names != list(ConformanceCheckName):
             raise ConformanceContractError(

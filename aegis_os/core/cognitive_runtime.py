@@ -19,7 +19,11 @@ from aegis_os.execution.conformance import (
     workflow_completion_is_valid,
 )
 from aegis_os.execution.execution_engine import ExecutionEngine
-from aegis_os.execution.models import ExecutionReceipt, ExecutionStatus
+from aegis_os.execution.models import (
+    ExecutionMode,
+    ExecutionReceipt,
+    ExecutionStatus,
+)
 from aegis_os.pipeline.models import CognitiveRequestResult, PipelineStatus
 from aegis_os.pipeline.request_pipeline import CognitiveRequestPipeline
 
@@ -142,9 +146,13 @@ class CanonicalRuntimeResult:
             raise CanonicalRuntimeInvariantError(
                 "Execution receipt must have a terminal status."
             )
-        if receipt is not None and (not self.simulated or not receipt.simulated):
+        if receipt is not None and (
+            not self.simulated
+            or not receipt.simulated
+            or receipt.execution_mode is not ExecutionMode.SIMULATED
+        ):
             raise CanonicalRuntimeInvariantError(
-                "Current execution receipts require simulated=True."
+                "Current execution receipts require typed simulation mode."
             )
         if receipt is not None and not terminal_execution_is_valid(receipt):
             raise CanonicalRuntimeInvariantError(

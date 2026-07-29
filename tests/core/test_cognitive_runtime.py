@@ -147,6 +147,7 @@ def make_receipt(
     request_id="runtime-result-1",
     status=ExecutionStatus.COMPLETED,
     simulated=True,
+    execution_mode=None,
 ):
     step_status = ExecutionStepStatus.PENDING
     completed_steps = 0
@@ -164,7 +165,7 @@ def make_receipt(
         ExecutionStatus.FAILED,
         ExecutionStatus.CANCELLED,
     }
-    return ExecutionReceipt(
+    receipt = ExecutionReceipt(
         request_id=request_id,
         mission="Research competitors",
         selected_agent="Research Agent",
@@ -183,6 +184,9 @@ def make_receipt(
         failed_steps=failed_steps,
         simulated=simulated,
     )
+    if execution_mode is not None:
+        receipt.execution_mode = execution_mode
+    return receipt
 
 
 def make_validation(
@@ -309,6 +313,15 @@ def make_validation(
                 "simulated": False,
             },
             id="non-simulated-runtime-with-receipt",
+        ),
+        pytest.param(
+            {
+                "status": CanonicalRuntimeStatus.COMPLETED,
+                "execution": make_receipt(execution_mode="simulated"),
+                "execution_requested": True,
+                "execution_performed": True,
+            },
+            id="untyped-simulation-mode",
         ),
     ],
 )

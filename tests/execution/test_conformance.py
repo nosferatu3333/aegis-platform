@@ -273,6 +273,32 @@ def test_conformance_result_rejects_nonterminal_operation_outcome():
         )
 
 
+def test_conformance_result_rejects_untyped_terminal_outcome():
+    with pytest.raises(
+        ConformanceContractError,
+        match="terminal operation outcome",
+    ):
+        ExecutionConformanceResult(
+            request_id="conformance-1",
+            status=ConformanceStatus.PASSED,
+            operation_outcome="completed",  # type: ignore[arg-type]
+            checks=make_checks(),
+        )
+
+
+def test_conformance_result_requires_typed_check_tuple():
+    with pytest.raises(
+        ConformanceContractError,
+        match="tuple of typed checks",
+    ):
+        ExecutionConformanceResult(
+            request_id="conformance-1",
+            status=ConformanceStatus.PASSED,
+            operation_outcome=ExecutionStatus.COMPLETED,
+            checks=list(make_checks()),  # type: ignore[arg-type]
+        )
+
+
 def test_conformance_result_requires_canonical_check_completeness():
     with pytest.raises(
         ConformanceContractError,
