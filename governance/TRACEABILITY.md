@@ -52,8 +52,9 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 
 ### TR-002: Runtime Execution-Conformance Validation
 
-**Status:** Authorized
+**Status:** Authorized — Amended; Reconstruction Required
 **Recorded:** 2026-07-29
+**Amended:** 2026-07-29
 **Subject:** Deterministic validation and exposure of synchronous simulated execution conformance
 
 | Sequence | Record | Relationship | Repository reference |
@@ -63,21 +64,32 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | 3 | Architecture Auditor Decision | Classified the preserved implementation as one coherent Phase I vertical slice and returned `AUTHORIZE AS ONE WORK ORDER`. | Decision received 2026-07-29; canonical repository location not recorded at the time of this entry. |
 | 4 | Engineering Director Decision — WO-003 Authorization | Assigned `WO-003`, authorized the preserved implementation boundary, and required correction of failed-conformance handling before acceptance. | Authorization directive received 2026-07-29; canonical repository location not recorded at the time of this entry. |
 | 5 | Work Order — Runtime Execution-Conformance Validation | Defines the authorized files, blocking correction, acceptance criteria, non-goals, role gates, and roadmap placement. | [`work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md`](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md) |
+| 6 | Architecture Auditor — WO-003 Architectural Scope Reconciliation | Issued `AMEND WO-003 AND RECONSTRUCT`, accepted the final runtime architecture, rejected the contaminated branch as a candidate, and fixed the bounded reconstruction scope. | Reconciliation decision received 2026-07-29; canonical repository location not recorded at the time of this entry. |
+| 7 | Engineering Director — GOV-003-A1 | Authorized the governance amendment and direct handoff to Release & Integration for bounded reconstruction. | Amendment assignment received 2026-07-29; implemented by the amended work-order record. |
 
 #### Initial Governance State
 
 | Control | Status |
 |---|---|
 | Work order | `WO-003` |
-| Work-order status | **AUTHORIZED** |
-| Implementation | **PARTIALLY COMPLETE** |
-| Blocking correction | **OPEN** |
+| Work-order status | **AUTHORIZED — AMENDED; RECONSTRUCTION REQUIRED** |
+| Authoritative base | `4d1842087289336675d43d7cd650bd80f57b8c8d` |
+| Implementation | **NOT ACCEPTED; BOUNDED RECONSTRUCTION REQUIRED** |
+| Candidate readiness | **NOT READY** |
 | QA & Verification | **PENDING** |
 | Architecture review | **PENDING** |
-| Documentation & Governance | **ACTIVE** |
+| Documentation & Governance | **AMENDMENT RECORDED** |
+| Current gate | **RELEASE & INTEGRATION RECONSTRUCTION** |
+| Next owner | **Release & Integration Engineer** |
 
 #### Authorization Boundary
 
-WO-003 governs only the files and behavior identified in the authoritative [work order](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md). The preserved implementation is authorized for correction and verification; it is not accepted by authorization alone.
+WO-003 governs only the files and behavior identified in the amended authoritative [work order](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md). The current branch is not an authorized candidate.
+
+The reconstructed candidate must begin at exact base `4d1842087289336675d43d7cd650bd80f57b8c8d`, differ only in the amended authorized paths, exclude `aegis_os/core/runtime_errors.py`, and prove that infrastructure commit `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` is not an ancestor.
+
+The candidate must implement the locked canonical-result semantics, including valid `conformance_failed` results, preserved evidence and four-way request correlation, structured HTTP 500 for failed conformance, HTTP 200 for passed conformance, HTTP 422 for invalid or non-ready requests, additive schema-version-1 compatibility, and no normal `RuntimeConformanceError`.
+
+Required pre-freeze evidence includes focused and complete tests, Ruff lint and formatting, dependency-integrity and pre-commit validation, whitespace and authorized-path checks, clean state, immutable candidate identity, and independent QA and Architecture verdicts against the same candidate.
 
 WO-003 must close before kernel/main convergence begins. Kernel/main convergence remains the next Phase I slice and is not opened or authorized by this entry.
