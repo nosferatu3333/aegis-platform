@@ -53,6 +53,18 @@ class RuntimeConformanceError(RuntimeIntegrityError):
     ) -> None:
         if not request_id or not request_id.strip():
             raise ValueError("Conformance failure request_id cannot be empty.")
+        if not isinstance(analysis, CognitiveRequestResult):
+            raise TypeError(
+                "RuntimeConformanceError analysis must be CognitiveRequestResult."
+            )
+        if not isinstance(execution, ExecutionReceipt):
+            raise TypeError(
+                "RuntimeConformanceError execution must be ExecutionReceipt."
+            )
+        if not isinstance(validation, ExecutionConformanceResult):
+            raise TypeError(
+                "RuntimeConformanceError validation must be ExecutionConformanceResult."
+            )
         if execution.request_id != request_id:
             raise ValueError(
                 "Conformance failure execution request_id must match the failure."

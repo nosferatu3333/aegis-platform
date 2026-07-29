@@ -11,7 +11,10 @@ from aegis_os.core.cognitive_runtime import (
     CognitiveRuntime,
     LifecycleStageStatus,
 )
-from aegis_os.core.runtime_errors import CanonicalRuntimeInvariantError
+from aegis_os.core.runtime_errors import (
+    CanonicalRuntimeInvariantError,
+    RuntimeConformanceError,
+)
 from aegis_os.execution.conformance import (
     ConformanceCheck,
     ConformanceCheckName,
@@ -218,6 +221,42 @@ def make_validation(
             for name in ConformanceCheckName
         ),
     )
+
+
+@pytest.mark.parametrize(
+    ("missing_artifact", "message"),
+    [
+        pytest.param(
+            "analysis",
+            "analysis must be CognitiveRequestResult",
+            id="analysis-none",
+        ),
+        pytest.param(
+            "execution",
+            "execution must be ExecutionReceipt",
+            id="execution-none",
+        ),
+        pytest.param(
+            "validation",
+            "validation must be ExecutionConformanceResult",
+            id="validation-none",
+        ),
+    ],
+)
+def test_runtime_conformance_error_rejects_missing_evidence(
+    missing_artifact,
+    message,
+):
+    arguments = {
+        "request_id": "runtime-result-1",
+        "analysis": make_result(),
+        "execution": make_receipt(),
+        "validation": make_validation(status=ConformanceStatus.FAILED),
+    }
+    arguments[missing_artifact] = None
+
+    with pytest.raises(TypeError, match=message):
+        RuntimeConformanceError(**arguments)
 
 
 @pytest.mark.parametrize(
