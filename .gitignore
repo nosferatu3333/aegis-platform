@@ -5,11 +5,19 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
 
 # Virtual environments
 .venv/
 env/
 venv/
+
+# Local environment configuration
+.env
+.env.*
+!.env.example
 
 # Packaging output
 build/
@@ -19,6 +27,10 @@ dist/
 # Local runtime state
 aegis_state.json
 *.log
+
+# Generated benchmark reports
+benchmarks/reports/*
+!benchmarks/reports/.gitkeep
 
 # Editors and operating systems
 .vscode/*

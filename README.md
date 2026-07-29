@@ -221,6 +221,10 @@ test failure: that step fails, later steps are skipped, and the receipt ends in
 
 ## Tests
 
+The canonical setup, interpreter guard, validation command, CI behavior, and
+Windows troubleshooting guidance are documented in
+[`docs/development/validation.md`](docs/development/validation.md).
+
 Run the complete suite:
 
 ```powershell
