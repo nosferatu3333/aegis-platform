@@ -11,7 +11,10 @@ from aegis_os.core.cognitive_runtime import (
     CognitiveRuntime,
     LifecycleStageStatus,
 )
-from aegis_os.core.runtime_errors import CanonicalRuntimeInvariantError
+from aegis_os.core.runtime_errors import (
+    CanonicalRuntimeInvariantError,
+    RuntimeConformanceError,
+)
 from aegis_os.execution.conformance import (
     ConformanceCheck,
     ConformanceCheckName,
@@ -644,6 +647,11 @@ def test_canonical_result_rejects_validation_without_execution():
             "outcome must match",
             id="validation-outcome-mismatch",
         ),
+        pytest.param(
+            make_validation(status=ConformanceStatus.FAILED),
+            "requires passed conformance",
+            id="failed-conformance",
+        ),
     ],
 )
 def test_canonical_result_rejects_contradictory_validation(
@@ -662,27 +670,34 @@ def test_canonical_result_rejects_contradictory_validation(
         )
 
 
-def test_canonical_result_accepts_structured_failed_conformance():
+def test_runtime_conformance_error_retains_correlated_diagnostic_artifacts():
+    analysis = make_result()
+    execution = make_receipt()
     validation = make_validation(status=ConformanceStatus.FAILED)
-    result = CanonicalRuntimeResult(
+    error = RuntimeConformanceError(
         request_id="runtime-result-1",
-        status=CanonicalRuntimeStatus.CONFORMANCE_FAILED,
-        analysis=make_result(),
-        execution=make_receipt(),
-        execution_requested=True,
-        execution_performed=True,
+        analysis=analysis,
+        execution=execution,
         validation=validation,
     )
-    payload = result.to_dict()
+    payload = error.to_dict()
 
-    assert result.execution.status is ExecutionStatus.COMPLETED
-    assert result.validation is validation
-    assert result.validation.status is ConformanceStatus.FAILED
-    assert all(not check.passed for check in result.validation.checks)
+    assert error.request_id == "runtime-result-1"
+    assert error.analysis is analysis
+    assert error.execution is execution
+    assert error.receipt is execution
+    assert error.validation is validation
+    assert error.execution.status is ExecutionStatus.COMPLETED
+    assert error.validation.status is ConformanceStatus.FAILED
+    assert payload["type"] == "RuntimeConformanceError"
+    assert payload["classification"] == "internal_runtime_integrity_failure"
+    assert payload["code"] == "execution_conformance_failure"
     assert payload["request_id"] == "runtime-result-1"
+    assert payload["analysis"]["request_id"] == "runtime-result-1"
     assert payload["execution"]["request_id"] == "runtime-result-1"
     assert payload["validation"]["request_id"] == "runtime-result-1"
-    assert payload["status"] == "conformance_failed"
+    assert len(payload["validation"]["checks"]) == len(ConformanceCheckName)
+    assert len(payload["validation"]["evidence"]) == len(ConformanceCheckName)
     json.dumps(payload)
 
 
@@ -694,29 +709,34 @@ def test_runtime_preserves_failed_conformance_evidence():
         conformance_validator=FailedConformanceValidator(),
     )
 
-    result = runtime.run(
-        "Research competitors",
-        "runtime-conformance-failure-1",
-        execute=True,
-    )
-    failed_checks = [check for check in result.validation.checks if not check.passed]
+    with pytest.raises(RuntimeConformanceError) as captured:
+        runtime.run(
+            "Research competitors",
+            "runtime-conformance-failure-1",
+            execute=True,
+        )
 
-    assert result.status is CanonicalRuntimeStatus.CONFORMANCE_FAILED
-    assert result.analysis is pipeline.result
-    assert result.execution.status is ExecutionStatus.COMPLETED
-    assert result.validation.status is ConformanceStatus.FAILED
-    assert result.validation.operation_outcome is ExecutionStatus.COMPLETED
-    assert tuple(check.name for check in result.validation.checks) == tuple(
+    error = captured.value
+    failed_checks = [check for check in error.validation.checks if not check.passed]
+
+    assert pipeline.calls == 1
+    assert error.analysis is pipeline.result
+    assert error.execution.status is ExecutionStatus.COMPLETED
+    assert error.validation.status is ConformanceStatus.FAILED
+    assert error.validation.operation_outcome is ExecutionStatus.COMPLETED
+    assert tuple(check.name for check in error.validation.checks) == tuple(
         ConformanceCheckName
     )
-    assert all(check.evidence for check in result.validation.checks)
-    assert len(result.validation.to_dict()["evidence"]) == len(ConformanceCheckName)
+    assert all(check.evidence for check in error.validation.checks)
+    assert len(error.validation.to_dict()["evidence"]) == len(ConformanceCheckName)
     assert len(failed_checks) == 1
     assert "mission-preservation mismatch" in failed_checks[0].evidence
-    assert result.request_id == "runtime-conformance-failure-1"
-    assert result.execution.request_id == result.request_id
-    assert result.validation.request_id == result.request_id
-    json.dumps(result.to_dict())
+    assert error.request_id == "runtime-conformance-failure-1"
+    assert error.execution.request_id == error.request_id
+    assert error.validation.request_id == error.request_id
+    payload = error.to_dict()
+    assert payload["analysis"]["request_id"] == error.request_id
+    json.dumps(payload)
 
 
 def test_legacy_cognitive_loop_remains_available():

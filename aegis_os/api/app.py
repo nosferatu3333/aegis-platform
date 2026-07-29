@@ -11,11 +11,11 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
-from aegis_os.core.cognitive_runtime import (
-    RUNTIME_SCHEMA_VERSION,
-    CanonicalRuntimeStatus,
+from aegis_os.core.cognitive_runtime import RUNTIME_SCHEMA_VERSION
+from aegis_os.core.runtime_errors import (
+    RuntimeConformanceError,
+    RuntimeIntegrityError,
 )
-from aegis_os.core.runtime_errors import RuntimeIntegrityError
 from aegis_os.pipeline.composition import (
     create_default_pipeline,
     create_default_runtime,
@@ -111,6 +111,26 @@ def create_app() -> FastAPI:
             request_id,
             error.error_code,
         )
+        if isinstance(error, RuntimeConformanceError):
+            diagnostic = error.to_dict()
+            return JSONResponse(
+                status_code=500,
+                content=jsonable_encoder(
+                    {
+                        "schema_version": RUNTIME_SCHEMA_VERSION,
+                        "error": {
+                            "type": diagnostic["type"],
+                            "classification": diagnostic["classification"],
+                            "code": diagnostic["code"],
+                            "message": diagnostic["message"],
+                        },
+                        "request_id": diagnostic["request_id"],
+                        "analysis": diagnostic["analysis"],
+                        "execution": diagnostic["execution"],
+                        "validation": diagnostic["validation"],
+                    }
+                ),
+            )
         return JSONResponse(
             status_code=500,
             content={
@@ -184,7 +204,7 @@ def create_app() -> FastAPI:
     def execute_task(
         body: AnalyzeTaskRequest,
         request: Request,
-    ):
+    ) -> dict:
         request_id = request.state.request_id
         try:
             runtime_result = runtime.run(
@@ -211,24 +231,12 @@ def create_app() -> FastAPI:
             )
         analysis_payload = analysis.to_dict()
         analysis_payload["request_id"] = request_id
-        response_payload = {
+        return {
             "analysis": analysis_payload,
             "execution": receipt.to_dict(),
             "validation": runtime_result.validation.to_dict(),
             "simulated": runtime_result.simulated,
         }
-        if runtime_result.status is CanonicalRuntimeStatus.CONFORMANCE_FAILED:
-            return JSONResponse(
-                status_code=500,
-                content=jsonable_encoder(
-                    {
-                        **response_payload,
-                        "request_id": runtime_result.request_id,
-                        "runtime_status": runtime_result.status.value,
-                    }
-                ),
-            )
-        return response_payload
 
     return application
 
