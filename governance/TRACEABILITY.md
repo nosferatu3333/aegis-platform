@@ -49,3 +49,35 @@ main
 ```
 
 This direction is outside WO-002. Current post-HEAD execution-conformance work appears to be a separate slice and must remain under a separate authorization boundary. No new work order was opened as part of WO-002 closure.
+
+### TR-002: Runtime Execution-Conformance Validation
+
+**Status:** Authorized
+**Recorded:** 2026-07-29
+**Subject:** Deterministic validation and exposure of synchronous simulated execution conformance
+
+| Sequence | Record | Relationship | Repository reference |
+|---|---|---|---|
+| 1 | WO-002 Closure — Canonical Runtime Contract Hardening | Closed the preceding runtime hardening work and established that execution-conformance work required a separate authorization boundary. | [`work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md`](work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md) |
+| 2 | Preserved Implementation — Runtime Execution-Conformance Validation | Contains the initial nine-file vertical implementation slice governed by WO-003. | Commit `5faf3007bf10832806647fc5835a73279cbfdf45` (`Implement execution conformance validation`) |
+| 3 | Architecture Auditor Decision | Classified the preserved implementation as one coherent Phase I vertical slice and returned `AUTHORIZE AS ONE WORK ORDER`. | Decision received 2026-07-29; canonical repository location not recorded at the time of this entry. |
+| 4 | Engineering Director Decision — WO-003 Authorization | Assigned `WO-003`, authorized the preserved implementation boundary, and required correction of failed-conformance handling before acceptance. | Authorization directive received 2026-07-29; canonical repository location not recorded at the time of this entry. |
+| 5 | Work Order — Runtime Execution-Conformance Validation | Defines the authorized files, blocking correction, acceptance criteria, non-goals, role gates, and roadmap placement. | [`work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md`](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md) |
+
+#### Initial Governance State
+
+| Control | Status |
+|---|---|
+| Work order | `WO-003` |
+| Work-order status | **AUTHORIZED** |
+| Implementation | **PARTIALLY COMPLETE** |
+| Blocking correction | **OPEN** |
+| QA & Verification | **PENDING** |
+| Architecture review | **PENDING** |
+| Documentation & Governance | **ACTIVE** |
+
+#### Authorization Boundary
+
+WO-003 governs only the files and behavior identified in the authoritative [work order](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md). The preserved implementation is authorized for correction and verification; it is not accepted by authorization alone.
+
+WO-003 must close before kernel/main convergence begins. Kernel/main convergence remains the next Phase I slice and is not opened or authorized by this entry.
