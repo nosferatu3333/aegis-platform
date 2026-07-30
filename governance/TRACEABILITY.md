@@ -210,7 +210,7 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 
 ### TR-004: WO-002/WO-003 Bounded Integration Authorization
 
-**Status:** Authorized — Local Isolated Composition and Validation Only
+**Status:** Authorized — Amended for Bounded Ruff No-Regression
 **Recorded:** 2026-07-30
 **Subject:** Dependency-aware two-stage integration of the closed WO-002 foundation and immutable WO-003 Candidate 2
 
@@ -221,6 +221,7 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | 3 | WO-003 Candidate 2 | Supplies the exact sixteen-path overlay blobs. | Tag `qa/wo-003-candidate-2`; tag object `3b674e57b18568fe1e2a4509f8448ffeaff647ee`; commit `eee135547a768c3cad95c1e2e5342e9203620463`; tree `ee0e3c0b0b95547b1006babc50d9cac419a96686` |
 | 4 | WO-003 governance closure | Establishes that WO-003 is closed without itself authorizing integration. | Commit `655045c33ecea736fde25e0ba46f865d175cba7d` |
 | 5 | Bounded Integration Authorization | Authorizes only isolated local composition, exactly two commits, and CPython 3.11 stage validation across the exact 21-path boundary. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_AUTHORIZATION.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_AUTHORIZATION.md) |
+| 6 | Ruff Baseline Amendment | Replaces absolute repository-wide Ruff cleanliness with exact inherited-baseline equality plus mandatory clean scoped checks; preserves Integration A and authorizes resumption without base remediation. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md) |
 
 #### Authorized Integration Boundary
 
@@ -235,9 +236,18 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | Integration worktree | `C:\Users\Woolis Shop\Projects\aegis-platform-int-wo-002-wo-003-c137005b` |
 | Local commits | Exactly two: Integration A and Integration B |
 | Validation | CPython 3.11 at both stages |
+| Ruff validation | Exact three-diagnostic repository baseline; clean Stage 1 nine-path and Stage 2 21-path scoped checks |
 | Governance projection | No source governance blobs or governance lineage |
 | Active owner | Release & Integration Engineer |
 
 The authorization preserves the current worktree, existing worktrees, Candidate 1, Candidate 2, their tags, and the unrelated uncommitted documentation paths. It does not authorize modification of `main`, push, publication, release, source-lineage merge, governance-lineage merge, cleanup, or WO-004 activation.
 
 After successful composition, Release & Integration must return the exact local integration SHA and complete stage evidence. Independent QA and Architecture review of that same SHA, a separate governance disposition authority, and a separate promotion authorization are required before `main` modification or push.
+
+#### Ruff Baseline Amendment
+
+Release & Integration stopped correctly at Stage 1 after repository-wide Ruff identified three inherited `F401` diagnostics in `aegis_os/knowledge/knowledge_graph.py` and `aegis_os/pipeline/__init__.py`. Both files retain their exact protected-base blobs and are outside the authorized integration boundary.
+
+The amended gate requires exact repository-wide diagnostic-set equality with the protected base and clean direct Ruff lint and format-check across the nine Stage 1 paths and final 21-path boundary. The inherited findings are recorded as pre-existing technical debt and must not be remediated under this authorization.
+
+Integration A remains immutable at `fb0364d1b4e0a27953ea7d683a786193d6e61c48`, tree `b165ad0521d8544f613fd9b1b95e541fd107805a`. Release & Integration may resume from that commit. Integration B remains the sole additional authorized commit, and the final branch remains limited to exactly two integration commits.

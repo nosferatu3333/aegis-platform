@@ -8,6 +8,7 @@
 **WO-002 status:** CLOSED
 **WO-003 status:** CLOSED — CANDIDATE 2 ACCEPTED
 **WO-004 status:** NOT ACTIVATED
+**Ruff baseline amendment:** [`WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md`](WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md)
 
 ---
 
@@ -215,6 +216,8 @@ Both stages require CPython 3.11. The final report must record the exact Python 
 
 Ruff must run in check-only mode using the `pyproject.toml` configuration already tracked at integration base `c137005b08c449a8e19f7734098865dd10181955`. The configuration must not be replaced or modified, and formatting must not rewrite files.
 
+Repository-wide Ruff is governed by the bounded no-regression policy in the [Ruff Baseline Amendment](WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md). The protected base and each evaluated integration stage must produce the same exact three-diagnostic inherited baseline. All authorized integration paths must pass direct Ruff lint and format-check.
+
 ## Stage 1 Validation Gates
 
 Before Stage 2 begins, Release & Integration must prove:
@@ -228,9 +231,11 @@ Before Stage 2 begins, Release & Integration must prove:
 7. Focused runtime, API, and benchmark tests pass.
 8. The full repository test suite passes.
 9. Dependency integrity passes.
-10. Ruff lint and formatting checks pass under the authorized base configuration.
-11. No unrelated path or incidental tracked change is present.
-12. The integration worktree is clean after validation.
+10. Repository-wide Ruff output exactly matches the inherited protected-base diagnostic set under the Ruff Baseline Amendment.
+11. Direct Ruff lint against all nine Stage 1 paths passes.
+12. Ruff format-check against all nine Stage 1 paths passes.
+13. No unrelated path or incidental tracked change is present.
+14. The integration worktree is clean after validation.
 
 A failed or incomplete Stage 1 gate prohibits Stage 2.
 
@@ -247,11 +252,13 @@ After Integration B is created, Release & Integration must prove:
 7. Complete WO-003 validation passes.
 8. The full repository test suite passes.
 9. Dependency integrity passes.
-10. Ruff lint and formatting checks pass under the authorized base configuration.
-11. Candidate 1 and Candidate 2 tags and commits remain unchanged.
-12. The prohibited commits and source/governance lineages are absent from integration ancestry.
-13. No incidental tracked change remains.
-14. The integration worktree is clean after validation.
+10. Direct Ruff lint against the final exact 21-path boundary passes.
+11. Ruff format-check against the final exact 21-path boundary passes.
+12. Repository-wide Ruff output exactly matches the inherited protected-base diagnostic set, with no violation in an authorized path.
+13. Candidate 1 and Candidate 2 tags and commits remain unchanged.
+14. The prohibited commits and source/governance lineages are absent from integration ancestry.
+15. No incidental tracked change remains.
+16. The integration worktree is clean after validation.
 
 ## Post-Composition Gate
 
@@ -276,6 +283,7 @@ Stop immediately and report without broadening scope if:
 - A source blob is absent or fails to match.
 - A stage contains an unauthorized path.
 - A required validation gate fails or cannot be executed on CPython 3.11.
+- A repository-wide Ruff diagnostic differs from the exact inherited baseline or an authorized path fails scoped Ruff validation.
 - The authorized Ruff configuration would need modification.
 - Composition requires semantic adaptation, conflict resolution, or a third commit.
 - A candidate tag or source reference changes.
@@ -307,6 +315,8 @@ This authorization does not permit:
 - Cherry-picking the excluded commits or any unreviewed commit.
 - Creating any commit beyond Integration A and Integration B.
 - Modifying the exact source blobs after projection.
+- Remediating inherited Ruff debt or modifying its two base paths.
+- Modifying Ruff configuration, dependencies, or Infrastructure policy.
 - Editing or adding a governance path to the integration branch.
 - Modifying, moving, replacing, or deleting candidate tags.
 - Stashing, cleaning, restoring, formatting, staging, or committing preserved unrelated work.
@@ -321,11 +331,13 @@ Release & Integration must return a **WO-002/WO-003 Bounded Integration Composit
 - Integration branch name and worktree path.
 - Integration A SHA, parent, exact nine-path inventory, and per-path source-blob proof.
 - Stage 1 CPython 3.11 environment, commands, results, and clean-state evidence.
+- Stage 1 scoped Ruff results and exact protected-base no-regression comparison evidence.
 - Integration B/final integration SHA, parent, exact sixteen-path inventory, and per-path Candidate 2 blob proof.
 - Exact final 21-path base delta.
 - Commit-range and ancestry evidence proving only the base and two integration commits compose the local integration history.
 - Proof that excluded commits, source lineages, governance paths, and incidental changes are absent.
 - Stage 2 CPython 3.11 environment, commands, results, and clean-state evidence.
+- Stage 2 final-boundary Ruff results and exact repository-wide no-regression comparison evidence.
 - Candidate tag immutability confirmation.
 - Confirmation that the preserved documentation changes were untouched.
 - Confirmation that `main` and remote state were unchanged and no push occurred.
