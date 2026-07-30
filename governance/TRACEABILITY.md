@@ -72,25 +72,34 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | 11 | Documentation & Governance — GOV-003-A2 | Corrected candidate-gate sequencing and reconciled the amendment commit references without moving Candidate 1. | Governance correction recorded 2026-07-29 |
 | 12 | Candidate 1 Ratification — WO-GOV-003B | Ratified the existing annotated tag and peeled commit as immutable governance references without replacing or modifying either object. | Tag `qa/wo-003-candidate-1`; tag object `cfbefaa046b043d2fa0b099a967f2936915499f8`; candidate `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
 | 13 | Candidate 1 Final Verdict — WO-GOV-003C | Preserved Candidate 1 QA acceptance, recorded the Architecture rejection and blocking defect, and authorized a bounded Candidate 2 correction. | `CANDIDATE 1 QA ACCEPTED`; `CANDIDATE 1 ARCHITECTURE REJECTED`; recorded 2026-07-30 |
+| 14 | Candidate 2 Designation | Fixed the bounded correction as the second immutable WO-003 review target without altering Candidate 1. | Tag `qa/wo-003-candidate-2`; tag object `3b674e57b18568fe1e2a4509f8448ffeaff647ee`; candidate `eee135547a768c3cad95c1e2e5342e9203620463`; parent `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
+| 15 | Candidate 2 Final Review | Recorded QA `PASS` and Architecture `APPROVE` against the same immutable Candidate 2 SHA, with no blocking findings and no candidate change during review. | `CANDIDATE 2 ARCHITECTURE ACCEPTED`; final Architecture audit received 2026-07-30 |
 
-#### Initial Governance State
+#### Current Governance State
 
 | Control | Status |
 |---|---|
 | Work order | `WO-003` |
-| Work-order status | **CANDIDATE 1 REJECTED — CANDIDATE 2 CORRECTION AUTHORIZED** |
+| Work-order status | **CANDIDATE 2 ACCEPTED — PYTHON 3.11 EVIDENCE PENDING** |
 | Authoritative base | `4d1842087289336675d43d7cd650bd80f57b8c8d` |
-| Candidate tag | `qa/wo-003-candidate-1` |
-| Tag object | `cfbefaa046b043d2fa0b099a967f2936915499f8` |
-| Candidate SHA | `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
-| Candidate tree | `fdbda901de7048f968d8d89efaa7f71a7aed8bcb` |
+| Candidate 1 tag | `qa/wo-003-candidate-1` |
+| Candidate 1 tag object | `cfbefaa046b043d2fa0b099a967f2936915499f8` |
+| Candidate 1 SHA | `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
+| Candidate 1 tree | `fdbda901de7048f968d8d89efaa7f71a7aed8bcb` |
 | Candidate 1 QA | **ACCEPTED** |
 | Candidate 1 Architecture | **REJECTED** |
 | Candidate 1 disposition | **IMMUTABLE AND REJECTED** |
-| Candidate 2 | **CORRECTION AUTHORIZED; NOT YET DESIGNATED** |
-| Documentation & Governance | **CANDIDATE 2 AUTHORITY RECORDED** |
-| Current gate | **RELEASE & INTEGRATION CANDIDATE 2 CORRECTION** |
-| Next owner | **Release & Integration Engineer** |
+| Candidate 2 tag | `qa/wo-003-candidate-2` |
+| Candidate 2 tag object | `3b674e57b18568fe1e2a4509f8448ffeaff647ee` |
+| Candidate 2 SHA | `eee135547a768c3cad95c1e2e5342e9203620463` |
+| Candidate 2 tree | `ee0e3c0b0b95547b1006babc50d9cac419a96686` |
+| Candidate 2 parent | `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
+| Candidate 2 QA | **PASS** |
+| Candidate 2 Architecture | **APPROVE** |
+| Candidate 2 disposition | **IMMUTABLE AND INDEPENDENTLY ACCEPTED** |
+| Documentation & Governance | **CLOSURE EVIDENCE PENDING** |
+| Current gate | **EXACT PYTHON 3.11 VALIDATION EVIDENCE** |
+| Next owner | **QA & Verification** |
 
 #### Authorization Boundary
 
@@ -115,6 +124,26 @@ Candidate 1 QA acceptance remains historically valid. The Architecture Auditor r
 Candidate 1 remains immutable at tag object `cfbefaa046b043d2fa0b099a967f2936915499f8`, peeled commit `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`, and tree `fdbda901de7048f968d8d89efaa7f71a7aed8bcb`.
 
 Release & Integration may construct Candidate 2 from immutable Candidate 1 using only the maximum correction allowlist in the authoritative work order. Candidate 2 requires a new SHA and candidate number, pre-freeze validation against the exact proposed HEAD, separate designation authority, and QA and Architecture review against the same immutable Candidate 2 SHA. Python 3.11 evidence is required before final WO-003 closure.
+
+#### Candidate 2 Final Review
+
+Candidate 2 is immutable at annotated tag `qa/wo-003-candidate-2`, tag object `3b674e57b18568fe1e2a4509f8448ffeaff647ee`, peeled commit `eee135547a768c3cad95c1e2e5342e9203620463`, tree `ee0e3c0b0b95547b1006babc50d9cac419a96686`, and parent `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`.
+
+The Candidate 2 correction contains one commit after Candidate 1 and changes only:
+
+- `aegis_os/api/app.py`
+- `aegis_os/core/cognitive_runtime.py`
+- `docs/architecture/execution-engine.md`
+- `tests/api/test_execute_task.py`
+- `tests/core/test_cognitive_runtime.py`
+
+The complete base-to-Candidate-2 delta remains the exact 16-path WO-003 allowlist. The final review confirmed the absence of infrastructure and governance ancestry, `aegis_os/core/runtime_errors.py`, `RuntimeConformanceError`, scope expansion, and new API endpoints.
+
+QA recorded `PASS`, and Architecture recorded `APPROVE — CANDIDATE 2 ARCHITECTURE ACCEPTED`, against the same exact Candidate 2 SHA. Recorded evidence includes 52 focused runtime/API tests, 97 complete WO-003 tests, 172 repository tests, Ruff lint and formatting, dependency integrity, pre-commit configuration, whitespace validation, and identity and cleanliness checks. Candidate 2 and Candidate 1 remained unchanged throughout review.
+
+That validation ran on Python 3.14.6. Because WO-GOV-003C explicitly requires exact Python 3.11 evidence before final governance closure, WO-003 remains open at that single evidence gate. The evidence must be collected against unchanged Candidate 2 SHA `eee135547a768c3cad95c1e2e5342e9203620463`; no Candidate 3 or candidate-content change is required solely for this validation.
+
+Duplicate canonical-status derivation, dashboard rendering of structured non-2xx conformance evidence, and possible future internal-fault taxonomy expansion are non-blocking deferred debt. They do not expand WO-003 and require separate authorization if pursued.
 
 #### Amendment Commit Reconciliation
 

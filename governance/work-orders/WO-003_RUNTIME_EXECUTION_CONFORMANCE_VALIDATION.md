@@ -1,6 +1,6 @@
 # Work Order WO-003: Runtime Execution-Conformance Validation
 
-**Status:** CANDIDATE 1 REJECTED — CANDIDATE 2 CORRECTION AUTHORIZED
+**Status:** CANDIDATE 2 ACCEPTED — PYTHON 3.11 EVIDENCE PENDING
 **Authority:** Engineering Director Decision implementing the Architecture Auditor's final reconciliation
 **Active review owners:** QA & Verification; Architecture Auditor
 **Date authorized:** 2026-07-29
@@ -8,6 +8,7 @@
 **Formal amendment:** `WO-GOV-003`
 **Candidate ratification:** `WO-GOV-003B`
 **Candidate 1 disposition:** `WO-GOV-003C`
+**Candidate 2 final review:** RECORDED
 **Architecture verdict:** AMEND WO-003 AND RECONSTRUCT
 **Amendment review:** CONFIRMED; REQUIRED SEQUENCING CLARIFICATION RECORDED
 **Authoritative base:** `4d1842087289336675d43d7cd650bd80f57b8c8d`
@@ -15,12 +16,17 @@
 **Tag object:** `cfbefaa046b043d2fa0b099a967f2936915499f8`
 **Candidate SHA:** `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`
 **Candidate tree:** `fdbda901de7048f968d8d89efaa7f71a7aed8bcb`
-**Implementation:** CANDIDATE 1 REJECTED; CORRECTION REQUIRED
-**Candidate readiness:** CANDIDATE 2 NOT YET DESIGNATED
-**QA & Verification:** CANDIDATE 1 QA ACCEPTED
-**Architecture approval:** CANDIDATE 1 ARCHITECTURE REJECTED
-**Documentation & Governance:** CANDIDATE 2 AUTHORITY RECORDED
-**Next owner:** Release & Integration Engineer
+**Candidate 2 tag:** `qa/wo-003-candidate-2`
+**Candidate 2 tag object:** `3b674e57b18568fe1e2a4509f8448ffeaff647ee`
+**Candidate 2 SHA:** `eee135547a768c3cad95c1e2e5342e9203620463`
+**Candidate 2 tree:** `ee0e3c0b0b95547b1006babc50d9cac419a96686`
+**Candidate 2 parent:** `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`
+**Implementation:** CANDIDATE 2 INDEPENDENTLY ACCEPTED
+**Candidate readiness:** CLOSURE EVIDENCE PENDING
+**QA & Verification:** PASS
+**Architecture approval:** APPROVE
+**Documentation & Governance:** PYTHON 3.11 EVIDENCE GATE OPEN
+**Next owner:** QA & Verification — Python 3.11 evidence
 **Governed by:** `governance/ENGINEERING_CHARTER.md`
 
 ---
@@ -354,16 +360,62 @@ Candidate 2 designation requires separate release authorization. After designati
 - Every non-allowlisted path.
 - Push, merge, publication, modification of `main`, shared rebase, stash application, or stash deletion.
 
-The completed sequence was:
+## Candidate 2 Final Review Record
+
+The immutable Candidate 2 identity is:
 
 ```text
-bounded reconstruction
-→ technical validation of exact implementation HEAD
-→ immutable candidate designation
-→ independent QA and Architecture review pending
+Candidate tag: qa/wo-003-candidate-2
+Tag object: 3b674e57b18568fe1e2a4509f8448ffeaff647ee
+Candidate SHA: eee135547a768c3cad95c1e2e5342e9203620463
+Candidate tree: ee0e3c0b0b95547b1006babc50d9cac419a96686
+Parent: 7651fe4ac2fe242459d9864fb9256920fe3b2d9f
+Base: 4d1842087289336675d43d7cd650bd80f57b8c8d
 ```
 
-Reconstruction and candidate designation must not be repeated.
+Candidate 2 contains one commit after Candidate 1 and changes five authorized correction paths:
+
+- `aegis_os/api/app.py`
+- `aegis_os/core/cognitive_runtime.py`
+- `docs/architecture/execution-engine.md`
+- `tests/api/test_execute_task.py`
+- `tests/core/test_cognitive_runtime.py`
+
+The complete base-to-Candidate-2 delta remains the exact 16-path WO-003 allowlist.
+
+### Independent Verdicts
+
+```text
+QA & Verification: PASS
+Architecture Auditor: APPROVE
+Architecture disposition: CANDIDATE 2 ARCHITECTURE ACCEPTED
+Blocking findings: None
+Candidate changed during review: NO
+```
+
+Both verdicts apply to exact Candidate 2 SHA `eee135547a768c3cad95c1e2e5342e9203620463`.
+
+### Accepted Validation Evidence
+
+- Focused runtime/API tests: `52 passed`.
+- Complete WO-003 tests: `97 passed`.
+- Complete repository tests: `172 passed`.
+- Ruff lint: passed.
+- Ruff formatting: passed.
+- Dependency integrity: passed.
+- Pre-commit configuration: passed.
+- Git whitespace validation: passed.
+- Identity and cleanliness: verified before and after validation.
+
+The recorded validation used Python 3.14.6. Exact Python 3.11 evidence remains required by WO-GOV-003C before final governance closure. This evidence may be collected against the same immutable Candidate 2 SHA and does not require Candidate 3 or any candidate-content change.
+
+### Non-Blocking Deferred Debt
+
+- Duplicate canonical-status derivation remains backlog debt.
+- Dashboard rendering of structured non-2xx conformance evidence requires a separate UI work order.
+- Further internal-fault taxonomy expansion requires separate authorization.
+
+These items do not block Candidate 2 acceptance and must not expand WO-003.
 
 ## Acceptance Criteria
 
@@ -522,13 +574,13 @@ The two amendment commits have distinct, cumulative roles:
 ## Current Gate
 
 ```text
-CANDIDATE 1 REJECTED — CANDIDATE 2 CORRECTION AUTHORIZED
+CANDIDATE 2 ACCEPTED — PYTHON 3.11 EVIDENCE PENDING
 ```
 
-WO-003 is not closed, integrated, merged, or released. Candidate 1 QA acceptance and Architecture rejection are final historical verdicts for Candidate 1. Candidate 2 has not been designated or independently reviewed.
+WO-003 is not closed, integrated, merged, or released. Candidate 1 QA acceptance and Architecture rejection remain final historical verdicts for Candidate 1. QA & Verification and the Architecture Auditor have independently accepted the same immutable Candidate 2 SHA. Exact Python 3.11 validation evidence is the sole remaining closure gate.
 
 ## Stop Condition
 
-Hand off to Release & Integration for the bounded Candidate 2 correction. Do not designate Candidate 2 without separate release authorization.
+Hand off to QA & Verification to obtain and record exact Python 3.11 validation evidence against immutable Candidate 2 SHA `eee135547a768c3cad95c1e2e5342e9203620463`.
 
-Do not move, amend, recreate, delete, or retarget Candidate 1. Do not close WO-003 until QA & Verification and the Architecture Auditor approve the same immutable Candidate 2 SHA and required Python 3.11 evidence is recorded.
+Do not move, amend, recreate, delete, or retarget Candidate 1, Candidate 2, or either candidate tag. Do not create Candidate 3 solely to collect environment evidence. Do not expand WO-003 with the recorded non-blocking debt. Documentation & Governance may close WO-003 only after the required Python 3.11 evidence is recorded against the unchanged Candidate 2 SHA.
