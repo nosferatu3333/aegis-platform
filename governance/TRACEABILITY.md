@@ -210,7 +210,7 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 
 ### TR-004: WO-002/WO-003 Bounded Integration Authorization
 
-**Status:** Controlled Local-Main Promotion Authorized — Pending Report
+**Status:** Local Main Accepted — Eligible for Controlled Remote Publication
 **Recorded:** 2026-07-30
 **Subject:** Dependency-aware two-stage integration of the closed WO-002 foundation and immutable WO-003 Candidate 2
 
@@ -228,6 +228,8 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | 10 | Independent Architecture Review | Confirmed canonical ownership, accepted semantics, excluded history, compatibility, and absence of semantic adaptation or new integration debt. | `APPROVE`; reviewed SHA `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | 11 | Governance Disposition | Reconciled Release, QA, Architecture, Python 3.11, Ruff, preservation, and deferred-debt evidence and accepted the immutable composition for separately authorized controlled promotion. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_GOVERNANCE_DISPOSITION.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_GOVERNANCE_DISPOSITION.md) |
 | 12 | Controlled Local-Main Promotion Authorization | Authorizes one atomic compare-and-swap fast-forward of local `main` from the protected base to exact accepted Integration B, with bounded atomic rollback and no remote authority. | [`work-orders/WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md`](work-orders/WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md) |
+| 13 | Controlled Local-Main Promotion | Atomically fast-forwarded local `main` to exact accepted Integration B, reproduced all required validation, and required no rollback. | `PASS`; local `main` `f727d9f9f2b82b55f79e31008bb79b71477fbc84`; tree `23f458c2d8a1576c8068aac3de0350dbc792d421` |
+| 14 | Local-Main Promotion Governance Disposition | Reconciled the promotion, validation, preservation, and remote non-mutation evidence and accepted local `main` as eligible for separately controlled remote publication. | [`work-orders/WO-002_WO-003_LOCAL_MAIN_PROMOTION_GOVERNANCE_DISPOSITION.md`](work-orders/WO-002_WO-003_LOCAL_MAIN_PROMOTION_GOVERNANCE_DISPOSITION.md) |
 
 #### Authorized Integration Boundary
 
@@ -256,7 +258,15 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | Authorized new local `main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | Authorized new tree | `23f458c2d8a1576c8068aac3de0350dbc792d421` |
 | Remote modification | **NOT AUTHORIZED** |
-| Active owner | Release & Integration Engineer |
+| Atomic local promotion | **PASS** |
+| Current local `main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
+| Remote-tracking `origin/main` | `c137005b08c449a8e19f7734098865dd10181955` |
+| Live remote `main` | `c137005b08c449a8e19f7734098865dd10181955` |
+| Post-promotion validation | **PASS — CPython 3.11.9** |
+| Rollback | **NOT REQUIRED** |
+| Local-promotion disposition | **ACCEPTED — ELIGIBLE FOR CONTROLLED REMOTE PUBLICATION** |
+| Remote publication | **NOT AUTHORIZED** |
+| Next eligible owner | Release & Integration Engineer — separate explicit remote-publication authorization required |
 
 The authorization preserves the current worktree, existing worktrees, Candidate 1, Candidate 2, their tags, and the unrelated uncommitted documentation paths. It does not authorize modification of `main`, push, publication, release, source-lineage merge, governance-lineage merge, cleanup, or WO-004 activation.
 
@@ -296,4 +306,14 @@ All pre-promotion identity, ancestry, tree, boundary, worktree, candidate, recov
 
 Post-promotion CPython 3.11, scoped Ruff, repository no-regression, dependency, whitespace, boundary, clean-state, and preservation validation is mandatory. A single guarded atomic rollback to the protected base is authorized only on post-promotion failure while local `main` still equals the accepted target.
 
-Push, remote modification, merge commits, force update, tag mutation, cleanup, publication, and WO-004 activation remain unauthorized. Release & Integration must return the controlled local-main promotion report to Documentation & Governance.
+Release & Integration returned the controlled local-main promotion report to Documentation & Governance. Push, remote modification, merge commits, force update, tag mutation, cleanup, publication, and WO-004 activation remain unauthorized.
+
+#### Local-Main Promotion Governance Disposition
+
+Release & Integration completed the exact authorized atomic compare-and-swap update. Local `main` now points to accepted Integration B `f727d9f9f2b82b55f79e31008bb79b71477fbc84`, tree `23f458c2d8a1576c8068aac3de0350dbc792d421`, while remote-tracking and live remote `main` remain at protected base `c137005b08c449a8e19f7734098865dd10181955`.
+
+The preliminary read-only preflight stop was non-mutating, corrected before promotion, and followed by successful re-verification. It is not a promotion defect.
+
+Post-promotion CPython 3.11.9 validation passed with 52 focused tests, 97 complete WO-003 tests, and 172 repository tests. Dependency integrity, exact 18-path Ruff checks, repository no-regression, whitespace, exact 21-path boundary, and clean-state controls passed. Recovery, candidate, integration, and unrelated-work preservation were confirmed. Rollback was not required.
+
+The promoted local `main` is `ACCEPTED — ELIGIBLE FOR CONTROLLED REMOTE PUBLICATION`. This disposition grants no remote authority. Release & Integration may act only after separate explicit controlled remote-publication authorization.
