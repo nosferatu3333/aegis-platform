@@ -210,7 +210,7 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 
 ### TR-004: WO-002/WO-003 Bounded Integration Authorization
 
-**Status:** Authorized — Amended for Bounded Ruff No-Regression and Python-Only Target
+**Status:** Accepted — Eligible for Controlled Promotion
 **Recorded:** 2026-07-30
 **Subject:** Dependency-aware two-stage integration of the closed WO-002 foundation and immutable WO-003 Candidate 2
 
@@ -223,6 +223,10 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | 5 | Bounded Integration Authorization | Authorizes only isolated local composition, exactly two commits, and CPython 3.11 stage validation across the exact 21-path boundary. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_AUTHORIZATION.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_AUTHORIZATION.md) |
 | 6 | Ruff Baseline Amendment | Replaces absolute repository-wide Ruff cleanliness with exact inherited-baseline equality plus mandatory clean scoped checks; preserves Integration A and authorizes resumption without base remediation. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md) |
 | 7 | Python-Only Ruff Target Amendment | Corrects the Stage 2 scoped Ruff target to the exact 18 Python paths, retains three non-Python paths under other verification controls, and authorizes validation resumption from unchanged Integration B without another commit. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md) |
+| 8 | Completed Integration Composition | Produced the exact two-commit bounded composition with zero unauthorized paths and no semantic adaptation. | Integration A `fb0364d1b4e0a27953ea7d683a786193d6e61c48`; Integration B `f727d9f9f2b82b55f79e31008bb79b71477fbc84`; tree `23f458c2d8a1576c8068aac3de0350dbc792d421` |
+| 9 | Independent QA Review | Verified exact ancestry, source blobs, 21-path boundary, CPython 3.11.9 tests, scoped Ruff, inherited-baseline equality, and preservation. | `PASS`; reviewed SHA `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
+| 10 | Independent Architecture Review | Confirmed canonical ownership, accepted semantics, excluded history, compatibility, and absence of semantic adaptation or new integration debt. | `APPROVE`; reviewed SHA `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
+| 11 | Governance Disposition | Reconciled Release, QA, Architecture, Python 3.11, Ruff, preservation, and deferred-debt evidence and accepted the immutable composition for separately authorized controlled promotion. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_GOVERNANCE_DISPOSITION.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_GOVERNANCE_DISPOSITION.md) |
 
 #### Authorized Integration Boundary
 
@@ -236,14 +240,21 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | Integration branch | `integration/wo-002-wo-003-c137005b` |
 | Integration worktree | `C:\Users\Woolis Shop\Projects\aegis-platform-int-wo-002-wo-003-c137005b` |
 | Local commits | Exactly two: Integration A and Integration B |
+| Integration A | `fb0364d1b4e0a27953ea7d683a786193d6e61c48` |
+| Integration B | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
+| Integration B tree | `23f458c2d8a1576c8068aac3de0350dbc792d421` |
 | Validation | CPython 3.11 at both stages |
 | Ruff validation | Exact three-diagnostic repository baseline; clean Stage 1 nine-path and Stage 2 18-Python-path scoped checks |
 | Governance projection | No source governance blobs or governance lineage |
-| Active owner | Release & Integration Engineer |
+| Release verdict | **PASS** |
+| QA verdict | **PASS** |
+| Architecture verdict | **APPROVE** |
+| Governance disposition | **ACCEPTED — ELIGIBLE FOR CONTROLLED PROMOTION** |
+| Next eligible owner | Release & Integration Engineer — separate explicit promotion authorization required |
 
 The authorization preserves the current worktree, existing worktrees, Candidate 1, Candidate 2, their tags, and the unrelated uncommitted documentation paths. It does not authorize modification of `main`, push, publication, release, source-lineage merge, governance-lineage merge, cleanup, or WO-004 activation.
 
-After successful composition, Release & Integration must return the exact local integration SHA and complete stage evidence. Independent QA and Architecture review of that same SHA, a separate governance disposition authority, and a separate promotion authorization are required before `main` modification or push.
+Release & Integration returned the exact local integration SHA and complete stage evidence. Independent QA and Architecture review of that same SHA and the governance disposition are complete. A separate promotion authorization remains required before `main` modification or push.
 
 #### Ruff Baseline Amendment
 
@@ -260,3 +271,13 @@ Release & Integration completed immutable Integration B at `f727d9f9f2b82b55f79e
 The corrected Stage 2 target contains exactly 18 Python paths. `aegis_os/api/static/dashboard.js`, `aegis_os/api/templates/dashboard.html`, and `docs/architecture/execution-engine.md` remain inside the exact 21-path boundary and require Candidate 2 blob equality, relevant tests, full-suite validation, whitespace validation, and clean-state evidence.
 
 Release & Integration may resume validation from unchanged Integration B. No additional integration commit is authorized. If all corrected gates pass, the same Integration B SHA may be returned for independent QA and Architecture review.
+
+#### Final Integration Governance Disposition
+
+Release & Integration, QA & Verification, and the Architecture Auditor evaluated exact Integration B commit `f727d9f9f2b82b55f79e31008bb79b71477fbc84`, tree `23f458c2d8a1576c8068aac3de0350dbc792d421`. Their respective verdicts are `PASS`, `PASS`, and `APPROVE`, with no blocking findings and no new integration debt.
+
+QA completed minimum-version validation on CPython 3.11.9: 52 focused tests, 97 complete WO-003 tests, and 172 repository tests passed. This supersedes Architecture's timing note that Python 3.11 evidence might still be obtained; the evidence is complete, and the reconciliation is not an Architecture defect.
+
+The exact 18-path Python Ruff checks passed, and repository-wide Ruff output remained identical to the accepted three-diagnostic protected-base baseline. Candidate, recovery, local and remote `main`, unrelated-work, and clean-integration-state preservation were confirmed.
+
+The immutable composition is `ACCEPTED — ELIGIBLE FOR CONTROLLED PROMOTION`. This disposition grants no promotion authority. Release & Integration is the next eligible owner only after separate explicit controlled-promotion authorization.
