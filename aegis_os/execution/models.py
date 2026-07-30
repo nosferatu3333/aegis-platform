@@ -5,7 +5,6 @@ from datetime import datetime
 from enum import Enum
 from typing import Any
 
-
 EXECUTION_SCHEMA_VERSION = "1.0"
 
 
@@ -17,6 +16,10 @@ class ExecutionStatus(str, Enum):
     COMPLETED = "completed"
     FAILED = "failed"
     CANCELLED = "cancelled"
+
+
+class ExecutionMode(str, Enum):
+    SIMULATED = "simulated"
 
 
 class ExecutionStepStatus(str, Enum):
@@ -32,6 +35,7 @@ class ExecutionRequest:
     request_id: str
     mission: str
     selected_agent: str
+    execution_mode: ExecutionMode = ExecutionMode.SIMULATED
     required_capabilities: list[str] = field(default_factory=list)
     workflow_steps: list[Any] = field(default_factory=list)
     constraints: list[str] = field(default_factory=list)
@@ -43,6 +47,7 @@ class ExecutionRequest:
             "request_id": self.request_id,
             "mission": self.mission,
             "selected_agent": self.selected_agent,
+            "execution_mode": self.execution_mode.value,
             "required_capabilities": list(self.required_capabilities),
             "workflow_steps": [
                 step.to_dict() if hasattr(step, "to_dict") else step
@@ -75,6 +80,7 @@ class ExecutionReceipt:
     request_id: str
     mission: str
     selected_agent: str
+    execution_mode: ExecutionMode = ExecutionMode.SIMULATED
     status: ExecutionStatus = ExecutionStatus.PENDING
     steps: list[ExecutionStep] = field(default_factory=list)
     started_at: datetime | None = None
@@ -90,17 +96,14 @@ class ExecutionReceipt:
             "request_id": self.request_id,
             "mission": self.mission,
             "selected_agent": self.selected_agent,
+            "execution_mode": self.execution_mode.value,
             "status": self.status.value,
             "steps": [step.to_dict() for step in self.steps],
-            "started_at": (
-                self.started_at.isoformat() if self.started_at else None
-            ),
-            "finished_at": (
-                self.finished_at.isoformat() if self.finished_at else None
-            ),
+            "started_at": (self.started_at.isoformat() if self.started_at else None),
+            "finished_at": (self.finished_at.isoformat() if self.finished_at else None),
             "completed_steps": self.completed_steps,
             "failed_steps": self.failed_steps,
             "logs": list(self.logs),
-            "simulated": True,
+            "simulated": self.simulated,
             "schema_version": self.schema_version,
         }

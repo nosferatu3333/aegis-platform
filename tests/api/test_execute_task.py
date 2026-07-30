@@ -3,12 +3,57 @@ from importlib import import_module
 from fastapi.testclient import TestClient
 
 from aegis_os.api.app import create_app
+from aegis_os.core.cognitive_runtime import CanonicalRuntimeInvariantError
+from aegis_os.execution.conformance import (
+    ConformanceCheck,
+    ConformanceCheckName,
+    ConformanceStatus,
+    ExecutionConformanceResult,
+    ExecutionConformanceValidator,
+)
 from aegis_os.pipeline.composition import create_default_runtime
 
 api_app = import_module("aegis_os.api.app")
 
 client = TestClient(create_app())
 MISSION = "Research competitors in the cognitive systems market"
+
+
+class FaultingRuntime:
+    pipeline = object()
+
+    def __init__(self, error):
+        self.error = error
+
+    def run(self, task, request_id, *, execute=False):
+        raise self.error
+
+
+class FailedConformanceValidator:
+    def validate(self, **arguments):
+        validation = ExecutionConformanceValidator().validate(**arguments)
+        checks = tuple(
+            ConformanceCheck(
+                name=check.name,
+                status=(
+                    ConformanceStatus.FAILED
+                    if check.name is ConformanceCheckName.MISSION_PRESERVATION
+                    else check.status
+                ),
+                evidence=(
+                    "Injected deterministic mission-preservation mismatch."
+                    if check.name is ConformanceCheckName.MISSION_PRESERVATION
+                    else check.evidence
+                ),
+            )
+            for check in validation.checks
+        )
+        return ExecutionConformanceResult(
+            request_id=validation.request_id,
+            status=ConformanceStatus.FAILED,
+            operation_outcome=validation.operation_outcome,
+            checks=checks,
+        )
 
 
 def test_execute_task_runs_simulated_workflow():
@@ -18,6 +63,7 @@ def test_execute_task_runs_simulated_workflow():
     payload = response.json()
     analysis = payload["analysis"]
     execution = payload["execution"]
+    validation = payload["validation"]
 
     assert analysis["capability"]["name"] == "Research Agent"
     assert execution["selected_agent"] == "Research Agent"
@@ -33,6 +79,12 @@ def test_execute_task_runs_simulated_workflow():
     assert execution["completed_steps"] == 5
     assert execution["simulated"] is True
     assert payload["simulated"] is True
+    assert validation["request_id"] == execution["request_id"]
+    assert validation["status"] == "passed"
+    assert validation["operation_outcome"] == "completed"
+    assert len(validation["checks"]) == 8
+    assert all(check["status"] == "passed" for check in validation["checks"])
+    assert len(validation["evidence"]) == 8
 
 
 def test_execute_task_rejects_invalid_task():
@@ -59,6 +111,7 @@ def test_analyze_task_contract_remains_analysis_only():
     assert payload["capability"]["name"] == "Research Agent"
     assert "analysis" not in payload
     assert "execution" not in payload
+    assert "validation" not in payload
 
 
 def test_api_routes_delegate_to_canonical_runtime(monkeypatch):
@@ -86,3 +139,80 @@ def test_api_routes_delegate_to_canonical_runtime(monkeypatch):
     assert analysis_response.status_code == 200
     assert execution_response.status_code == 200
     assert calls == [False, True]
+
+
+def test_internal_conformance_failure_returns_typed_http_500(monkeypatch):
+    request_id = "api-conformance-failure-1"
+    runtime = create_default_runtime()
+    runtime.conformance_validator = FailedConformanceValidator()
+    monkeypatch.setattr(
+        api_app,
+        "create_runtime",
+        lambda: runtime,
+    )
+    fault_client = TestClient(api_app.create_app())
+
+    response = fault_client.post(
+        "/execute-task",
+        json={"task": MISSION},
+        headers={"X-Request-ID": request_id},
+    )
+
+    assert response.status_code == 500
+    assert response.headers["X-Request-ID"] == request_id
+    payload = response.json()
+    assert payload["request_id"] == request_id
+    assert payload["runtime_status"] == "conformance_failed"
+    assert payload["analysis"]["request_id"] == request_id
+    assert payload["execution"]["request_id"] == request_id
+    assert payload["validation"]["request_id"] == request_id
+    assert payload["analysis"]["status"] == "ready"
+    assert payload["execution"]["status"] == "completed"
+    assert payload["validation"]["status"] == "failed"
+    assert payload["validation"]["operation_outcome"] == "completed"
+    failed_checks = [
+        check
+        for check in payload["validation"]["checks"]
+        if check["status"] == "failed"
+    ]
+    assert len(failed_checks) == 1
+    assert "mission-preservation mismatch" in failed_checks[0]["evidence"]
+    assert all(check["evidence"] for check in payload["validation"]["checks"])
+    assert len(payload["validation"]["evidence"]) == 8
+    assert "detail" not in payload
+    assert "error" not in payload
+
+
+def test_runtime_invariant_failure_returns_safe_http_500(monkeypatch):
+    request_id = "api-runtime-invariant-1"
+    error = CanonicalRuntimeInvariantError(
+        "Injected impossible internal validator state."
+    )
+    monkeypatch.setattr(
+        api_app,
+        "create_runtime",
+        lambda: FaultingRuntime(error),
+    )
+    fault_client = TestClient(api_app.create_app())
+
+    response = fault_client.post(
+        "/execute-task",
+        json={"task": MISSION},
+        headers={"X-Request-ID": request_id},
+    )
+
+    assert response.status_code == 500
+    assert response.headers["X-Request-ID"] == request_id
+    assert response.json() == {
+        "schema_version": "1.0",
+        "request_id": request_id,
+        "detail": {
+            "code": "canonical_runtime_invariant_failure",
+            "message": ("The canonical runtime produced an invalid internal state."),
+        },
+    }
+    assert "Injected impossible internal validator state." not in response.text
+    assert "runtime_status" not in response.json()
+    assert "analysis" not in response.json()
+    assert "execution" not in response.json()
+    assert "validation" not in response.json()

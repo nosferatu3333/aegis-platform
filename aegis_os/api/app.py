@@ -11,6 +11,11 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
+from aegis_os.core.cognitive_runtime import (
+    RUNTIME_SCHEMA_VERSION,
+    CanonicalRuntimeInvariantError,
+    CanonicalRuntimeStatus,
+)
 from aegis_os.pipeline.composition import (
     create_default_pipeline,
     create_default_runtime,
@@ -95,6 +100,28 @@ def create_app() -> FastAPI:
             },
         )
 
+    @application.exception_handler(CanonicalRuntimeInvariantError)
+    async def canonical_runtime_invariant_error(
+        request: Request,
+        error: CanonicalRuntimeInvariantError,
+    ) -> JSONResponse:
+        request_id = request.state.request_id
+        logger.error(
+            "event=canonical_runtime_invariant_failure request_id=%s",
+            request_id,
+        )
+        return JSONResponse(
+            status_code=500,
+            content={
+                "schema_version": RUNTIME_SCHEMA_VERSION,
+                "request_id": request_id,
+                "detail": {
+                    "code": error.error_code,
+                    "message": error.public_message,
+                },
+            },
+        )
+
     application.mount(
         "/static",
         StaticFiles(directory=STATIC_DIRECTORY),
@@ -159,7 +186,7 @@ def create_app() -> FastAPI:
     def execute_task(
         body: AnalyzeTaskRequest,
         request: Request,
-    ) -> dict:
+    ):
         request_id = request.state.request_id
         try:
             runtime_result = runtime.run(
@@ -186,11 +213,24 @@ def create_app() -> FastAPI:
             )
         analysis_payload = analysis.to_dict()
         analysis_payload["request_id"] = request_id
-        return {
+        response_payload = {
             "analysis": analysis_payload,
             "execution": receipt.to_dict(),
+            "validation": runtime_result.validation.to_dict(),
             "simulated": runtime_result.simulated,
         }
+        if runtime_result.status is CanonicalRuntimeStatus.CONFORMANCE_FAILED:
+            return JSONResponse(
+                status_code=500,
+                content=jsonable_encoder(
+                    {
+                        **response_payload,
+                        "request_id": runtime_result.request_id,
+                        "runtime_status": runtime_result.status.value,
+                    }
+                ),
+            )
+        return response_payload
 
     return application
 
