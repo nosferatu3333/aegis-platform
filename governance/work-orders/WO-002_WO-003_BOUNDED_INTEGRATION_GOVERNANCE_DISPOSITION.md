@@ -10,8 +10,9 @@
 **QA verdict:** PASS
 **Architecture verdict:** APPROVE
 **Blocking findings:** NONE
-**Promotion authority:** NOT GRANTED
-**Next eligible owner:** Release & Integration Engineer — separate explicit promotion authorization required
+**Promotion authority at disposition:** NOT GRANTED
+**Subsequent promotion authorization:** [`WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md`](WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md)
+**Next eligible owner:** Release & Integration Engineer — bounded local-main promotion authorized by the subsequent linked record
 
 ---
 
@@ -227,7 +228,7 @@ This disposition establishes eligibility only.
 
 ## Promotion Boundary
 
-Release & Integration is the next eligible owner, but it may take no promotion action until a separate explicit promotion authorization defines:
+Release & Integration was the next eligible owner, but it could take no promotion action until a separate explicit promotion authorization defined:
 
 - The exact source and target objects.
 - The permitted promotion mechanism.
@@ -237,9 +238,9 @@ Release & Integration is the next eligible owner, but it may take no promotion a
 - Remote and push authority, if any.
 - Final preservation and evidence requirements.
 
-Until that authorization exists, the following remain prohibited:
+That condition was subsequently satisfied by the [Controlled Local-Main Promotion Authorization](WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md). Only the exact atomic local-`main` compare-and-swap and bounded recovery described there are authorized. The following remain prohibited:
 
-- Modifying, merging, or fast-forwarding `main`.
+- Modifying or merging `main` by any method other than the separately authorized exact atomic compare-and-swap fast-forward.
 - Pushing any commit, branch, tag, or reference.
 - Creating, moving, replacing, or deleting a tag.
 - Squashing, adapting, rebasing, amending, or rebuilding the accepted integration commits.
@@ -259,9 +260,9 @@ Ruff no-regression: PASS — EXACT THREE-DIAGNOSTIC BASELINE EQUALITY
 Governance disposition: ACCEPTED — ELIGIBLE FOR CONTROLLED PROMOTION
 Governance disposition commit: RECORDED BY THE COMMIT CONTAINING THIS DOCUMENT
 Integration accepted: YES
-Main modification authorized: NO
+Main modification authorized: YES — ONLY BY THE SUBSEQUENT EXACT LOCAL CAS AUTHORIZATION
 Push authorized: NO
 WO-004 authorized: NO
 Next eligible owner: RELEASE & INTEGRATION ENGINEER
-Required next authorization: SEPARATE EXPLICIT CONTROLLED-PROMOTION AUTHORIZATION
+Required next authorization: SATISFIED BY WO-002/WO-003 CONTROLLED LOCAL-MAIN PROMOTION AUTHORIZATION
 ```

@@ -12,7 +12,9 @@
 **Python-only Ruff target amendment:** [`WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md`](WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md)
 **Composition status:** ACCEPTED — ELIGIBLE FOR CONTROLLED PROMOTION
 **Governance disposition:** [`WO-002_WO-003_BOUNDED_INTEGRATION_GOVERNANCE_DISPOSITION.md`](WO-002_WO-003_BOUNDED_INTEGRATION_GOVERNANCE_DISPOSITION.md)
-**Next eligible owner:** Release & Integration Engineer — separate explicit promotion authorization required
+**Controlled local-main promotion:** [`WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md`](WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md)
+**Promotion status:** AUTHORIZED — PENDING EXECUTION AND REPORT
+**Active owner:** Release & Integration Engineer
 
 ---
 
@@ -274,11 +276,11 @@ After successful composition:
 2. QA & Verification must independently review the exact reported integration SHA.
 3. The Architecture Auditor must review that same SHA and verify that no semantic adaptation or scope expansion was introduced.
 4. Documentation & Governance may record the integration disposition only under separate governance authority.
-5. A separate explicit promotion authorization is required before any modification of `main` or push.
+5. A separate explicit promotion authorization is required before any modification of `main` or push. The later [Controlled Local-Main Promotion Authorization](WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md) satisfies this condition only for its exact local compare-and-swap operation; push remains unauthorized.
 
 The integration branch must remain fixed at the reported SHA during independent review. Creating an integration tag or other review reference is not authorized by this record.
 
-Release & Integration, QA & Verification, and the Architecture Auditor subsequently accepted exact Integration B commit `f727d9f9f2b82b55f79e31008bb79b71477fbc84`, tree `23f458c2d8a1576c8068aac3de0350dbc792d421`. The [Governance Disposition](WO-002_WO-003_BOUNDED_INTEGRATION_GOVERNANCE_DISPOSITION.md) records `ACCEPTED — ELIGIBLE FOR CONTROLLED PROMOTION`. A separate explicit promotion authorization remains required.
+Release & Integration, QA & Verification, and the Architecture Auditor subsequently accepted exact Integration B commit `f727d9f9f2b82b55f79e31008bb79b71477fbc84`, tree `23f458c2d8a1576c8068aac3de0350dbc792d421`. The [Governance Disposition](WO-002_WO-003_BOUNDED_INTEGRATION_GOVERNANCE_DISPOSITION.md) records `ACCEPTED — ELIGIBLE FOR CONTROLLED PROMOTION`. The later [Controlled Local-Main Promotion Authorization](WO-002_WO-003_CONTROLLED_LOCAL_MAIN_PROMOTION_AUTHORIZATION.md) grants only its exact bounded local operation.
 
 ## Stop Conditions
 
@@ -363,7 +365,7 @@ Recovery reference authorized: YES — refs/tags/recovery/pre-wo-002-wo-003-inte
 Integration branch authorized: YES — integration/wo-002-wo-003-c137005b
 Integration worktree authorized: YES — C:\Users\Woolis Shop\Projects\aegis-platform-int-wo-002-wo-003-c137005b
 Local commits authorized: EXACTLY TWO — INTEGRATION A AND INTEGRATION B
-Main modification authorized: NO
+Main modification authorized: NO UNDER THIS COMPOSITION AUTHORIZATION — SEE SEPARATE CONTROLLED LOCAL-MAIN AUTHORIZATION
 Push authorized: NO
 WO-004 authorized: NO
 Active owner: RELEASE & INTEGRATION ENGINEER
