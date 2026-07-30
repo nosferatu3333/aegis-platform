@@ -96,3 +96,34 @@ Required pre-freeze evidence includes focused and complete tests, Ruff lint and 
 This amendment does not authorize pushing, merging, tagging, rebasing shared branches, deleting branches or preserved references, modifying `main`, applying preserved work, or implementing infrastructure controls. Creation of an immutable review target remains subject to separately approved release controls.
 
 WO-003 must close before kernel/main convergence begins. Kernel/main convergence remains the next Phase I slice and is not opened or authorized by this entry.
+
+### TR-003: Repository Validation Baseline and Remote CI Verification
+
+**Status:** Closed
+**Recorded:** 2026-07-29
+**Subject:** Acceptance of the repository validation baseline and independent remote-CI evidence
+
+| Sequence | Record | Relationship | Repository reference |
+|---|---|---|---|
+| 1 | WO-INF-001 — Repository Validation and CI Baseline | Defines and records the accepted infrastructure-only validation baseline. | [`work-orders/WO-INF-001_REPOSITORY_VALIDATION_AND_CI_BASELINE.md`](work-orders/WO-INF-001_REPOSITORY_VALIDATION_AND_CI_BASELINE.md) |
+| 2 | Accepted implementation commit | Implements the validation and CI baseline verified by local and remote evidence. | Commit `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` (`Establish repository validation and CI baseline`) |
+| 3 | WO-INF-002 — Remote CI Verification | Records the exact GitHub Actions run, job, branch, commit, runner, Python version, validation results, and QA disposition. | [`work-orders/WO-INF-002_REMOTE_CI_VERIFICATION.md`](work-orders/WO-INF-002_REMOTE_CI_VERIFICATION.md) |
+| 4 | Independent QA decision | Accepted the authoritative remote-CI evidence with no discrepancies. | `REMOTE CI EVIDENCE ACCEPTED`, recorded 2026-07-29 |
+
+#### Closure State
+
+| Control | Final state |
+|---|---|
+| WO-INF-001 | **ACCEPTED** |
+| WO-INF-002 | **CLOSED** |
+| Disposition | **REMOTE CI VERIFIED** |
+| Verified commit | `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` |
+| Remote branch | `ci/wo-inf-002-ead99d3` |
+| Workflow run | [30484391539](https://github.com/nosferatu3333/aegis-platform/actions/runs/30484391539) |
+| Job | `90686292534` — `Python 3.11 validation` |
+| Runner | Ubuntu 24.04.4 LTS |
+| Python | CPython 3.11.15 |
+| Test result | `168 passed` |
+| QA verdict | **REMOTE CI EVIDENCE ACCEPTED** |
+
+The dedicated CI branch must remain preserved. Deletion requires separate authorization. This closure does not change `main`, authorize integration, or expand infrastructure scope.
