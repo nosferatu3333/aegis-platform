@@ -7,6 +7,7 @@
 **Date amended:** 2026-07-29
 **Formal amendment:** `WO-GOV-003`
 **Architecture verdict:** AMEND WO-003 AND RECONSTRUCT
+**Amendment review:** CONFIRMED; REQUIRED SEQUENCING CLARIFICATION RECORDED
 **Authoritative base:** `4d1842087289336675d43d7cd650bd80f57b8c8d`
 **Implementation:** NOT ACCEPTED; BOUNDED RECONSTRUCTION REQUIRED
 **Candidate readiness:** NOT READY
@@ -258,11 +259,11 @@ WO-003 is accepted only when:
 17. Dashboard terminology remains “Execution conformance” and does not imply evaluation, approval, governance, authorization, or mission success.
 18. No explicit non-goal is introduced.
 19. All required pre-freeze validation passes.
-20. QA & Verification and the Architecture Auditor record verdicts against the same immutable candidate.
+20. QA & Verification and the Architecture Auditor record verdicts, in that order, against the same immutable candidate SHA after designation.
 
 ## Required Pre-Freeze Evidence Gates
 
-Candidate 1 must not be frozen until all of the following pass:
+Before candidate designation, all of the following must pass against one exact proposed implementation HEAD SHA:
 
 - Focused WO-003 tests.
 - Complete pytest suite.
@@ -272,15 +273,12 @@ Candidate 1 must not be frozen until all of the following pass:
 - Pre-commit validation.
 - `git diff --check`.
 - Exact authorized-path inventory against the authoritative base.
-- Commit-range and ancestry evidence from the authoritative base through candidate HEAD.
+- Commit-range and ancestry evidence from the authoritative base through the proposed implementation HEAD.
 - Proof that `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` is not an ancestor.
 - Proof that `RuntimeConformanceError` is absent.
 - Clean worktree.
-- Exact candidate SHA.
-- Complete validation results tied to the exact candidate SHA.
-- Candidate-specific QA & Verification evidence.
-- Candidate-specific Architecture Auditor evidence.
-- An immutable review target created only under separately approved release controls.
+- Exact proposed implementation HEAD SHA.
+- Complete pre-freeze technical validation results tied to that exact proposed SHA.
 
 ### Focused Validation Coverage
 
@@ -301,6 +299,19 @@ Focused validation must cover:
 - Typed simulation boundary.
 - Dashboard terminology and safe rendering.
 - Absence of normal `RuntimeConformanceError`.
+
+## Candidate Designation and Post-Freeze Review Gates
+
+After pre-freeze technical validation passes:
+
+1. Separate release authority must designate the exact validated implementation SHA as immutable candidate 1 without changing its contents.
+2. QA & Verification evaluates candidate 1 and records candidate-specific evidence and a verdict against the designated SHA.
+3. The Architecture Auditor evaluates the same candidate SHA after QA and records candidate-specific evidence and a verdict.
+4. Any correction creates a new implementation SHA and a new candidate number.
+5. Candidate 1 is never moved, amended, or reused for corrected contents.
+6. Documentation & Governance may close WO-003 only after both independent verdicts apply to the same immutable candidate SHA.
+
+Candidate designation, publication, or tagging remains subject to separately approved release controls.
 
 ## Governance Limitations
 
@@ -325,14 +336,16 @@ Documentation & Governance
 
 Release & Integration Engineer
 → bounded reconstruction from the authoritative base
-→ pre-freeze validation
-→ immutable candidate preparation
+→ pre-freeze technical validation against an exact implementation HEAD SHA
+
+Separately authorized Release & Integration action
+→ designate that unchanged SHA as immutable candidate 1
 
 QA & Verification
-→ independent verdict against the immutable candidate
+→ candidate-specific evidence and independent verdict against candidate 1
 
 Architecture Auditor
-→ independent verdict against the same immutable candidate
+→ candidate-specific evidence and independent verdict against the same candidate SHA
 
 Documentation & Governance
 → closure only after all evidence and approvals are recorded

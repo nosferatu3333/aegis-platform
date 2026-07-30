@@ -67,6 +67,7 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | 6 | Architecture Auditor — WO-003 Architectural Scope Reconciliation | Issued `AMEND WO-003 AND RECONSTRUCT`, accepted the final runtime architecture, rejected the contaminated branch as a candidate, and fixed the bounded reconstruction scope. | Reconciliation decision received 2026-07-29; canonical repository location not recorded at the time of this entry. |
 | 7 | Engineering Director — GOV-003-A1 | Authorized the governance amendment and direct handoff to Release & Integration for bounded reconstruction. | Amendment assignment received 2026-07-29; implemented by the amended work-order record. |
 | 8 | Formal Amendment — WO-GOV-003 | Formalized the authoritative base, exact typed-simulation path scope, non-exception `conformance_failed` semantics, reconstruction limitations, and candidate evidence package. | Recorded in the authoritative amended work order on 2026-07-29. |
+| 9 | Architecture Authorization Review — WO-GOV-003 | Confirmed the amendment with a required clarification separating pre-freeze technical validation from post-freeze independent review. | `WO-003 AMENDMENT CONFIRMED WITH REQUIRED CLARIFICATIONS`, received 2026-07-29 |
 
 #### Initial Governance State
 
@@ -91,7 +92,9 @@ The reconstructed candidate must begin at exact base `4d1842087289336675d43d7cd6
 
 The candidate must implement the locked canonical-result semantics, including valid typed `conformance_failed` results without exception-based control flow, preserved evidence and four-way request correlation, structured HTTP 500 for failed conformance, HTTP 200 for passed conformance, HTTP 422 for invalid or non-ready requests, additive schema-version-1 compatibility, and complete exclusion of superseded `RuntimeConformanceError`.
 
-Required pre-freeze evidence includes focused and complete tests, Ruff lint and formatting, dependency-integrity and pre-commit validation, whitespace and exact authorized-path checks, commit-range and ancestry evidence, proof that infrastructure ancestry and `RuntimeConformanceError` are absent, clean state, exact candidate SHA, complete candidate-tied validation, and candidate-specific QA and Architecture evidence.
+Pre-freeze technical evidence must include focused and complete tests, Ruff lint and formatting, dependency-integrity and pre-commit validation, whitespace and exact authorized-path checks, commit-range and ancestry evidence, proof that infrastructure ancestry and `RuntimeConformanceError` are absent, clean state, an exact proposed implementation HEAD SHA, and complete validation tied to that proposed SHA.
+
+Under separate release authority, the exact validated SHA is then designated as immutable candidate 1 without content changes. QA evaluates candidate 1 first; the Architecture Auditor evaluates the same immutable SHA afterward. Their candidate-specific evidence and verdicts are post-freeze gates. Any correction requires a new SHA and candidate number; candidate 1 is never moved.
 
 This amendment does not authorize pushing, merging, tagging, rebasing shared branches, deleting branches or preserved references, modifying `main`, applying preserved work, or implementing infrastructure controls. Creation of an immutable review target remains subject to separately approved release controls.
 
