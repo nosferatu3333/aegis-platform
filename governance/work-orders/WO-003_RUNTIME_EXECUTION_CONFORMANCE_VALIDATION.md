@@ -1,15 +1,17 @@
 # Work Order WO-003: Runtime Execution-Conformance Validation
 
-**Status:** CANDIDATE 2 ACCEPTED — PYTHON 3.11 EVIDENCE PENDING
+**Status:** CLOSED — CANDIDATE 2 ACCEPTED
 **Authority:** Engineering Director Decision implementing the Architecture Auditor's final reconciliation
-**Active review owners:** QA & Verification; Architecture Auditor
+**Final review owners:** Integration Verification; QA & Verification; Architecture Auditor
 **Date authorized:** 2026-07-29
 **Date amended:** 2026-07-29
+**Date closed:** 2026-07-30
 **Formal amendment:** `WO-GOV-003`
 **Candidate ratification:** `WO-GOV-003B`
 **Candidate 1 disposition:** `WO-GOV-003C`
 **Candidate 2 final review:** RECORDED
-**Architecture verdict:** AMEND WO-003 AND RECONSTRUCT
+**Reconstruction architecture verdict:** AMEND WO-003 AND RECONSTRUCT
+**Final Architecture verdict:** APPROVE
 **Amendment review:** CONFIRMED; REQUIRED SEQUENCING CLARIFICATION RECORDED
 **Authoritative base:** `4d1842087289336675d43d7cd650bd80f57b8c8d`
 **Candidate tag:** `qa/wo-003-candidate-1`
@@ -22,11 +24,12 @@
 **Candidate 2 tree:** `ee0e3c0b0b95547b1006babc50d9cac419a96686`
 **Candidate 2 parent:** `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`
 **Implementation:** CANDIDATE 2 INDEPENDENTLY ACCEPTED
-**Candidate readiness:** CLOSURE EVIDENCE PENDING
+**Integration verification:** INT-004 PASS
 **QA & Verification:** PASS
 **Architecture approval:** APPROVE
-**Documentation & Governance:** PYTHON 3.11 EVIDENCE GATE OPEN
-**Next owner:** QA & Verification — Python 3.11 evidence
+**Python 3.11 evidence:** PASS — CPython 3.11.9
+**Documentation & Governance:** CLOSED
+**Next eligible owner:** Release & Integration — separate explicit integration assignment required
 **Governed by:** `governance/ENGINEERING_CHARTER.md`
 
 ---
@@ -407,7 +410,30 @@ Both verdicts apply to exact Candidate 2 SHA `eee135547a768c3cad95c1e2e5342e9203
 - Git whitespace validation: passed.
 - Identity and cleanliness: verified before and after validation.
 
-The recorded validation used Python 3.14.6. Exact Python 3.11 evidence remains required by WO-GOV-003C before final governance closure. This evidence may be collected against the same immutable Candidate 2 SHA and does not require Candidate 3 or any candidate-content change.
+The initial accepted validation used Python 3.14.6. WO-GOV-003C therefore retained exact Python 3.11 evidence as the sole remaining governance closure gate.
+
+### Minimum-Version Closure Evidence
+
+Evidence-only validation subsequently ran against unchanged Candidate 2 SHA `eee135547a768c3cad95c1e2e5342e9203620463` using CPython 3.11.9:
+
+- INT-004 integration verification: `PASS`.
+- QA verdict: `PASS`.
+- Architecture verdict: `APPROVE`.
+- Python 3.11 evidence verdict: `PASS`.
+- Focused runtime/API tests: `52 passed`.
+- Complete WO-003 tests: `97 passed`.
+- Complete repository tests: `172 passed`.
+- Dependency integrity: passed.
+- Ruff lint: passed.
+- Ruff formatting: passed; `118 files already formatted`.
+- Candidate 1 unchanged: yes.
+- Candidate 2 unchanged: yes.
+- Repository clean: yes.
+- Push performed: no.
+- `main` modified: no.
+- Blocking findings: none.
+
+This evidence satisfies the exact minimum-version condition recorded in governance commit `47d7680736d699648f983c3068a0721dadf882c9`. All WO-003 acceptance and closure gates are satisfied against the same immutable Candidate 2.
 
 ### Non-Blocking Deferred Debt
 
@@ -574,13 +600,13 @@ The two amendment commits have distinct, cumulative roles:
 ## Current Gate
 
 ```text
-CANDIDATE 2 ACCEPTED — PYTHON 3.11 EVIDENCE PENDING
+WO-003 CLOSED — CANDIDATE 2 ACCEPTED
 ```
 
-WO-003 is not closed, integrated, merged, or released. Candidate 1 QA acceptance and Architecture rejection remain final historical verdicts for Candidate 1. QA & Verification and the Architecture Auditor have independently accepted the same immutable Candidate 2 SHA. Exact Python 3.11 validation evidence is the sole remaining closure gate.
+Candidate 1 QA acceptance and Architecture rejection remain final historical verdicts for Candidate 1. INT-004 integration verification, QA, Architecture, and exact CPython 3.11.9 validation have accepted the unchanged immutable Candidate 2. No blocking findings remain, and WO-003 is formally closed.
 
-## Stop Condition
+## Closure and Integration Boundary
 
-Hand off to QA & Verification to obtain and record exact Python 3.11 validation evidence against immutable Candidate 2 SHA `eee135547a768c3cad95c1e2e5342e9203620463`.
+Closure does not authorize push, merge, publication, release, modification of `main`, tag mutation, branch mutation, stash operations, or activation of WO-004.
 
-Do not move, amend, recreate, delete, or retarget Candidate 1, Candidate 2, or either candidate tag. Do not create Candidate 3 solely to collect environment evidence. Do not expand WO-003 with the recorded non-blocking debt. Documentation & Governance may close WO-003 only after the required Python 3.11 evidence is recorded against the unchanged Candidate 2 SHA.
+Candidate 1, Candidate 2, and both candidate tags remain immutable governance references. The recorded non-blocking debt remains deferred and outside WO-003. The next eligible owner is Release & Integration, which may act only under a separate explicit integration assignment.

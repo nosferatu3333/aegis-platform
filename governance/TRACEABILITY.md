@@ -52,9 +52,10 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 
 ### TR-002: Runtime Execution-Conformance Validation
 
-**Status:** Authorized — Amended; Reconstruction Required
+**Status:** Closed — Candidate 2 Accepted
 **Recorded:** 2026-07-29
 **Amended:** 2026-07-29
+**Closed:** 2026-07-30
 **Subject:** Deterministic validation and exposure of synchronous simulated execution conformance
 
 | Sequence | Record | Relationship | Repository reference |
@@ -74,13 +75,15 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | 13 | Candidate 1 Final Verdict — WO-GOV-003C | Preserved Candidate 1 QA acceptance, recorded the Architecture rejection and blocking defect, and authorized a bounded Candidate 2 correction. | `CANDIDATE 1 QA ACCEPTED`; `CANDIDATE 1 ARCHITECTURE REJECTED`; recorded 2026-07-30 |
 | 14 | Candidate 2 Designation | Fixed the bounded correction as the second immutable WO-003 review target without altering Candidate 1. | Tag `qa/wo-003-candidate-2`; tag object `3b674e57b18568fe1e2a4509f8448ffeaff647ee`; candidate `eee135547a768c3cad95c1e2e5342e9203620463`; parent `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
 | 15 | Candidate 2 Final Review | Recorded QA `PASS` and Architecture `APPROVE` against the same immutable Candidate 2 SHA, with no blocking findings and no candidate change during review. | `CANDIDATE 2 ARCHITECTURE ACCEPTED`; final Architecture audit received 2026-07-30 |
+| 16 | Python 3.11 Minimum-Version Evidence | Satisfied the sole remaining closure gate through evidence-only validation against unchanged Candidate 2 using CPython 3.11.9. | `52 passed`; `97 passed`; `172 passed`; dependency integrity, Ruff lint, and Ruff formatting passed; received 2026-07-30 |
+| 17 | Final Governance Closure | Reconciled INT-004 integration verification, QA, Architecture, and Python 3.11 evidence; preserved deferred debt; formally closed WO-003 without granting integration authority. | `WO-003 CLOSED — CANDIDATE 2 ACCEPTED`; recorded 2026-07-30 |
 
 #### Current Governance State
 
 | Control | Status |
 |---|---|
 | Work order | `WO-003` |
-| Work-order status | **CANDIDATE 2 ACCEPTED — PYTHON 3.11 EVIDENCE PENDING** |
+| Work-order status | **CLOSED — CANDIDATE 2 ACCEPTED** |
 | Authoritative base | `4d1842087289336675d43d7cd650bd80f57b8c8d` |
 | Candidate 1 tag | `qa/wo-003-candidate-1` |
 | Candidate 1 tag object | `cfbefaa046b043d2fa0b099a967f2936915499f8` |
@@ -97,9 +100,12 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | Candidate 2 QA | **PASS** |
 | Candidate 2 Architecture | **APPROVE** |
 | Candidate 2 disposition | **IMMUTABLE AND INDEPENDENTLY ACCEPTED** |
-| Documentation & Governance | **CLOSURE EVIDENCE PENDING** |
-| Current gate | **EXACT PYTHON 3.11 VALIDATION EVIDENCE** |
-| Next owner | **QA & Verification** |
+| INT-004 integration verification | **PASS** |
+| Python 3.11 evidence | **PASS — CPython 3.11.9** |
+| Blocking findings | **NONE** |
+| Documentation & Governance | **CLOSED** |
+| Current gate | **ALL WO-003 CLOSURE GATES SATISFIED** |
+| Next eligible owner | **Release & Integration — separate explicit integration assignment required** |
 
 #### Authorization Boundary
 
@@ -141,7 +147,23 @@ The complete base-to-Candidate-2 delta remains the exact 16-path WO-003 allowlis
 
 QA recorded `PASS`, and Architecture recorded `APPROVE — CANDIDATE 2 ARCHITECTURE ACCEPTED`, against the same exact Candidate 2 SHA. Recorded evidence includes 52 focused runtime/API tests, 97 complete WO-003 tests, 172 repository tests, Ruff lint and formatting, dependency integrity, pre-commit configuration, whitespace validation, and identity and cleanliness checks. Candidate 2 and Candidate 1 remained unchanged throughout review.
 
-That validation ran on Python 3.14.6. Because WO-GOV-003C explicitly requires exact Python 3.11 evidence before final governance closure, WO-003 remains open at that single evidence gate. The evidence must be collected against unchanged Candidate 2 SHA `eee135547a768c3cad95c1e2e5342e9203620463`; no Candidate 3 or candidate-content change is required solely for this validation.
+The initial validation ran on Python 3.14.6, leaving the exact Python 3.11 evidence requirement from WO-GOV-003C as the sole remaining closure gate.
+
+#### Python 3.11 Evidence and Final Closure
+
+Evidence-only validation subsequently ran against unchanged Candidate 2 SHA `eee135547a768c3cad95c1e2e5342e9203620463` on CPython 3.11.9. It reported 52 focused runtime/API tests, 97 complete WO-003 tests, and 172 repository tests passed. Dependency integrity, Ruff lint, and Ruff formatting passed; formatting reported 118 files already formatted. Candidate 1 and Candidate 2 were unchanged, the repository was clean, no push occurred, and `main` was not modified.
+
+The reconciled final evidence is:
+
+| Gate | Verdict |
+|---|---|
+| INT-004 integration verification | **PASS** |
+| QA & Verification | **PASS** |
+| Architecture Auditor | **APPROVE** |
+| Python 3.11 minimum-version evidence | **PASS** |
+| Blocking findings | **NONE** |
+
+The CPython 3.11.9 evidence satisfies the minimum-version condition recorded in governance commit `47d7680736d699648f983c3068a0721dadf882c9`. All WO-003 closure requirements are satisfied against the same immutable Candidate 2, and WO-003 is formally closed.
 
 Duplicate canonical-status derivation, dashboard rendering of structured non-2xx conformance evidence, and possible future internal-fault taxonomy expansion are non-blocking deferred debt. They do not expand WO-003 and require separate authorization if pursued.
 
@@ -151,9 +173,9 @@ Duplicate canonical-status derivation, dashboard rendering of structured non-2xx
 - `43899da52c3d78399f6efb4a3b0c9418c58aa8d5` is a direct child of `39b059e`, adds the formal `WO-GOV-003` authority and tighter controls, and is the authoritative formal amendment record.
 - `43899da` supersedes `39b059e` only where their wording differs. Both remain part of the traceability chain.
 
-This amendment does not authorize pushing, merging, tagging, rebasing shared branches, deleting branches or preserved references, modifying `main`, applying preserved work, or implementing infrastructure controls. Creation of an immutable review target remains subject to separately approved release controls.
+This closure does not authorize pushing, merging, publication, release, tagging, rebasing shared branches, deleting or changing branches or preserved references, modifying `main`, applying preserved work, stash operations, implementing infrastructure controls, or activating WO-004.
 
-WO-003 must close before kernel/main convergence begins. Kernel/main convergence remains the next Phase I slice and is not opened or authorized by this entry.
+WO-003 is closed. Release & Integration is the next eligible owner but may act only under a separate explicit integration assignment. Kernel/main convergence and WO-004 remain unopened and unauthorized by this entry.
 
 ### TR-003: Repository Validation Baseline and Remote CI Verification
 
