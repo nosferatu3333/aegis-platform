@@ -68,21 +68,25 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | 7 | Engineering Director — GOV-003-A1 | Authorized the governance amendment and direct handoff to Release & Integration for bounded reconstruction. | Amendment assignment received 2026-07-29; implemented by the amended work-order record. |
 | 8 | Formal Amendment — WO-GOV-003 | Formalized the authoritative base, exact typed-simulation path scope, non-exception `conformance_failed` semantics, reconstruction limitations, and candidate evidence package. | Recorded in the authoritative amended work order on 2026-07-29. |
 | 9 | Architecture Authorization Review — WO-GOV-003 | Confirmed the amendment with a required clarification separating pre-freeze technical validation from post-freeze independent review. | `WO-003 AMENDMENT CONFIRMED WITH REQUIRED CLARIFICATIONS`, received 2026-07-29 |
+| 10 | Candidate 1 Designation | Fixed the validated reconstruction as the immutable review target under separate release authority. | Tag `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`; base `4d1842087289336675d43d7cd650bd80f57b8c8d` |
+| 11 | Documentation & Governance — GOV-003-A2 | Corrected candidate-gate sequencing and reconciled the amendment commit references without moving Candidate 1. | Governance correction recorded 2026-07-29 |
 
 #### Initial Governance State
 
 | Control | Status |
 |---|---|
 | Work order | `WO-003` |
-| Work-order status | **AUTHORIZED — AMENDED; RECONSTRUCTION REQUIRED** |
+| Work-order status | **CANDIDATE 1 FROZEN — INDEPENDENT REVIEW PENDING** |
 | Authoritative base | `4d1842087289336675d43d7cd650bd80f57b8c8d` |
-| Implementation | **NOT ACCEPTED; BOUNDED RECONSTRUCTION REQUIRED** |
-| Candidate readiness | **NOT READY** |
+| Candidate tag | `qa/wo-003-candidate-1` |
+| Candidate SHA | `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
+| Implementation | **RECONSTRUCTED; NOT YET INDEPENDENTLY ACCEPTED** |
+| Candidate readiness | **FROZEN FOR INDEPENDENT REVIEW** |
 | QA & Verification | **PENDING** |
 | Architecture review | **PENDING** |
-| Documentation & Governance | **AMENDMENT RECORDED** |
-| Current gate | **RELEASE & INTEGRATION RECONSTRUCTION** |
-| Next owner | **Release & Integration Engineer** |
+| Documentation & Governance | **WAITING FOR BOTH VERDICTS** |
+| Current gate | **POST-FREEZE INDEPENDENT REVIEW** |
+| Next owners | **QA & Verification; Architecture Auditor** |
 
 #### Authorization Boundary
 
@@ -95,6 +99,14 @@ The candidate must implement the locked canonical-result semantics, including va
 Pre-freeze technical evidence must include focused and complete tests, Ruff lint and formatting, dependency-integrity and pre-commit validation, whitespace and exact authorized-path checks, commit-range and ancestry evidence, proof that infrastructure ancestry and `RuntimeConformanceError` are absent, clean state, an exact proposed implementation HEAD SHA, and complete validation tied to that proposed SHA.
 
 Under separate release authority, the exact validated SHA is then designated as immutable candidate 1 without content changes. QA evaluates candidate 1 first; the Architecture Auditor evaluates the same immutable SHA afterward. Their candidate-specific evidence and verdicts are post-freeze gates. Any correction requires a new SHA and candidate number; candidate 1 is never moved.
+
+Candidate 1 is currently designated as `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`. That reference and target must remain unchanged throughout independent review.
+
+#### Amendment Commit Reconciliation
+
+- `39b059ebdc2de8b87372108ca15887d6f6a06b91` is the initial reconstruction-scope amendment and remains the historical foundation.
+- `43899da52c3d78399f6efb4a3b0c9418c58aa8d5` is a direct child of `39b059e`, adds the formal `WO-GOV-003` authority and tighter controls, and is the authoritative formal amendment record.
+- `43899da` supersedes `39b059e` only where their wording differs. Both remain part of the traceability chain.
 
 This amendment does not authorize pushing, merging, tagging, rebasing shared branches, deleting branches or preserved references, modifying `main`, applying preserved work, or implementing infrastructure controls. Creation of an immutable review target remains subject to separately approved release controls.
 

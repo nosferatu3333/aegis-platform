@@ -1,20 +1,22 @@
 # Work Order WO-003: Runtime Execution-Conformance Validation
 
-**Status:** AUTHORIZED — AMENDED; RECONSTRUCTION REQUIRED
+**Status:** CANDIDATE 1 FROZEN — INDEPENDENT REVIEW PENDING
 **Authority:** Engineering Director Decision implementing the Architecture Auditor's final reconciliation
-**Accountable role:** Release & Integration Engineer
+**Active review owners:** QA & Verification; Architecture Auditor
 **Date authorized:** 2026-07-29
 **Date amended:** 2026-07-29
 **Formal amendment:** `WO-GOV-003`
 **Architecture verdict:** AMEND WO-003 AND RECONSTRUCT
 **Amendment review:** CONFIRMED; REQUIRED SEQUENCING CLARIFICATION RECORDED
 **Authoritative base:** `4d1842087289336675d43d7cd650bd80f57b8c8d`
-**Implementation:** NOT ACCEPTED; BOUNDED RECONSTRUCTION REQUIRED
-**Candidate readiness:** NOT READY
+**Candidate tag:** `qa/wo-003-candidate-1`
+**Candidate SHA:** `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`
+**Implementation:** RECONSTRUCTED; NOT YET INDEPENDENTLY ACCEPTED
+**Candidate readiness:** FROZEN FOR INDEPENDENT REVIEW
 **QA & Verification:** PENDING
 **Architecture approval:** PENDING
-**Documentation & Governance:** AMENDMENT RECORDED
-**Next owner:** Release & Integration Engineer
+**Documentation & Governance:** WAITING FOR BOTH VERDICTS
+**Next owners:** QA & Verification; Architecture Auditor
 **Governed by:** `governance/ENGINEERING_CHARTER.md`
 
 ---
@@ -234,7 +236,30 @@ The Release & Integration Engineer is authorized and required to:
 7. Validate the reconstructed implementation.
 8. Freeze candidate 1 at an immutable SHA only after validation succeeds.
 
-This record authorizes bounded reconstruction. It does not approve implementation, candidate readiness, release, integration, or closure.
+This reconstruction authority did not itself approve implementation, candidate readiness, release, integration, or closure. Candidate 1 was subsequently designated under separate release authority.
+
+## Current Immutable Candidate
+
+The separately authorized reconstruction and designation sequence produced:
+
+```text
+Tag: qa/wo-003-candidate-1
+Candidate SHA: 7651fe4ac2fe242459d9864fb9256920fe3b2d9f
+Base SHA: 4d1842087289336675d43d7cd650bd80f57b8c8d
+```
+
+Candidate 1 is frozen. Its tag and target must not be moved, amended, recreated, deleted, or retargeted under this work order.
+
+The completed sequence was:
+
+```text
+bounded reconstruction
+→ technical validation of exact implementation HEAD
+→ immutable candidate designation
+→ independent QA and Architecture review pending
+```
+
+Reconstruction and candidate designation must not be repeated.
 
 ## Acceptance Criteria
 
@@ -302,16 +327,30 @@ Focused validation must cover:
 
 ## Candidate Designation and Post-Freeze Review Gates
 
-After pre-freeze technical validation passes:
+The governing sequence is:
 
-1. Separate release authority must designate the exact validated implementation SHA as immutable candidate 1 without changing its contents.
-2. QA & Verification evaluates candidate 1 and records candidate-specific evidence and a verdict against the designated SHA.
-3. The Architecture Auditor evaluates the same candidate SHA after QA and records candidate-specific evidence and a verdict.
-4. Any correction creates a new implementation SHA and a new candidate number.
-5. Candidate 1 is never moved, amended, or reused for corrected contents.
-6. Documentation & Governance may close WO-003 only after both independent verdicts apply to the same immutable candidate SHA.
+1. Release & Integration reconstructs from the approved base.
+2. Pre-freeze technical validation runs against an exact proposed implementation HEAD.
+3. Under separate release authority, Release & Integration designates that unchanged SHA as an immutable candidate.
+4. QA & Verification evaluates the immutable candidate and records candidate-specific evidence and a verdict.
+5. The Architecture Auditor evaluates the same candidate SHA and records candidate-specific evidence and a verdict.
+6. Any required correction creates a new implementation SHA and a new candidate number.
+7. A designated candidate is never moved, amended, or retargeted.
+8. Documentation & Governance may close WO-003 only after both independent verdicts reference the same immutable candidate SHA.
 
-Candidate designation, publication, or tagging remains subject to separately approved release controls.
+For the current review, the immutable reference is `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`.
+
+### Post-Freeze Independent-Review Evidence
+
+Closure requires:
+
+- Immutable candidate tag or equivalent reference.
+- Exact candidate SHA.
+- QA & Verification verdict tied to that candidate SHA.
+- Architecture Auditor verdict tied to the same candidate SHA.
+- Confirmation that the candidate reference did not move during either review.
+
+Candidate-specific QA and Architecture evidence is post-freeze evidence. It is not a pre-freeze technical-validation requirement.
 
 ## Governance Limitations
 
@@ -363,18 +402,29 @@ This amended work order is linked through `governance/TRACEABILITY.md` to:
 - The original WO-003 authorization.
 - The Architecture Auditor's final scope reconciliation.
 - The Engineering Director's reconstruction amendment assignment.
-- The bounded reconstruction and immutable candidate evidence when produced.
+- The frozen Candidate 1 identity and independent-review evidence when produced.
+
+## Governance Commit Reconciliation
+
+The two amendment commits have distinct, cumulative roles:
+
+| Commit | Relationship and content | Governance disposition |
+|---|---|---|
+| `39b059ebdc2de8b87372108ca15887d6f6a06b91` | Initial reconstruction-scope amendment. Recorded the authoritative base, expanded exact path scope, semantic locks, exclusions, reconstruction instructions, and evidence gates. | Retained as the historical foundation of the amended authorization. |
+| `43899da52c3d78399f6efb4a3b0c9418c58aa8d5` | Direct child of `39b059e`; formally identified `WO-GOV-003` and tightened non-exception `conformance_failed` semantics, stash and unrelated-work exclusions, candidate evidence, and release limitations. | Authoritative formal WO-GOV-003 amendment record. |
+
+`43899da` follows and supersedes `39b059e` where their wording differs; it does not erase the historical amendment. Both commits remain referenced for complete traceability.
 
 ## Current Gate
 
 ```text
-AUTHORIZED — AMENDED; RECONSTRUCTION REQUIRED
+CANDIDATE 1 FROZEN — INDEPENDENT REVIEW PENDING
 ```
 
-WO-003 is not implemented, candidate-ready, QA passed, Architecture approved, closed, or integrated.
+WO-003 is not closed, integrated, merged, or released. QA remains pending unless a completed candidate-specific QA report is recorded. Architecture approval remains pending unless a final audit against the same candidate SHA is recorded.
 
 ## Stop Condition
 
-Stop after the amended authorization is recorded and handed to the Release & Integration Engineer.
+Wait for QA & Verification and the Architecture Auditor to return verdicts against `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`.
 
-During reconstruction, stop and escalate before changing an unauthorized path, introducing an explicit non-goal, carrying excluded history into the candidate, or freezing a candidate without all pre-freeze evidence.
+Do not move, amend, recreate, delete, or retarget Candidate 1. Do not close WO-003 until both independent verdicts reference that same immutable SHA.
