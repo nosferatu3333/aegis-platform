@@ -207,3 +207,37 @@ WO-003 is closed. Release & Integration is the next eligible owner but may act o
 | QA verdict | **REMOTE CI EVIDENCE ACCEPTED** |
 
 The dedicated CI branch must remain preserved. Deletion requires separate authorization. This closure does not change `main`, authorize integration, or expand infrastructure scope.
+
+### TR-004: WO-002/WO-003 Bounded Integration Authorization
+
+**Status:** Authorized — Local Isolated Composition and Validation Only
+**Recorded:** 2026-07-30
+**Subject:** Dependency-aware two-stage integration of the closed WO-002 foundation and immutable WO-003 Candidate 2
+
+| Sequence | Record | Relationship | Repository reference |
+|---|---|---|---|
+| 1 | Systems Integration Architecture Assessment | Approved a dependency-aware two-stage integration subject to explicit authorization and stage-gated validation. | `APPROVE DEPENDENCY-AWARE TWO-STAGE INTEGRATION, SUBJECT TO EXPLICIT INTEGRATION AUTHORIZATION AND STAGE-GATED VALIDATION`; received 2026-07-30 |
+| 2 | WO-002 authoritative source | Supplies the exact nine-path foundation blobs. | Commit `4d1842087289336675d43d7cd650bd80f57b8c8d` |
+| 3 | WO-003 Candidate 2 | Supplies the exact sixteen-path overlay blobs. | Tag `qa/wo-003-candidate-2`; tag object `3b674e57b18568fe1e2a4509f8448ffeaff647ee`; commit `eee135547a768c3cad95c1e2e5342e9203620463`; tree `ee0e3c0b0b95547b1006babc50d9cac419a96686` |
+| 4 | WO-003 governance closure | Establishes that WO-003 is closed without itself authorizing integration. | Commit `655045c33ecea736fde25e0ba46f865d175cba7d` |
+| 5 | Bounded Integration Authorization | Authorizes only isolated local composition, exactly two commits, and CPython 3.11 stage validation across the exact 21-path boundary. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_AUTHORIZATION.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_AUTHORIZATION.md) |
+
+#### Authorized Integration Boundary
+
+| Control | Authorized value |
+|---|---|
+| Integration base | `c137005b08c449a8e19f7734098865dd10181955` |
+| Stage 1 | 9 exact WO-002 paths from `4d1842087289336675d43d7cd650bd80f57b8c8d` |
+| Stage 2 | 16 exact WO-003 paths from `eee135547a768c3cad95c1e2e5342e9203620463` |
+| Final unique delta | Exactly 21 paths |
+| Recovery reference | `refs/tags/recovery/pre-wo-002-wo-003-integration-c137005b` |
+| Integration branch | `integration/wo-002-wo-003-c137005b` |
+| Integration worktree | `C:\Users\Woolis Shop\Projects\aegis-platform-int-wo-002-wo-003-c137005b` |
+| Local commits | Exactly two: Integration A and Integration B |
+| Validation | CPython 3.11 at both stages |
+| Governance projection | No source governance blobs or governance lineage |
+| Active owner | Release & Integration Engineer |
+
+The authorization preserves the current worktree, existing worktrees, Candidate 1, Candidate 2, their tags, and the unrelated uncommitted documentation paths. It does not authorize modification of `main`, push, publication, release, source-lineage merge, governance-lineage merge, cleanup, or WO-004 activation.
+
+After successful composition, Release & Integration must return the exact local integration SHA and complete stage evidence. Independent QA and Architecture review of that same SHA, a separate governance disposition authority, and a separate promotion authorization are required before `main` modification or push.
