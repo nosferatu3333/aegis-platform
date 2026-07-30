@@ -71,25 +71,26 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | 10 | Candidate 1 Designation | Fixed the validated reconstruction as the immutable review target under separate release authority. | Tag `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`; base `4d1842087289336675d43d7cd650bd80f57b8c8d` |
 | 11 | Documentation & Governance — GOV-003-A2 | Corrected candidate-gate sequencing and reconciled the amendment commit references without moving Candidate 1. | Governance correction recorded 2026-07-29 |
 | 12 | Candidate 1 Ratification — WO-GOV-003B | Ratified the existing annotated tag and peeled commit as immutable governance references without replacing or modifying either object. | Tag `qa/wo-003-candidate-1`; tag object `cfbefaa046b043d2fa0b099a967f2936915499f8`; candidate `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
+| 13 | Candidate 1 Final Verdict — WO-GOV-003C | Preserved Candidate 1 QA acceptance, recorded the Architecture rejection and blocking defect, and authorized a bounded Candidate 2 correction. | `CANDIDATE 1 QA ACCEPTED`; `CANDIDATE 1 ARCHITECTURE REJECTED`; recorded 2026-07-30 |
 
 #### Initial Governance State
 
 | Control | Status |
 |---|---|
 | Work order | `WO-003` |
-| Work-order status | **CANDIDATE 1 RATIFIED — QA REVIEW PENDING** |
+| Work-order status | **CANDIDATE 1 REJECTED — CANDIDATE 2 CORRECTION AUTHORIZED** |
 | Authoritative base | `4d1842087289336675d43d7cd650bd80f57b8c8d` |
 | Candidate tag | `qa/wo-003-candidate-1` |
 | Tag object | `cfbefaa046b043d2fa0b099a967f2936915499f8` |
 | Candidate SHA | `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
-| Implementation | **RECONSTRUCTED; NOT YET INDEPENDENTLY ACCEPTED** |
-| Candidate readiness | **RATIFIED FOR INDEPENDENT REVIEW** |
-| QA & Verification | **PENDING** |
-| Architecture review | **PENDING** |
-| Documentation & Governance | **WAITING FOR BOTH VERDICTS** |
-| Current gate | **QA & VERIFICATION REVIEW** |
-| Next owner | **QA & Verification** |
-| Subsequent owner | **Architecture Auditor** |
+| Candidate tree | `fdbda901de7048f968d8d89efaa7f71a7aed8bcb` |
+| Candidate 1 QA | **ACCEPTED** |
+| Candidate 1 Architecture | **REJECTED** |
+| Candidate 1 disposition | **IMMUTABLE AND REJECTED** |
+| Candidate 2 | **CORRECTION AUTHORIZED; NOT YET DESIGNATED** |
+| Documentation & Governance | **CANDIDATE 2 AUTHORITY RECORDED** |
+| Current gate | **RELEASE & INTEGRATION CANDIDATE 2 CORRECTION** |
+| Next owner | **Release & Integration Engineer** |
 
 #### Authorization Boundary
 
@@ -105,7 +106,15 @@ Under separate release authority, the exact validated SHA is then designated as 
 
 Candidate 1 is currently designated as `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`. That reference and target must remain unchanged throughout independent review.
 
-WO-GOV-003B ratifies the existing annotated tag object `cfbefaa046b043d2fa0b099a967f2936915499f8` and its peeled candidate commit. The tag annotation remains unchanged as historical evidence. QA must evaluate the peeled candidate SHA first; Architecture must subsequently evaluate that same SHA. Any correction requires a new commit and Candidate 2. Push, merge, publication, `main` modification, tag deletion or replacement, and stash operations remain unauthorized.
+WO-GOV-003B ratified the existing annotated tag object `cfbefaa046b043d2fa0b099a967f2936915499f8` and its peeled candidate commit. The tag annotation remains unchanged as historical evidence. QA evaluated the peeled candidate SHA first; Architecture subsequently evaluated that same SHA. The resulting correction requires a new commit and Candidate 2. Push, merge, publication, `main` modification, tag deletion or replacement, and stash operations remain unauthorized.
+
+#### Candidate 1 Rejection and Candidate 2 Authority
+
+Candidate 1 QA acceptance remains historically valid. The Architecture Auditor rejected Candidate 1 because server-produced runtime invariant failures are raised as `ValueError` and then mapped to HTTP 422, incorrectly representing internal runtime or validator contradictions as client failures.
+
+Candidate 1 remains immutable at tag object `cfbefaa046b043d2fa0b099a967f2936915499f8`, peeled commit `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`, and tree `fdbda901de7048f968d8d89efaa7f71a7aed8bcb`.
+
+Release & Integration may construct Candidate 2 from immutable Candidate 1 using only the maximum correction allowlist in the authoritative work order. Candidate 2 requires a new SHA and candidate number, pre-freeze validation against the exact proposed HEAD, separate designation authority, and QA and Architecture review against the same immutable Candidate 2 SHA. Python 3.11 evidence is required before final WO-003 closure.
 
 #### Amendment Commit Reconciliation
 
