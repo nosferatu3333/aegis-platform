@@ -70,23 +70,26 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | 9 | Architecture Authorization Review — WO-GOV-003 | Confirmed the amendment with a required clarification separating pre-freeze technical validation from post-freeze independent review. | `WO-003 AMENDMENT CONFIRMED WITH REQUIRED CLARIFICATIONS`, received 2026-07-29 |
 | 10 | Candidate 1 Designation | Fixed the validated reconstruction as the immutable review target under separate release authority. | Tag `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`; base `4d1842087289336675d43d7cd650bd80f57b8c8d` |
 | 11 | Documentation & Governance — GOV-003-A2 | Corrected candidate-gate sequencing and reconciled the amendment commit references without moving Candidate 1. | Governance correction recorded 2026-07-29 |
+| 12 | Candidate 1 Ratification — WO-GOV-003B | Ratified the existing annotated tag and peeled commit as immutable governance references without replacing or modifying either object. | Tag `qa/wo-003-candidate-1`; tag object `cfbefaa046b043d2fa0b099a967f2936915499f8`; candidate `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
 
 #### Initial Governance State
 
 | Control | Status |
 |---|---|
 | Work order | `WO-003` |
-| Work-order status | **CANDIDATE 1 FROZEN — INDEPENDENT REVIEW PENDING** |
+| Work-order status | **CANDIDATE 1 RATIFIED — QA REVIEW PENDING** |
 | Authoritative base | `4d1842087289336675d43d7cd650bd80f57b8c8d` |
 | Candidate tag | `qa/wo-003-candidate-1` |
+| Tag object | `cfbefaa046b043d2fa0b099a967f2936915499f8` |
 | Candidate SHA | `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
 | Implementation | **RECONSTRUCTED; NOT YET INDEPENDENTLY ACCEPTED** |
-| Candidate readiness | **FROZEN FOR INDEPENDENT REVIEW** |
+| Candidate readiness | **RATIFIED FOR INDEPENDENT REVIEW** |
 | QA & Verification | **PENDING** |
 | Architecture review | **PENDING** |
 | Documentation & Governance | **WAITING FOR BOTH VERDICTS** |
-| Current gate | **POST-FREEZE INDEPENDENT REVIEW** |
-| Next owners | **QA & Verification; Architecture Auditor** |
+| Current gate | **QA & VERIFICATION REVIEW** |
+| Next owner | **QA & Verification** |
+| Subsequent owner | **Architecture Auditor** |
 
 #### Authorization Boundary
 
@@ -101,6 +104,8 @@ Pre-freeze technical evidence must include focused and complete tests, Ruff lint
 Under separate release authority, the exact validated SHA is then designated as immutable candidate 1 without content changes. QA evaluates candidate 1 first; the Architecture Auditor evaluates the same immutable SHA afterward. Their candidate-specific evidence and verdicts are post-freeze gates. Any correction requires a new SHA and candidate number; candidate 1 is never moved.
 
 Candidate 1 is currently designated as `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`. That reference and target must remain unchanged throughout independent review.
+
+WO-GOV-003B ratifies the existing annotated tag object `cfbefaa046b043d2fa0b099a967f2936915499f8` and its peeled candidate commit. The tag annotation remains unchanged as historical evidence. QA must evaluate the peeled candidate SHA first; Architecture must subsequently evaluate that same SHA. Any correction requires a new commit and Candidate 2. Push, merge, publication, `main` modification, tag deletion or replacement, and stash operations remain unauthorized.
 
 #### Amendment Commit Reconciliation
 

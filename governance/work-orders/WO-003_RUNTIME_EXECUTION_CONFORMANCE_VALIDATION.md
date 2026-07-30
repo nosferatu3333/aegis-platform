@@ -1,22 +1,25 @@
 # Work Order WO-003: Runtime Execution-Conformance Validation
 
-**Status:** CANDIDATE 1 FROZEN — INDEPENDENT REVIEW PENDING
+**Status:** CANDIDATE 1 RATIFIED — QA REVIEW PENDING
 **Authority:** Engineering Director Decision implementing the Architecture Auditor's final reconciliation
 **Active review owners:** QA & Verification; Architecture Auditor
 **Date authorized:** 2026-07-29
 **Date amended:** 2026-07-29
 **Formal amendment:** `WO-GOV-003`
+**Candidate ratification:** `WO-GOV-003B`
 **Architecture verdict:** AMEND WO-003 AND RECONSTRUCT
 **Amendment review:** CONFIRMED; REQUIRED SEQUENCING CLARIFICATION RECORDED
 **Authoritative base:** `4d1842087289336675d43d7cd650bd80f57b8c8d`
 **Candidate tag:** `qa/wo-003-candidate-1`
+**Tag object:** `cfbefaa046b043d2fa0b099a967f2936915499f8`
 **Candidate SHA:** `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`
 **Implementation:** RECONSTRUCTED; NOT YET INDEPENDENTLY ACCEPTED
-**Candidate readiness:** FROZEN FOR INDEPENDENT REVIEW
+**Candidate readiness:** RATIFIED FOR INDEPENDENT REVIEW
 **QA & Verification:** PENDING
 **Architecture approval:** PENDING
 **Documentation & Governance:** WAITING FOR BOTH VERDICTS
-**Next owners:** QA & Verification; Architecture Auditor
+**Next owner:** QA & Verification
+**Subsequent owner:** Architecture Auditor
 **Governed by:** `governance/ENGINEERING_CHARTER.md`
 
 ---
@@ -244,11 +247,29 @@ The separately authorized reconstruction and designation sequence produced:
 
 ```text
 Tag: qa/wo-003-candidate-1
+Tag object: cfbefaa046b043d2fa0b099a967f2936915499f8
 Candidate SHA: 7651fe4ac2fe242459d9864fb9256920fe3b2d9f
 Base SHA: 4d1842087289336675d43d7cd650bd80f57b8c8d
 ```
 
 Candidate 1 is frozen. Its tag and target must not be moved, amended, recreated, deleted, or retargeted under this work order.
+
+## Candidate 1 Ratification Record
+
+`WO-GOV-003B` ratifies the existing annotated tag `qa/wo-003-candidate-1`; it does not replace, recreate, move, or alter the tag.
+
+The following are immutable governance references:
+
+- Annotated tag `qa/wo-003-candidate-1`.
+- Tag object `cfbefaa046b043d2fa0b099a967f2936915499f8`.
+- Peeled candidate commit `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`.
+- Authoritative base `4d1842087289336675d43d7cd650bd80f57b8c8d`.
+
+The existing tag annotation remains unchanged as historical evidence.
+
+QA & Verification must evaluate the exact peeled candidate SHA `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`. The Architecture Auditor must subsequently evaluate that same SHA. Any required correction must produce a new commit and Candidate 2. Candidate 1 must never move.
+
+Ratification does not authorize push, merge, publication, modification of `main`, tag deletion or replacement, or any stash operation.
 
 The completed sequence was:
 
@@ -418,7 +439,7 @@ The two amendment commits have distinct, cumulative roles:
 ## Current Gate
 
 ```text
-CANDIDATE 1 FROZEN — INDEPENDENT REVIEW PENDING
+CANDIDATE 1 RATIFIED — QA REVIEW PENDING
 ```
 
 WO-003 is not closed, integrated, merged, or released. QA remains pending unless a completed candidate-specific QA report is recorded. Architecture approval remains pending unless a final audit against the same candidate SHA is recorded.
