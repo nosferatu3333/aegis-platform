@@ -9,6 +9,7 @@
 **WO-003 status:** CLOSED — CANDIDATE 2 ACCEPTED
 **WO-004 status:** NOT ACTIVATED
 **Ruff baseline amendment:** [`WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md`](WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md)
+**Python-only Ruff target amendment:** [`WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md`](WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md)
 
 ---
 
@@ -216,7 +217,7 @@ Both stages require CPython 3.11. The final report must record the exact Python 
 
 Ruff must run in check-only mode using the `pyproject.toml` configuration already tracked at integration base `c137005b08c449a8e19f7734098865dd10181955`. The configuration must not be replaced or modified, and formatting must not rewrite files.
 
-Repository-wide Ruff is governed by the bounded no-regression policy in the [Ruff Baseline Amendment](WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md). The protected base and each evaluated integration stage must produce the same exact three-diagnostic inherited baseline. All authorized integration paths must pass direct Ruff lint and format-check.
+Repository-wide Ruff is governed by the bounded no-regression policy in the [Ruff Baseline Amendment](WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md). The protected base and each evaluated integration stage must produce the same exact three-diagnostic inherited baseline. All authorized Python integration paths must pass direct Ruff lint and format-check. The three non-Python boundary paths are governed by the [Python-Only Ruff Target Amendment](WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md).
 
 ## Stage 1 Validation Gates
 
@@ -252,8 +253,8 @@ After Integration B is created, Release & Integration must prove:
 7. Complete WO-003 validation passes.
 8. The full repository test suite passes.
 9. Dependency integrity passes.
-10. Direct Ruff lint against the final exact 21-path boundary passes.
-11. Ruff format-check against the final exact 21-path boundary passes.
+10. Direct Ruff lint against the final exact 18-path Python manifest passes.
+11. Ruff format-check against the final exact 18-path Python manifest passes.
 12. Repository-wide Ruff output exactly matches the inherited protected-base diagnostic set, with no violation in an authorized path.
 13. Candidate 1 and Candidate 2 tags and commits remain unchanged.
 14. The prohibited commits and source/governance lineages are absent from integration ancestry.
@@ -283,7 +284,7 @@ Stop immediately and report without broadening scope if:
 - A source blob is absent or fails to match.
 - A stage contains an unauthorized path.
 - A required validation gate fails or cannot be executed on CPython 3.11.
-- A repository-wide Ruff diagnostic differs from the exact inherited baseline or an authorized path fails scoped Ruff validation.
+- A repository-wide Ruff diagnostic differs from the exact inherited baseline or an authorized Python path fails scoped Ruff validation.
 - The authorized Ruff configuration would need modification.
 - Composition requires semantic adaptation, conflict resolution, or a third commit.
 - A candidate tag or source reference changes.
@@ -337,7 +338,7 @@ Release & Integration must return a **WO-002/WO-003 Bounded Integration Composit
 - Commit-range and ancestry evidence proving only the base and two integration commits compose the local integration history.
 - Proof that excluded commits, source lineages, governance paths, and incidental changes are absent.
 - Stage 2 CPython 3.11 environment, commands, results, and clean-state evidence.
-- Stage 2 final-boundary Ruff results and exact repository-wide no-regression comparison evidence.
+- Stage 2 18-path Python Ruff results, three-path non-Python verification evidence, and exact repository-wide no-regression comparison evidence.
 - Candidate tag immutability confirmation.
 - Confirmation that the preserved documentation changes were untouched.
 - Confirmation that `main` and remote state were unchanged and no push occurred.

@@ -9,6 +9,7 @@
 **Authorized owner:** Release & Integration Engineer
 **Decision owner:** Documentation & Governance
 **Policy scope:** This bounded integration only
+**Python-only target amendment:** [`WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md`](WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md)
 
 ---
 
@@ -139,23 +140,20 @@ Unauthorized paths: 0
 Worktree: clean
 ```
 
-## Stage 2 Scoped Ruff Commands
+## Stage 2 Python-Only Ruff Commands
 
 After the amended Stage 1 gate passes and the exact Candidate 2 overlay is committed as Integration B, run:
 
 ```powershell
-$finalBoundary = @(
+$pythonBoundary = @(
   'aegis_benchmark/runner.py'
   'aegis_os/api/__init__.py'
   'aegis_os/api/app.py'
-  'aegis_os/api/static/dashboard.js'
-  'aegis_os/api/templates/dashboard.html'
   'aegis_os/core/cognitive_runtime.py'
   'aegis_os/execution/conformance.py'
   'aegis_os/execution/execution_engine.py'
   'aegis_os/execution/models.py'
   'aegis_os/pipeline/composition.py'
-  'docs/architecture/execution-engine.md'
   'tests/api/test_dashboard.py'
   'tests/api/test_execute_task.py'
   'tests/api/test_execute_task_contract.py'
@@ -168,23 +166,23 @@ $finalBoundary = @(
   'tests/execution/test_models.py'
 )
 
-python -m ruff check --no-cache --config pyproject.toml -- $finalBoundary
-python -m ruff format --check --no-cache --config pyproject.toml -- $finalBoundary
+python -m ruff check --no-cache --config pyproject.toml -- $pythonBoundary
+python -m ruff format --check --no-cache --config pyproject.toml -- $pythonBoundary
 python -m ruff check --no-cache --output-format=concise --config pyproject.toml .
 ```
 
-The first two commands must return `PASS`. The repository-wide command must produce the exact inherited baseline and no other diagnostic.
+The Python manifest contains exactly the 18 `.py` paths in the authorized boundary. The JavaScript, HTML, and Markdown paths remain in the 21-path integration boundary but are not direct Ruff parser targets. The first two commands must return `PASS`. The repository-wide command must produce the exact inherited baseline and no other diagnostic.
 
 ## Amended Stage 2 Gate
 
 Stage 2 satisfies the Ruff gate only when:
 
 1. Integration B is created only after the amended Stage 1 gate passes.
-2. Direct Ruff lint against the final exact 21-path boundary passes.
-3. Ruff format-check against the final exact 21-path boundary passes.
+2. Direct Ruff lint against the final exact 18-path Python manifest passes.
+3. Ruff format-check against the final exact 18-path Python manifest passes.
 4. Repository-wide Ruff introduces no diagnostic relative to the protected base.
 5. No inherited diagnostic is removed, relocated, recoded, or changed.
-6. No authorized integration path has a Ruff violation.
+6. No authorized Python integration path has a Ruff violation.
 7. The repository-wide normalized diagnostic set remains exactly the three-item inherited baseline.
 
 All non-Ruff Stage 2 gates remain unchanged.
@@ -243,7 +241,8 @@ The bounded integration composition report must additionally include:
 - Ruff version and configuration identity.
 - Normalized diagnostic-set comparison proving exact equality.
 - Stage 1 nine-path lint and format-check commands and results.
-- Stage 2 21-path lint and format-check commands and results.
+- Stage 2 18-path Python lint and format-check commands and results.
+- Candidate 2 blob, test, whitespace, and clean-state evidence for the three non-Python boundary paths.
 - Final repository-wide diagnostic-set comparison.
 - Blob evidence proving both inherited-debt files remain unchanged.
 - Confirmation that no base-remediation path was modified.
@@ -255,7 +254,7 @@ Integration A preserved: fb0364d1b4e0a27953ea7d683a786193d6e61c48
 Inherited Ruff violations: EXACTLY 3 F401 DIAGNOSTICS IN 2 UNCHANGED BASE FILES
 Stage 1 scoped lint required: YES — EXACT 9 PATHS MUST PASS
 Stage 1 repository no-regression required: YES — EXACT BASELINE EQUALITY
-Stage 2 final-boundary lint required: YES — EXACT 21 PATHS MUST PASS
+Stage 2 Python-boundary lint required: YES — EXACT 18 PYTHON PATHS MUST PASS
 Stage 2 repository no-regression required: YES — EXACT BASELINE EQUALITY
 Base remediation authorized: NO
 Integration B authorized: YES — SOLE ADDITIONAL COMMIT AFTER AMENDED STAGE 1 PASS

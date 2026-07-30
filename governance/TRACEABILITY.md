@@ -210,7 +210,7 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 
 ### TR-004: WO-002/WO-003 Bounded Integration Authorization
 
-**Status:** Authorized — Amended for Bounded Ruff No-Regression
+**Status:** Authorized — Amended for Bounded Ruff No-Regression and Python-Only Target
 **Recorded:** 2026-07-30
 **Subject:** Dependency-aware two-stage integration of the closed WO-002 foundation and immutable WO-003 Candidate 2
 
@@ -222,6 +222,7 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | 4 | WO-003 governance closure | Establishes that WO-003 is closed without itself authorizing integration. | Commit `655045c33ecea736fde25e0ba46f865d175cba7d` |
 | 5 | Bounded Integration Authorization | Authorizes only isolated local composition, exactly two commits, and CPython 3.11 stage validation across the exact 21-path boundary. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_AUTHORIZATION.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_AUTHORIZATION.md) |
 | 6 | Ruff Baseline Amendment | Replaces absolute repository-wide Ruff cleanliness with exact inherited-baseline equality plus mandatory clean scoped checks; preserves Integration A and authorizes resumption without base remediation. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_RUFF_BASELINE_AMENDMENT.md) |
+| 7 | Python-Only Ruff Target Amendment | Corrects the Stage 2 scoped Ruff target to the exact 18 Python paths, retains three non-Python paths under other verification controls, and authorizes validation resumption from unchanged Integration B without another commit. | [`work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md`](work-orders/WO-002_WO-003_BOUNDED_INTEGRATION_PYTHON_ONLY_RUFF_TARGET_AMENDMENT.md) |
 
 #### Authorized Integration Boundary
 
@@ -236,7 +237,7 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | Integration worktree | `C:\Users\Woolis Shop\Projects\aegis-platform-int-wo-002-wo-003-c137005b` |
 | Local commits | Exactly two: Integration A and Integration B |
 | Validation | CPython 3.11 at both stages |
-| Ruff validation | Exact three-diagnostic repository baseline; clean Stage 1 nine-path and Stage 2 21-path scoped checks |
+| Ruff validation | Exact three-diagnostic repository baseline; clean Stage 1 nine-path and Stage 2 18-Python-path scoped checks |
 | Governance projection | No source governance blobs or governance lineage |
 | Active owner | Release & Integration Engineer |
 
@@ -248,6 +249,14 @@ After successful composition, Release & Integration must return the exact local 
 
 Release & Integration stopped correctly at Stage 1 after repository-wide Ruff identified three inherited `F401` diagnostics in `aegis_os/knowledge/knowledge_graph.py` and `aegis_os/pipeline/__init__.py`. Both files retain their exact protected-base blobs and are outside the authorized integration boundary.
 
-The amended gate requires exact repository-wide diagnostic-set equality with the protected base and clean direct Ruff lint and format-check across the nine Stage 1 paths and final 21-path boundary. The inherited findings are recorded as pre-existing technical debt and must not be remediated under this authorization.
+The amended gate requires exact repository-wide diagnostic-set equality with the protected base and clean direct Ruff lint and format-check across the nine Stage 1 paths and the 18 Python paths in the final boundary. The inherited findings are recorded as pre-existing technical debt and must not be remediated under this authorization.
 
 Integration A remains immutable at `fb0364d1b4e0a27953ea7d683a786193d6e61c48`, tree `b165ad0521d8544f613fd9b1b95e541fd107805a`. Release & Integration may resume from that commit. Integration B remains the sole additional authorized commit, and the final branch remains limited to exactly two integration commits.
+
+#### Python-Only Ruff Target Amendment
+
+Release & Integration completed immutable Integration B at `f727d9f9f2b82b55f79e31008bb79b71477fbc84`, tree `23f458c2d8a1576c8068aac3de0350dbc792d421`, then stopped when Ruff 0.15.22 attempted to parse the explicitly supplied JavaScript, HTML, and Markdown boundary paths as Python. This was a validation-command defect, not an implementation defect.
+
+The corrected Stage 2 target contains exactly 18 Python paths. `aegis_os/api/static/dashboard.js`, `aegis_os/api/templates/dashboard.html`, and `docs/architecture/execution-engine.md` remain inside the exact 21-path boundary and require Candidate 2 blob equality, relevant tests, full-suite validation, whitespace validation, and clean-state evidence.
+
+Release & Integration may resume validation from unchanged Integration B. No additional integration commit is authorized. If all corrected gates pass, the same Integration B SHA may be returned for independent QA and Architecture review.
