@@ -11,11 +11,11 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
-from aegis_os.execution.adapter import build_execution_request
-from aegis_os.execution.execution_engine import ExecutionEngine
-from aegis_os.pipeline.composition import create_default_pipeline
+from aegis_os.pipeline.composition import (
+    create_default_pipeline,
+    create_default_runtime,
+)
 from aegis_os.pipeline.models import SCHEMA_VERSION
-
 
 API_DIRECTORY = Path(__file__).resolve().parent
 STATIC_DIRECTORY = API_DIRECTORY / "static"
@@ -43,6 +43,7 @@ class AnalyzeTaskRequest(BaseModel):
 
 
 create_pipeline = create_default_pipeline
+create_runtime = create_default_runtime
 
 
 def create_app() -> FastAPI:
@@ -50,7 +51,7 @@ def create_app() -> FastAPI:
         title="AEGIS Platform API",
         version=APPLICATION_VERSION,
     )
-    pipeline = create_pipeline()
+    runtime = create_runtime()
 
     @application.middleware("http")
     async def correlate_request(
@@ -82,8 +83,7 @@ def create_app() -> FastAPI:
     ) -> JSONResponse:
         request_id = request.state.request_id
         logger.info(
-            "event=request_rejected request_id=%s "
-            "pipeline_status=invalid_request",
+            "event=request_rejected request_id=%s pipeline_status=invalid_request",
             request_id,
         )
         return JSONResponse(
@@ -103,9 +103,7 @@ def create_app() -> FastAPI:
 
     @application.get("/", response_class=FileResponse)
     def dashboard() -> FileResponse:
-        return FileResponse(
-            TEMPLATE_DIRECTORY / "dashboard.html"
-        )
+        return FileResponse(TEMPLATE_DIRECTORY / "dashboard.html")
 
     @application.get("/health")
     def health() -> dict:
@@ -113,7 +111,7 @@ def create_app() -> FastAPI:
             "service": SERVICE_NAME,
             "status": "ok",
             "version": APPLICATION_VERSION,
-            "pipeline_available": pipeline is not None,
+            "pipeline_available": runtime.pipeline is not None,
         }
 
     @application.post("/analyze-task")
@@ -123,11 +121,14 @@ def create_app() -> FastAPI:
     ) -> dict:
         request_id = request.state.request_id
         try:
-            result = pipeline.process_task(body.task)
+            runtime_result = runtime.run(
+                body.task,
+                request_id,
+                execute=False,
+            )
         except ValueError as error:
             logger.info(
-                "event=request_rejected request_id=%s "
-                "pipeline_status=invalid_request",
+                "event=request_rejected request_id=%s pipeline_status=invalid_request",
                 request_id,
             )
             raise HTTPException(
@@ -135,13 +136,12 @@ def create_app() -> FastAPI:
                 detail=str(error),
             ) from error
 
+        result = runtime_result.analysis
         payload = result.to_dict()
         payload["request_id"] = request_id
 
         selected_profile = (
-            result.capability.name
-            if result.status.value != "failed"
-            else "none"
+            result.capability.name if result.status.value != "failed" else "none"
         )
         logger.info(
             "event=analysis_completed request_id=%s "
@@ -162,19 +162,14 @@ def create_app() -> FastAPI:
     ) -> dict:
         request_id = request.state.request_id
         try:
-            analysis = pipeline.process_task(body.task)
-            execution_request = build_execution_request(
-                analysis,
+            runtime_result = runtime.run(
+                body.task,
                 request_id,
-                constraints=[
-                    "Simulation only; no external actions are permitted."
-                ],
-                permissions=["simulated_workflow_execution"],
+                execute=True,
             )
         except ValueError as error:
             logger.info(
-                "event=request_rejected request_id=%s "
-                "pipeline_status=invalid_request",
+                "event=request_rejected request_id=%s pipeline_status=invalid_request",
                 request_id,
             )
             raise HTTPException(
@@ -182,13 +177,19 @@ def create_app() -> FastAPI:
                 detail=str(error),
             ) from error
 
-        receipt = ExecutionEngine().execute(execution_request)
+        analysis = runtime_result.analysis
+        receipt = runtime_result.execution
+        if receipt is None:
+            raise HTTPException(
+                status_code=422,
+                detail=("Cognitive result is not ready for execution."),
+            )
         analysis_payload = analysis.to_dict()
         analysis_payload["request_id"] = request_id
         return {
             "analysis": analysis_payload,
             "execution": receipt.to_dict(),
-            "simulated": True,
+            "simulated": runtime_result.simulated,
         }
 
     return application

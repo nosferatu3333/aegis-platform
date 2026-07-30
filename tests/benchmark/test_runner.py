@@ -1,6 +1,7 @@
 from aegis_benchmark.loader import load_benchmark_directory
 from aegis_benchmark.models import BenchmarkCase, BenchmarkExpectation
 from aegis_benchmark.runner import BenchmarkRunner
+from aegis_os.pipeline.composition import create_default_runtime
 
 
 def test_runner_uses_real_pipeline_for_research_case():
@@ -85,3 +86,38 @@ def test_initial_suite_passes_and_has_expected_category_counts():
         "research": 6,
         "unsupported": 3,
     }
+
+
+def test_runner_delegates_to_canonical_runtime():
+    runtime = create_default_runtime()
+    calls = []
+    original_run = runtime.run
+
+    def record_run(task, request_id, *, execute=False):
+        calls.append((task, request_id, execute))
+        return original_run(task, request_id, execute=execute)
+
+    runtime.run = record_run
+    case = BenchmarkCase(
+        "delegation",
+        "Delegation",
+        "research",
+        "easy",
+        "Research autonomous intelligence systems",
+        BenchmarkExpectation(
+            primary_intent="research",
+            execution_status="completed",
+            simulated=True,
+        ),
+    )
+
+    result = BenchmarkRunner(runtime=runtime).run_case(case)
+
+    assert result.passed is True
+    assert calls == [
+        (
+            "Research autonomous intelligence systems",
+            "benchmark-delegation",
+            True,
+        )
+    ]
