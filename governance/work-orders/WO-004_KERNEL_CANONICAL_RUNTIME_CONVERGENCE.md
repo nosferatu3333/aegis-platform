@@ -1,13 +1,13 @@
 # Work Order WO-004: Kernel Canonical Runtime Convergence
 
-**Status:** ACTIVE — IMPLEMENTATION AUTHORIZED
+**Status:** CLOSED - PUBLISHED TO MAIN
 **Authority:** Product Owner / Founder activation decision, recorded by Documentation & Governance
 **Date authorized:** 2026-07-31
 **Authoritative base:** `8514de1f4e1bafb73748ec74a9b29e8b2f83d952`
 **Implementation owner:** Implementation Engineer
 **Required review owners:** QA & Verification; Architecture Auditor; Documentation & Governance
-**Integration authority:** NOT GRANTED
-**Remote-publication authority:** NOT GRANTED
+**Integration authority:** EXECUTED - COMPLETE
+**Remote-publication authority:** EXECUTED - COMPLETE
 **Governed by:** `governance/ENGINEERING_CHARTER.md`
 
 ---
@@ -235,14 +235,15 @@ Implementation and review must stop if:
 ## Current Disposition
 
 ```text
-WO-004: ACTIVE — IMPLEMENTATION AUTHORIZED
+WO-004: CLOSED - PUBLISHED TO MAIN
 Authoritative base: 8514de1f4e1bafb73748ec74a9b29e8b2f83d952
-Implementation scope: BOUNDED
-Candidate designated: NO
-QA review: NOT STARTED
-Architecture review: NOT STARTED
-Integration authority: NOT GRANTED
-Publication authority: NOT GRANTED
+Implementation scope: COMPLETED
+Candidate designated: ce9d17429edc186db74e389e39f5ce6e0677cb35
+QA review: PASS
+Architecture review: PASS
+Integration authority: EXECUTED - COMPLETE
+Publication authority: EXECUTED - COMPLETE
+Published main: e8de24afa14b564c28ebecd6564e0c111e134924
 ```
 ## Candidate review verdict
 
@@ -297,3 +298,49 @@ candidate.
 This review does not authorize integration, publication, push, modification of
 `main`, tagging, release, cleanup, or ruleset changes. A separate explicit
 integration authorization is required.
+## Post-publication closure
+
+- Closure date: 2026-07-31
+- Authoritative base: `8514de1f4e1bafb73748ec74a9b29e8b2f83d952`
+- Authorization source: `1aa7c27248438662272cab22e1b63797845ab6da`
+- Reviewed candidate: `ce9d17429edc186db74e389e39f5ce6e0677cb35`
+- Governance review source: `59ed6530210fc296b50c8d64b7372c08b9db302b`
+- Published integration head: `e8de24afa14b564c28ebecd6564e0c111e134924`
+- Destination: `refs/heads/main`
+- Publication result: **PASS - STRICT FAST-FORWARD**
+- Final status: **CLOSED - PUBLISHED TO MAIN**
+
+### Published linear sequence
+
+1. `1b00418c87293f607dfdf76df1aa6325e6610ae7` - Authorize WO-004 kernel runtime convergence
+2. `9a39aff6ecd991eade808628d1931ccfd4ac22b3` - Converge Kernel on canonical runtime
+3. `e8de24afa14b564c28ebecd6564e0c111e134924` - Record WO-004 candidate review verdict
+
+### Final evidence
+
+- Live remote `main`, `origin/main`, local `main`, and integration HEAD matched the published head.
+- Publication used a strict fast-forward.
+- No force-push, merge commit, tag, release, or cleanup occurred.
+- Integrated repository suite: 179 passed.
+- Python 3.11 reviewed-candidate suite: 179 passed.
+- Ruff lint, Ruff format, and dependency integrity passed.
+- All related worktrees were clean and the original worktree was unchanged.
+
+### Final architectural disposition
+
+The normal application entry path now uses `Kernel.process_task()`, the
+configured canonical `CognitiveRuntime`, the canonical request pipeline,
+optional simulated execution, conformance validation, and
+`CanonicalRuntimeResult`.
+
+The historical `Kernel.process_goal()` path remains available only through the
+explicit lazy compatibility adapter. No real execution was introduced.
+
+### Closure boundary
+
+This closure is governance-only. It changes no implementation, test, runtime,
+API, benchmark, dependency, CI, ruleset, tag, or release content.
+
+WO-004 is complete. This record grants no further implementation, integration,
+publication, cleanup, release, deployment, tag, ruleset, or branch-removal
+authority.
