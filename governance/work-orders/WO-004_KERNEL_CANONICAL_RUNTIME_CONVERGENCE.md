@@ -244,3 +244,56 @@ Architecture review: NOT STARTED
 Integration authority: NOT GRANTED
 Publication authority: NOT GRANTED
 ```
+## Candidate review verdict
+
+- Review date: 2026-07-31
+- Authorization commit: `1aa7c27248438662272cab22e1b63797845ab6da`
+- Candidate commit: `ce9d17429edc186db74e389e39f5ce6e0677cb35`
+- Shared authorized base: `8514de1f4e1bafb73748ec74a9b29e8b2f83d952`
+- Verdict: **FULL PASS**
+- Candidate path count: 5
+- Remote mutation during implementation and review: none
+
+### Reviewed candidate paths
+
+1. `aegis_os/core/kernel.py`
+2. `aegis_os/core/legacy_compatibility.py`
+3. `aegis_os/main.py`
+4. `docs/architecture/cognitive-pipeline.md`
+5. `tests/core/test_kernel.py`
+
+### Validation evidence
+
+- Identity and commit lineage: PASS
+- Authorized implementation boundary: PASS
+- Governance evidence and TR-006 linkage: PASS
+- Architectural conformance review: PASS
+- Full test suite under Python 3.14.6: 179 passed
+- Full test suite under Python 3.11.9: 179 passed
+- Ruff lint: PASS
+- Ruff format: PASS
+- Dependency integrity under Python 3.14: PASS
+- Dependency integrity under Python 3.11: PASS
+- Implementation worktree after review: clean
+- Governance worktree before this record: clean
+- Temporary Python 3.11 validation environment: removed
+
+### Architectural conclusion
+
+The candidate converges the application Kernel on the shared canonical
+`CognitiveRuntime` composition and typed result boundary.
+
+The historical `process_goal()` contract remains available only through the
+explicit, lazily initialized `LegacyCompatibilityAdapter`.
+
+The canonical application entry point no longer invokes the historical
+orchestrator path. Execution demonstrated by the application remains simulated.
+
+### Governance disposition
+
+The implementation candidate is technically accepted as a valid WO-004
+candidate.
+
+This review does not authorize integration, publication, push, modification of
+`main`, tagging, release, cleanup, or ruleset changes. A separate explicit
+integration authorization is required.
