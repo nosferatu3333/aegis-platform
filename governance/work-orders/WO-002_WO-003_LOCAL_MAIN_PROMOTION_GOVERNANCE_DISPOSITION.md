@@ -8,8 +8,9 @@
 **Promoted tree:** `23f458c2d8a1576c8068aac3de0350dbc792d421`
 **Release promotion verdict:** PASS
 **Rollback performed:** NO
-**Remote publication authority:** NOT GRANTED
-**Next eligible owner:** Release & Integration Engineer — separate explicit controlled remote-publication authorization required
+**Remote publication authority at disposition:** NOT GRANTED
+**Subsequent remote-publication authorization:** [`WO-002_WO-003_CONTROLLED_REMOTE_PUBLICATION_AUTHORIZATION.md`](WO-002_WO-003_CONTROLLED_REMOTE_PUBLICATION_AUTHORIZATION.md)
+**Next eligible owner:** Release & Integration Engineer — exact lease-guarded publication authorized by the subsequent linked record
 
 ---
 
@@ -162,7 +163,7 @@ This disposition establishes eligibility only.
 
 ## Remote-Publication Boundary
 
-Release & Integration is the next eligible owner but may not push or modify any remote reference until a separate explicit controlled remote-publication authorization defines:
+Release & Integration was the next eligible owner but could not push or modify any remote reference until a separate explicit controlled remote-publication authorization defined:
 
 - Exact local source and remote target identities.
 - Remote compare-and-swap or lease protection.
@@ -172,9 +173,9 @@ Release & Integration is the next eligible owner but may not push or modify any 
 - Recovery and failure procedures.
 - Publication evidence and final governance handoff.
 
-Until that authority exists, the following remain prohibited:
+That condition was subsequently satisfied by the [Controlled Remote-Publication Authorization](WO-002_WO-003_CONTROLLED_REMOTE_PUBLICATION_AUTHORIZATION.md). Only the exact SHA-to-`refs/heads/main` lease-guarded push described there is authorized. The following remain prohibited:
 
-- Push or any remote reference modification.
+- Any push or remote reference modification other than the separately authorized exact lease-guarded update of remote `refs/heads/main`.
 - Force push or weakened lease protection.
 - Tag publication or mutation.
 - Modification of local `main`, Integration A, or Integration B.
@@ -196,10 +197,10 @@ Governance disposition: ACCEPTED — ELIGIBLE FOR CONTROLLED REMOTE PUBLICATION
 Governance disposition commit: RECORDED BY THE COMMIT CONTAINING THIS DOCUMENT
 Local promotion accepted: YES
 Remote main: c137005b08c449a8e19f7734098865dd10181955
-Remote publication authorized: NO
-Push authorized: NO
+Remote publication authorized: YES — ONLY BY THE SUBSEQUENT EXACT LEASE-GUARDED AUTHORIZATION
+Push authorized: YES — ONLY THE SUBSEQUENT SINGLE EXPLICIT MAIN REFSPEC
 Rollback required: NO
 WO-004 authorized: NO
 Next eligible owner: RELEASE & INTEGRATION ENGINEER
-Required next authorization: SEPARATE EXPLICIT CONTROLLED REMOTE-PUBLICATION AUTHORIZATION
+Required next authorization: SATISFIED BY WO-002/WO-003 CONTROLLED REMOTE-PUBLICATION AUTHORIZATION
 ```
