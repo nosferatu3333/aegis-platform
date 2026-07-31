@@ -1,14 +1,18 @@
 # AEGIS Main-Branch Protection Governance Decision
 
-**Governance decision:** APPROVED — MINIMAL ACTIVE MAIN-INTEGRITY RULESET POLICY
+**Governance decision:** APPROVED — IMPLEMENTATION ACCEPTED AND CONTROL OPERATIONAL
 **Date recorded:** 2026-07-31
 **Decision authority:** Product Owner / Founder
 **Governance owner:** Documentation & Governance
-**Implementation owner:** Infrastructure Engineer, under separate bounded implementation authority only
+**Infrastructure implementation:** IMPLEMENTED AND VERIFIED
 **Repository:** `https://github.com/nosferatu3333/aegis-platform.git`
 **Canonical branch:** `refs/heads/main`
 **Original policy commit:** `d6beb6422a45de8036f19ede375eab3295e4bcb9`
 **Current amendment:** [`AEGIS Main-Branch Protection Governance Amendment — Minimal Active Enforcement`](AEGIS_MAIN_BRANCH_PROTECTION_ACTIVE_ENFORCEMENT_AMENDMENT.md)
+**Implementation report:** [`AEGIS Main-Branch Protection Ruleset Implementation Report`](AEGIS_MAIN_BRANCH_PROTECTION_RULESET_IMPLEMENTATION_REPORT.md)
+**Governance closure:** [`AEGIS Main-Branch Protection Governance Closure`](AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_CLOSURE.md)
+**Operational ruleset:** `20133752` — `AEGIS main integrity`
+**Work-item status:** CLOSED
 **Settings changed by Governance:** NONE
 **WO-004 status:** NOT ACTIVATED
 
@@ -20,7 +24,9 @@ This decision establishes the canonical policy for protecting AEGIS remote `main
 
 The original policy selected a minimal ruleset in `Evaluate` mode. GitHub rejected that configuration atomically because `Evaluate` enforcement is unavailable on the current plan. The Product Owner / Founder rejected an Enterprise upgrade as disproportionate and amended only the enforcement mode to `Active`. The authorized rules remain limited to deletion restriction and non-fast-forward blocking.
 
-This document is policy authority. It is not a GitHub settings mutation, standing push authority, release authorization, or Infrastructure implementation assignment.
+Infrastructure Engineering completed the separately bounded implementation and returned `IMPLEMENTED AND VERIFIED`. Documentation & Governance independently confirmed the resulting remote state through read-only GitHub and Git operations. The final operational configuration exactly matches the amended policy.
+
+This document is policy and closure authority. It is not standing push authority, release authorization, or authority to change the ruleset further.
 
 ## Canonical Integration Identity
 
@@ -45,16 +51,20 @@ Current exact-SHA publication was authorized through a one-time explicit governa
 | Control | Canonical value |
 |---|---|
 | Ruleset name | `AEGIS main integrity` |
+| Ruleset ID | `20133752` |
 | Ruleset target | `refs/heads/main` |
 | Exclusions | **NONE** |
 | Enforcement | **ACTIVE** |
 | Block force pushes / non-fast-forward updates | **ENABLED** |
 | Restrict deletion | **ENABLED** |
 | Bypass actors | **NONE** |
+| Operational status | **ACTIVE — VERIFIED** |
 
 The ruleset must target only `refs/heads/main`. It must not target tags, other branches, repository-wide patterns, or additional references.
 
 `Active` is the authorized enforcement mode because the current GitHub plan does not support `Evaluate`. No other policy control changed.
+
+The live ruleset has exactly one `ref_name` condition, including only `refs/heads/main` and excluding no reference. It has exactly the `deletion` and `non_fast_forward` rules, no bypass actors, and no additional repository ruleset. Classic branch protection remains absent.
 
 ## Controls Not Enabled
 
@@ -161,11 +171,11 @@ Full pull-request, reviewer, CODEOWNERS, and required-check enforcement remains 
 
 Meeting these prerequisites does not activate any additional control automatically. Any expansion requires a separate governance decision and bounded Infrastructure implementation authorization.
 
-## Infrastructure Implementation Boundary
+## Infrastructure Implementation and Closure
 
-Infrastructure Engineering is the next eligible implementation role, but it may act only under a separate bounded implementation assignment.
+Infrastructure Engineering completed the separately bounded active-ruleset assignment. It created exactly one ruleset, `20133752`, and returned the preserved [implementation report](AEGIS_MAIN_BRANCH_PROTECTION_RULESET_IMPLEMENTATION_REPORT.md).
 
-That assignment may authorize creation of exactly one ruleset with:
+The completed assignment authorized and produced only:
 
 ```text
 Name: AEGIS main integrity
@@ -178,7 +188,9 @@ All other rules: ABSENT
 Bypass actors: NONE
 ```
 
-The bounded assignment must require all compensating controls in this decision. Any ambiguity, unsupported capability, conflicting existing rule, unexpected default, additional setting, identity mismatch, or preservation failure is a stop condition requiring governance review.
+Documentation & Governance independently verified the repository identity, default branch, complete ruleset inventory, exact ruleset read-back, absence of classic branch protection, remote `main`, and remote tree. The closure decision is `APPROVED — IMPLEMENTATION ACCEPTED AND CONTROL OPERATIONAL`.
+
+No further Infrastructure work is authorized by this closure. Any amendment, expansion, suspension, restoration, or other ruleset change requires separate explicit authority.
 
 ## Explicit Non-Authority
 
@@ -200,7 +212,7 @@ This decision does not authorize:
 
 ## Required Implementation Report
 
-After separately authorized implementation, Infrastructure Engineering must return an **AEGIS Main-Branch Protection Ruleset Implementation Report** containing:
+Infrastructure Engineering returned the required **[AEGIS Main-Branch Protection Ruleset Implementation Report](AEGIS_MAIN_BRANCH_PROTECTION_RULESET_IMPLEMENTATION_REPORT.md)**. It records:
 
 - Governing implementation authorization.
 - Repository, owner, remote, and authenticated actor identities.
@@ -217,11 +229,12 @@ After separately authorized implementation, Infrastructure Engineering must retu
 - Handoff to Documentation & Governance for implementation disposition.
 
 ```text
-Governance decision: APPROVED — MINIMAL ACTIVE MAIN-INTEGRITY RULESET POLICY
+Governance decision: APPROVED — IMPLEMENTATION ACCEPTED AND CONTROL OPERATIONAL
 Canonical integration identity: EXACT COMMIT SHA
 Ruleset name: AEGIS main integrity
+Ruleset ID: 20133752
 Ruleset target: refs/heads/main
-Initial enforcement: ACTIVE
+Enforcement: ACTIVE
 Force-push blocking: ENABLED
 Deletion restriction: ENABLED
 Required PR: DISABLED
@@ -233,7 +246,13 @@ Personal repository retained: YES — CURRENT PHASE
 Organization migration: DEFERRED UNTIL OPERATING-MODEL TRIGGERS REQUIRE IT
 WO-004 activated: NO
 Settings changed by Governance: NO
-Next eligible owner: INFRASTRUCTURE ENGINEER
-Required next authorization: SEPARATE BOUNDED ACTIVE-RULESET IMPLEMENTATION ASSIGNMENT
-Required next report: AEGIS MAIN-BRANCH PROTECTION RULESET IMPLEMENTATION REPORT
+Ruleset implementation: IMPLEMENTED AND VERIFIED
+Authorized configuration match: EXACT
+Git reference preservation: VERIFIED
+Unauthorized repository mutations: NONE OBSERVED
+Residual risk accepted: NORMAL FAST-FORWARD DIRECT PUSHES REMAIN PERMITTED
+Work-item status: CLOSED
+Next eligible owner: NONE — SEPARATE EXPLICIT GOVERNANCE DECISION REQUIRED
+Required next authorization: SEPARATE EXPLICIT GOVERNANCE DECISION
+Required next report: DEPENDS ON FUTURE AUTHORIZATION
 ```
