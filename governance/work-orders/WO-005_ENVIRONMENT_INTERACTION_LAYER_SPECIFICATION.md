@@ -336,3 +336,31 @@ runtime changes.
 Any correction creates a new candidate and requires a new designation.
 This record does not authorize integration, publication, push, modification of
 `main`, runtime implementation, tags, releases, ruleset changes, or cleanup.
+## Architecture review verdict - accepted design
+
+- Review date: 2026-07-31
+- Review role: Architecture Auditor
+- Reviewed candidate: `f2376dce1bd4e312ca80a53aff9ab6212bb19289`
+- Reviewed tree: `2b18f80f57e7b690e1773f67d20112d6dee10633`
+- Reviewed parent: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Candidate paths: exactly four authorized documentation paths
+- Ownership boundaries: pass
+- Resource-to-environment handoff: pass
+- Deterministic registry and resolution: pass
+- Policy and approval separation: pass
+- Adapter isolation: pass
+- Simulation-to-live prevention: pass
+- Immutable result and receipt boundaries: pass
+- Secret-free bounded evidence: pass
+- Current pipeline and execution isolation: pass
+- Decision completeness: pass
+- Architecture verdict: **PASS**
+
+The candidate consistently accepts the provider-neutral simulation-only
+architecture. Phase A retains resource-resolution ownership; Phase B consumes a
+resolved reference and enforces deterministic environment resolution, policy,
+approval, adapter isolation, result normalization, and immutable receipts.
+
+This architecture review authorizes no correction, integration, publication,
+runtime implementation, push, main modification, tag, release, ruleset change,
+or cleanup.
