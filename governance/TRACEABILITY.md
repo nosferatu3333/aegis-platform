@@ -506,3 +506,24 @@ authorization.
 The exact reviewed implementation and governance records were published as a
 linear three-commit fast-forward from the authoritative base. This closure
 records the completed state only and grants no additional authority.
+## TR-007 WO-005 Architecture and Specification Authorization
+
+- Work order: WO-005 - Environment Interaction Layer Architecture Acceptance and Implementation Specification
+- Authorization date: 2026-07-31
+- Authoritative base: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Status: **ACTIVE - ARCHITECTURE AND SPECIFICATION WORK AUTHORIZED**
+- Work-order record: `governance/work-orders/WO-005_ENVIRONMENT_INTERACTION_LAYER_SPECIFICATION.md`
+- Deliverable boundary: exactly four documentation paths
+- Runtime implementation: not authorized
+- Deliverable integration: not authorized
+- Deliverable remote publication: not authorized
+- Authorization-record publication: authorized for this governance commit only
+
+The authorized work accepts no runtime implementation. It may reconcile
+ADR-006, the Phase B architecture, the roadmap, and a new implementation
+specification only within the exact documented boundary.
+
+The future deliverable must define provider-neutral, deterministic,
+simulation-first contracts and an exact later implementation allowlist before
+any Phase B Python work may begin. Separate explicit authority is required for
+candidate designation, integration, publication, and runtime implementation.
