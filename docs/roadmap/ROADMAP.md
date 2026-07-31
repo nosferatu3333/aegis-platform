@@ -16,9 +16,11 @@ See [release history](../releases/RELEASE_HISTORY.md) and the compact
 
 ## Next — v0.5.0 Environment Interaction Layer — Simulation First
 
-Phase A is implemented. Phase B architecture is proposed; its runtime is not
-implemented. See the current
-[Environment Interaction Layer architecture](../architecture/environment-interaction-layer.md).
+Phase A is implemented. Phase B architecture and implementation specification
+are accepted; its runtime is not implemented. See the accepted
+[Environment Interaction Layer architecture](../architecture/environment-interaction-layer.md)
+and
+[Phase B implementation specification](../specifications/v0.5-phase-b-environment-interaction-layer.md).
 
 - **Objective:** establish the governed boundary through which all future
   external domains are requested, authorized, resolved, invoked, and audited.
@@ -36,7 +38,7 @@ implemented. See the current
   sandboxing.
 - **Dependencies:** stable v0.3 execution contracts, v0.4 benchmark harness,
   request correlation, explicit risk mapping,
-  [ADR-002](../adr/ADR-002-governed-execution.md), and proposed
+  [ADR-002](../adr/ADR-002-governed-execution.md), and accepted
   [ADR-006](../adr/ADR-006-environment-interaction-layer.md) and
   [ADR-005](../adr/ADR-005-operational-resource-model.md).
 - **Completion evidence:** deterministic contract/registry/receipt tests;

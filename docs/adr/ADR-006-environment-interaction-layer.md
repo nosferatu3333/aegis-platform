@@ -1,6 +1,6 @@
 # ADR-006 — Provider-neutral Environment Interaction Layer
 
-- **Status:** Proposed
+- **Status:** Accepted
 
 ## Context
 
@@ -95,4 +95,23 @@ and detailed reason codes belong in the Phase B implementation specification.
 - [Operational Resource Model](../architecture/operational-resource-model.md)
 - [ADR-004 historical precursor](ADR-004-environment-interface.md)
 - [ADR-005](ADR-005-operational-resource-model.md)
+## WO-005 acceptance record
 
+- Acceptance date: 2026-07-31
+- Governing work order: `WO-005`
+- Architectural base: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Governance amendment main: `ad743b4568bbd82527f7ff192c5b10ca4d59c2e9`
+- Accepted scope: provider-neutral, deterministic, simulation-only Phase B design
+- Runtime implementation: not included
+- Live providers, credentials, persistence, and external I/O: not authorized
+
+Architecture, specification, and roadmap reconciliation confirm that Phase B
+remains isolated from the current cognitive pipeline, execution engine, API,
+dashboard, and benchmark fixtures.
+
+The accepted implementation contract is the existing
+[`v0.5 Phase B — Environment Interaction Layer implementation specification`](../specifications/v0.5-phase-b-environment-interaction-layer.md).
+
+Acceptance of this ADR does not authorize implementation, integration,
+publication of this candidate, live execution, provider access, tagging,
+release creation, ruleset modification, or cleanup.

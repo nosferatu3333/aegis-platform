@@ -1,8 +1,9 @@
 # v0.5 Phase B — Environment Interaction Layer
 
-> **Status: Proposed architecture.** This document is the current architecture
-> authority for Phase B. It designs a simulation-first boundary; it does not
-> describe implemented environment runtime behavior. The earlier
+> **Status: Accepted architecture; runtime not implemented.** This document is
+> the current architecture authority for Phase B. It defines a
+> simulation-first boundary; it does not describe implemented environment
+> runtime behavior. The earlier
 > [environment interface](environment-interface.md) and
 > [ADR-004](../adr/ADR-004-environment-interface.md) are preserved as historical
 > precursors. [ADR-006](../adr/ADR-006-environment-interaction-layer.md) records
@@ -517,4 +518,26 @@ flowchart LR
 - [Execution Engine](execution-engine.md)
 - [ADR-006](../adr/ADR-006-environment-interaction-layer.md)
 - [Roadmap](../roadmap/ROADMAP.md)
+## WO-005 accepted-design handoff
 
+WO-005 accepts this architecture together with ADR-006 and the existing
+[Phase B implementation specification](../specifications/v0.5-phase-b-environment-interaction-layer.md).
+
+The first runtime increment remains bounded to explicit immutable contracts,
+instance-owned registration, deterministic resolution, simulation-only policy,
+separate approval evaluation, deterministic simulated adapters, normalized
+results, immutable receipts, and focused in-memory tests.
+
+The accepted design preserves these ownership boundaries:
+
+- Phase A owns resource requirements, catalog state, and resource resolution;
+- Phase B consumes one resolved `ResourceReference` without re-resolving it;
+- policy and approval precede adapter invocation;
+- adapters declare support but never authorize or approve themselves;
+- `LIVE` is modeled only for explicit rejection in this increment;
+- provider clients, credentials, external I/O, persistence, observations,
+  memory, learning, and current execution integration remain deferred.
+
+The existing implementation specification is accepted through bounded revision,
+not replaced. Runtime code and test creation require a later separately
+authorized work order using the exact specification package and test boundary.
