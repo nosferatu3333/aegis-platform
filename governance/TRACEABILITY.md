@@ -421,3 +421,47 @@ No standing push authority, ruleset-change authority, emergency suspension, rele
 Final governance decision:
 
 `APPROVED — IMPLEMENTATION ACCEPTED AND CONTROL OPERATIONAL`
+
+### TR-006: Kernel Canonical Runtime Convergence
+
+**Status:** Active — Implementation Authorized
+**Recorded:** 2026-07-31
+**Subject:** Convergence of the Kernel and application entry point onto the canonical runtime
+
+| Sequence | Record | Relationship | Repository reference |
+|---|---|---|---|
+| 1 | WO-002 Closure Direction | Recorded the future Phase I convergence direction `main → Kernel → explicit legacy compatibility adapter → canonical CognitiveRuntime` without implementation authority. | [`work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md`](work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md) |
+| 2 | WO-003 Explicit Exclusion | Confirmed that Kernel/main convergence was outside WO-003 and required a separate authorization boundary. | [`work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md`](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md) |
+| 3 | Main-Integrity Governance Closure | Closed the repository-protection work and preserved WO-004 as not activated pending a separate Product Owner decision. | [`AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_CLOSURE.md`](AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_CLOSURE.md) |
+| 4 | Product Owner / Founder Activation | Explicitly approved activation of WO-004 for bounded Kernel canonical-runtime convergence. | Decision received 2026-07-31 |
+| 5 | Work Order — Kernel Canonical Runtime Convergence | Defines the exact base, implementation allowlist, architectural decisions, compatibility guarantees, exclusions, acceptance criteria, validation evidence, review sequence, and authority boundaries. | [`work-orders/WO-004_KERNEL_CANONICAL_RUNTIME_CONVERGENCE.md`](work-orders/WO-004_KERNEL_CANONICAL_RUNTIME_CONVERGENCE.md) |
+
+#### Current Governance State
+
+| Control | Status |
+|---|---|
+| Work order | `WO-004` |
+| Work-order status | **ACTIVE — IMPLEMENTATION AUTHORIZED** |
+| Authoritative base | `8514de1f4e1bafb73748ec74a9b29e8b2f83d952` |
+| Implementation boundary | **EXACT EIGHT-PATH ALLOWLIST** |
+| Canonical Kernel path | **AUTHORIZED FOR IMPLEMENTATION** |
+| Explicit legacy adapter | **REQUIRED** |
+| Legacy compatibility | **TEMPORARILY REQUIRED** |
+| Candidate | **NOT DESIGNATED** |
+| QA & Verification | **NOT STARTED** |
+| Architecture Auditor | **NOT STARTED** |
+| Integration authority | **NOT GRANTED** |
+| Remote-publication authority | **NOT GRANTED** |
+| Next eligible owner | **Implementation Engineer** |
+
+#### Authorization Boundary
+
+WO-004 authorizes bounded local implementation only from the exact authoritative base.
+
+No candidate designation, tag, merge, local-main update, remote publication, release, deployment, ruleset change, repository cleanup, or destructive operation is authorized by this traceability entry.
+
+Implementation must remain inside the exact allowlist and preserve the typed canonical runtime, API behavior, benchmark behavior, request correlation, simulation boundary, and temporary legacy compatibility contract.
+
+Final governance state:
+
+`WO-004 ACTIVE — BOUNDED IMPLEMENTATION AUTHORIZED`
