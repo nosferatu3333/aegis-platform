@@ -1,6 +1,6 @@
 # Work Order WO-005: Environment Interaction Layer Architecture Acceptance and Implementation Specification
 
-**Status:** ACTIVE - ACCEPTED-DESIGN CANDIDATE REVIEW PASSED
+**Status:** CLOSED - ACCEPTED DESIGN PUBLISHED
 **Authority:** Product Owner / Founder activation decision, recorded by Documentation & Governance
 **Date authorized:** 2026-07-31
 **Authoritative base:** `be7502f73b51808d54728f912ead46ad0073c7b9`
@@ -240,7 +240,7 @@ Work and review must stop if:
 ## Current disposition
 
 ```text
-WO-005: ACTIVE - ACCEPTED-DESIGN CANDIDATE REVIEW PASSED
+WO-005: CLOSED - ACCEPTED DESIGN PUBLISHED
 Authoritative base: be7502f73b51808d54728f912ead46ad0073c7b9
 Governance amendment main: ad743b4568bbd82527f7ff192c5b10ca4d59c2e9
 Specification at base: PRE-EXISTING - PROPOSED
@@ -250,8 +250,11 @@ Candidate tree: 2b18f80f57e7b690e1773f67d20112d6dee10633
 Architecture review: PASS
 QA review: PASS
 Candidate review verdict: PASS
-Deliverable integration authority: NOT GRANTED
-Deliverable publication authority: NOT GRANTED
+Deliverable integration: COMPLETE
+Deliverable publication: COMPLETE
+Published main: 7463aa6701a2246d9035476c7355007cb7051574
+Published tree: 3ac2ac7d95485e52d2991c762a5ecebecd8fdfa4
+Closure status: RECORDED BY THIS GOVERNANCE COMMIT
 Runtime implementation authority: NOT GRANTED
 ```
 ## Amendment 001 - Pre-existing specification correction
@@ -420,3 +423,51 @@ Technical acceptance does not constitute integration or publication
 authorization. A separate explicit authorization is required before any local
 integration, remote publication, runtime implementation, tag, release, ruleset
 change, or cleanup.
+## WO-005 closure record
+
+- Closure date: 2026-07-31
+- Product Owner / Founder closure authorization: explicit
+- Authoritative architectural base: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Pre-integration governance main: `ad743b4568bbd82527f7ff192c5b10ca4d59c2e9`
+- Published reviewed main: `7463aa6701a2246d9035476c7355007cb7051574`
+- Published reviewed tree: `3ac2ac7d95485e52d2991c762a5ecebecd8fdfa4`
+- Published commit count: 5
+- Published changed-path count: 6
+- Publication type: strict fast-forward
+- Force push: no
+- Merge commits: 0
+- Runtime changes: 0
+- Test changes: 0
+- Dependency changes: 0
+- CI changes: 0
+- Tag created: no
+- Release created: no
+- Ruleset changed: no
+- Worktree cleanup performed: no
+- Runtime implementation authority: not granted
+
+### Published linear sequence
+
+1. `5575031e4c2e0d7c7bf4a10d0e2d3558fcf406a7` — Accept WO-005 environment interaction design
+2. `7ecd4938a63e7b51c06cf5a0c11f39f2ab615822` — Designate WO-005 accepted design candidate
+3. `98f1c506d8d1d19a092b71b81577220a42e874a2` — Record WO-005 architecture review
+4. `dd75c5b458fd37a64646736066e20efe4f3fc01b` — Record WO-005 QA review
+5. `7463aa6701a2246d9035476c7355007cb7051574` — Record WO-005 candidate review verdict
+
+### Final disposition
+
+WO-005 is closed because the amended, reviewed, documentation-only Environment
+Interaction Layer design was integrated and published to `main` with exact
+technical and governance content identity.
+
+ADR-006, the architecture, the pre-existing implementation specification, and
+the roadmap now record the accepted simulation-first design. The current
+runtime remains unchanged.
+
+This closure grants no authority to implement the environment runtime, modify
+tests, integrate the design into execution, access providers, perform external
+I/O, create credentials, tags, or releases, change rulesets, or clean up
+preserved branches and worktrees.
+
+Any runtime implementation requires a new, separately authorized work order
+based on the accepted specification.
