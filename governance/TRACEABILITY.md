@@ -357,15 +357,19 @@ The final disposition is `ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE`. No fur
 
 ### TR-005: Main-Branch Protection Governance Decision
 
-**Status:** Policy Approved — Separate Bounded Implementation Assignment Required
+**Status:** Policy Amended — Minimal Active Enforcement; Separate Bounded Implementation Assignment Required
 **Recorded:** 2026-07-31
-**Subject:** Staged integrity controls for remote `refs/heads/main`
+**Amended:** 2026-07-31
+**Subject:** Minimal integrity controls for remote `refs/heads/main`
 
 | Sequence | Record | Relationship | Repository reference |
 |---|---|---|---|
-| 1 | Final Remote-Publication Governance Disposition | Established canonical remote `main` and recorded `Protected: false`, `Applicable rules: 0` as non-blocking repository-governance risk. | [`work-orders/WO-002_WO-003_FINAL_REMOTE_PUBLICATION_GOVERNANCE_DISPOSITION.md`](work-orders/WO-002_WO-003_FINAL_REMOTE_PUBLICATION_GOVERNANCE_DISPOSITION.md) |
-| 2 | Product Owner / Founder Decision | Approved the recommended staged protection policy, personal-repository retention, deferred full enforcement, and bounded Infrastructure handoff. | Decision received 2026-07-31 |
-| 3 | Canonical Main-Branch Protection Policy | Defines the exact ruleset, enforcement, enabled and disabled controls, emergency policy, migration triggers, implementation boundary, and non-authority controls. | [`AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_DECISION.md`](AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_DECISION.md) |
+| 1 | Final Remote-Publication Governance Disposition | Established canonical remote `main` and recorded `Protected: false`, `Applicable rules: 0` as a non-blocking repository-governance risk. | [`work-orders/WO-002_WO-003_FINAL_REMOTE_PUBLICATION_GOVERNANCE_DISPOSITION.md`](work-orders/WO-002_WO-003_FINAL_REMOTE_PUBLICATION_GOVERNANCE_DISPOSITION.md) |
+| 2 | Product Owner / Founder Decision — Staged Policy | Approved exact-SHA identity, a minimal `Evaluate` ruleset, personal-repository retention, deferred full enforcement, and bounded Infrastructure handoff. | Original policy commit `d6beb6422a45de8036f19ede375eab3295e4bcb9`; decision received 2026-07-31 |
+| 3 | Canonical Main-Branch Protection Policy | Defines the exact current ruleset, enabled and absent controls, emergency policy, migration triggers, implementation boundary, and non-authority controls. | [`AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_DECISION.md`](AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_DECISION.md) |
+| 4 | Evaluate-Mode Implementation Attempt | GitHub atomically rejected `Evaluate` enforcement with HTTP 422 because the current plan does not support it; no ruleset or repository state changed. | Infrastructure evidence received 2026-07-31; verdict **CAPABILITY BLOCKED — NO MUTATION** |
+| 5 | Product Owner / Founder Proportionality Decision | Rejected an Enterprise upgrade as disproportionate and approved changing only enforcement from `Evaluate` to `Active`. | Decision received 2026-07-31 |
+| 6 | Minimal Active Enforcement Amendment | Records the capability failure, exact active configuration, compensating controls, emergency policy, implementation limits, and required handoff. | [`AEGIS_MAIN_BRANCH_PROTECTION_ACTIVE_ENFORCEMENT_AMENDMENT.md`](AEGIS_MAIN_BRANCH_PROTECTION_ACTIVE_ENFORCEMENT_AMENDMENT.md) |
 
 #### Canonical Policy State
 
@@ -375,25 +379,29 @@ The final disposition is `ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE`. No fur
 | Ruleset name | `AEGIS main integrity` |
 | Ruleset target | `refs/heads/main` |
 | Exclusions | **NONE** |
-| Initial enforcement | **EVALUATE** |
-| Block force pushes | **ENABLED** |
+| Previous enforcement | **EVALUATE — UNSUPPORTED ON CURRENT PLAN** |
+| Current authorized enforcement | **ACTIVE** |
+| Block force pushes / non-fast-forward updates | **ENABLED** |
 | Restrict deletion | **ENABLED** |
 | Required pull requests | **DISABLED** |
 | Required approvals | **DISABLED** |
 | Required status checks | **DISABLED** |
 | Direct-update restriction | **DISABLED** |
-| Permanent bypass actors | **NONE APPROVED** |
+| Permanent bypass actors | **NONE** |
+| Enterprise upgrade | **REJECTED — DISPROPORTIONATE FOR CURRENT REQUIREMENT** |
+| Classic branch protection | **NOT AUTHORIZED** |
 | Personal repository | **RETAINED FOR CURRENT PHASE** |
 | Organization migration | **DEFERRED UNTIL OPERATING-MODEL TRIGGERS** |
-| Transition to `Active` | **NOT AUTHORIZED** |
 | Settings changed by Governance | **NONE** |
 | WO-004 | **NOT ACTIVATED** |
-| Next eligible owner | Infrastructure Engineer |
+| Next eligible owner | Infrastructure Engineer, under separate bounded assignment |
 
-Current exact-SHA publication remains governed through one-time explicit authorization and creates no standing direct-push authority. No permanent direct-push or force-push bypass is approved.
+The original `Evaluate` request failed atomically. It created no ruleset and changed no setting, reference, file, permission, or repository state. This capability result is preserved as evidence rather than treated as an implementation defect.
 
-Emergency suspension requires explicit authorization and, once the ruleset is `Active`, may change enforcement temporarily only to `Evaluate` or `Disabled`. The ruleset must not be deleted, and no history rewrite is implied or authorized.
+Current exact-SHA publication remains governed through one-time explicit authorization and creates no standing direct-push authority. No permanent direct-push or force-push bypass is approved. The minimal active ruleset protects only against deletion and non-fast-forward updates and does not prohibit an otherwise authorized strict fast-forward publication.
+
+Emergency suspension requires separate explicit authorization and may change enforcement temporarily only from `Active` to `Disabled`. The ruleset must remain present, `main` must be preserved, and the recorded configuration must be restored. No history rewrite, automatic rollback, or standing bypass is authorized.
 
 Full pull-request, reviewer, CODEOWNERS, status-check, and related enforcement remains deferred until the canonical prerequisites are satisfied and a separate policy decision authorizes expansion.
 
-Infrastructure Engineering may create only the approved `AEGIS main integrity` ruleset after receiving a separate bounded implementation assignment. No setting was changed, no implementation work was started, and no transition to `Active` was authorized by this governance record.
+Infrastructure Engineering may create only the approved `AEGIS main integrity` ruleset after receiving a separate bounded active-ruleset implementation assignment. The assignment must enforce payload capture, atomic single-ruleset creation, complete read-back, exact rule and target verification, reference preservation, no destructive test push, and stop-and-escalate handling for every mismatch. Governance changed no setting and authorized no push, repository-file change, permission change, release, or WO-004 activation.
