@@ -210,7 +210,7 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 
 ### TR-004: WO-002/WO-003 Bounded Integration Authorization
 
-**Status:** Controlled Remote Publication Authorized — Pending Report
+**Status:** Remote Main Publication Complete
 **Recorded:** 2026-07-30
 **Subject:** Dependency-aware two-stage integration of the closed WO-002 foundation and immutable WO-003 Candidate 2
 
@@ -231,6 +231,8 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | 13 | Controlled Local-Main Promotion | Atomically fast-forwarded local `main` to exact accepted Integration B, reproduced all required validation, and required no rollback. | `PASS`; local `main` `f727d9f9f2b82b55f79e31008bb79b71477fbc84`; tree `23f458c2d8a1576c8068aac3de0350dbc792d421` |
 | 14 | Local-Main Promotion Governance Disposition | Reconciled the promotion, validation, preservation, and remote non-mutation evidence and accepted local `main` as eligible for separately controlled remote publication. | [`work-orders/WO-002_WO-003_LOCAL_MAIN_PROMOTION_GOVERNANCE_DISPOSITION.md`](work-orders/WO-002_WO-003_LOCAL_MAIN_PROMOTION_GOVERNANCE_DISPOSITION.md) |
 | 15 | Controlled Remote-Publication Authorization | Authorizes one strict-fast-forward, exact-source, exact-destination push to remote `refs/heads/main` with the exact expected-old lease and no other reference authority. | [`work-orders/WO-002_WO-003_CONTROLLED_REMOTE_PUBLICATION_AUTHORIZATION.md`](work-orders/WO-002_WO-003_CONTROLLED_REMOTE_PUBLICATION_AUTHORIZATION.md) |
+| 16 | Controlled Remote-Main Publication | Published the exact accepted integration through the authorized lease-guarded strict fast-forward and updated exactly remote `refs/heads/main`. | `PASS`; remote `main` `f727d9f9f2b82b55f79e31008bb79b71477fbc84`; tree `23f458c2d8a1576c8068aac3de0350dbc792d421` |
+| 17 | Final Remote-Publication Governance Disposition | Reconciled publication, reference inventory, preservation, alignment, and non-authority evidence and established the final canonical remote state. | [`work-orders/WO-002_WO-003_FINAL_REMOTE_PUBLICATION_GOVERNANCE_DISPOSITION.md`](work-orders/WO-002_WO-003_FINAL_REMOTE_PUBLICATION_GOVERNANCE_DISPOSITION.md) |
 
 #### Authorized Integration Boundary
 
@@ -266,13 +268,22 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | Post-promotion validation | **PASS — CPython 3.11.9** |
 | Rollback | **NOT REQUIRED** |
 | Local-promotion disposition | **ACCEPTED — ELIGIBLE FOR CONTROLLED REMOTE PUBLICATION** |
-| Remote publication | **AUTHORIZED — EXACT LEASE-GUARDED REMOTE MAIN ONLY** |
+| Remote publication authorization | **EXECUTED — COMPLETE** |
 | Expected old remote `main` | `c137005b08c449a8e19f7734098865dd10181955` |
 | Authorized publication source | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | Authorized publication tree | `23f458c2d8a1576c8068aac3de0350dbc792d421` |
 | Authorized destination | `refs/heads/main` |
 | Other branches and tags | **NOT AUTHORIZED** |
-| Active owner | Release & Integration Engineer |
+| Remote publication result | **PASS — EXACTLY ONE DESTINATION** |
+| Current local `main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
+| Current remote-tracking `origin/main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
+| Current live remote `main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
+| Canonical remote tree | `23f458c2d8a1576c8068aac3de0350dbc792d421` |
+| Final publication disposition | **ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE** |
+| Release created | **NO** |
+| WO-004 activated | **NO** |
+| Branch protection | **DISABLED; 0 APPLICABLE RULES — NON-BLOCKING GOVERNANCE RISK** |
+| Further authority | **NONE — SEPARATE EXPLICIT AUTHORIZATION REQUIRED** |
 
 The original composition authorization preserves the current worktree, existing worktrees, Candidate 1, Candidate 2, their tags, and the unrelated uncommitted documentation paths. It did not itself authorize modification of `main`, push, publication, release, source-lineage merge, governance-lineage merge, cleanup, or WO-004 activation.
 
@@ -332,4 +343,14 @@ The only authorized command uses the immutable source SHA, exact destination, an
 
 Every local, live remote, remote-tracking, ancestry, tree, candidate, recovery, integration, unrelated-work, credential, and protection gate must pass. Any mismatch, ambiguity, rejection, or lease failure stops publication. Only remote `refs/heads/main` may change.
 
-No tag, other branch, governance history, ordinary force, remote rollback, release publication, cleanup, or WO-004 activation is authorized. Release & Integration must return the controlled remote-publication report to Documentation & Governance.
+Release & Integration returned the controlled remote-publication report to Documentation & Governance. No tag, other branch, governance history, ordinary force, remote rollback, release publication, cleanup, or WO-004 activation was authorized or performed.
+
+#### Final Remote-Publication Governance Disposition
+
+Release & Integration completed the exact authorized publication. Remote `refs/heads/main` advanced from `c137005b08c449a8e19f7734098865dd10181955` to `f727d9f9f2b82b55f79e31008bb79b71477fbc84` through a strict fast-forward guarded by the exact old-value lease. Exactly one remote destination changed.
+
+Local `main`, remote-tracking `origin/main`, live remote `main`, and the integration branch align at the published commit and tree `23f458c2d8a1576c8068aac3de0350dbc792d421`. Candidate, recovery, integration, and unrelated-work preservation was confirmed. No tag, other branch, governance history, release, rollback, or WO-004 state was published or changed.
+
+Remote `main` reports `Protected: false` and `Applicable rules: 0`. This is recorded as a non-blocking repository-governance risk. No protection setting is changed or authorized by this disposition; any response requires a separate Infrastructure/Governance decision.
+
+The final disposition is `ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE`. No further push, release, deployment, branch-protection change, cleanup, WO-004 activation, or engineering work is authorized.
