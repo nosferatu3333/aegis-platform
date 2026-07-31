@@ -107,3 +107,44 @@ general reasoning also have no mapped selectable profile.
 See [ADR-001](../adr/ADR-001-cognitive-pipeline.md), the
 [execution layer](execution-engine.md), and the
 [v0.1.0 release](../releases/v0.1.0.md).
+## Kernel entry boundary
+
+`Kernel` is the canonical application entry boundary. Its default construction
+uses `aegis_os.pipeline.composition.create_default_runtime()` rather than
+duplicating pipeline composition inside the Kernel.
+
+The canonical path is:
+
+```text
+caller
+  -> Kernel.process_task(task, request_id, execute)
+  -> CognitiveRuntime.run(...)
+  -> CognitiveRequestPipeline
+  -> optional simulated execution
+  -> execution-conformance validation
+  -> CanonicalRuntimeResult
+```
+
+`Kernel.boot()` starts only the canonical runtime. The application entry point
+in `aegis_os.main` uses `Kernel.process_task()` and serializes the canonical
+result through `CanonicalRuntimeResult.to_dict()`.
+
+The historical `Kernel.process_goal()` contract remains temporarily available
+through `LegacyCompatibilityAdapter`. The legacy runtime is constructed and
+started lazily only when a legacy goal is submitted:
+
+```text
+legacy caller
+  -> Kernel.process_goal(goal)
+  -> LegacyCompatibilityAdapter
+  -> CognitiveRuntime.process_goal(goal)
+  -> CognitiveOrchestrator
+```
+
+The compatibility adapter contains lifecycle and delegation behavior only. It
+does not implement analysis, planning, execution, validation, governance,
+evaluation, learning, or persistence. The legacy orchestrator is not part of
+the canonical Kernel path.
+
+The API and benchmark suite continue to use the shared composition root
+directly, preserving their established behavior.
