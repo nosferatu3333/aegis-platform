@@ -140,9 +140,11 @@ Protected: false
 Applicable rules: 0
 ```
 
+**Subsequent policy decision:** [`AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_DECISION.md`](../AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_DECISION.md)
+
 This is a non-blocking repository-governance risk. The successful authorized publication is not defective, but future unguarded changes to remote `main` may not receive platform-enforced review, status-check, or reference-update controls.
 
-No branch-protection or ruleset setting was changed under this assignment.
+No branch-protection or ruleset setting was changed under this assignment. The subsequent policy decision approves a staged `Evaluate`-mode ruleset but still requires a separate bounded Infrastructure implementation assignment.
 
 If the organization chooses to address this risk, it requires a separate explicit cross-domain Infrastructure/Governance decision defining:
 
@@ -153,7 +155,7 @@ If the organization chooses to address this risk, it requires a separate explici
 - Validation and rollback of settings.
 - Ownership and audit evidence.
 
-The Infrastructure Engineer is the technical decision owner for repository delivery controls. Documentation & Governance must participate to define and preserve the policy record. No remediation work is opened or authorized by this disposition.
+The Infrastructure Engineer is the technical decision owner for repository delivery controls. Documentation & Governance must participate to define and preserve the policy record. No settings implementation is opened or authorized by this disposition.
 
 ## Deferred Technical Debt
 
