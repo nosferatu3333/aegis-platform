@@ -1,6 +1,6 @@
 # Work Order WO-005: Environment Interaction Layer Architecture Acceptance and Implementation Specification
 
-**Status:** ACTIVE - ARCHITECTURE AND PRE-EXISTING SPECIFICATION REVISION AUTHORIZED
+**Status:** ACTIVE - ACCEPTED-DESIGN CANDIDATE DESIGNATED FOR REVIEW
 **Authority:** Product Owner / Founder activation decision, recorded by Documentation & Governance
 **Date authorized:** 2026-07-31
 **Authoritative base:** `be7502f73b51808d54728f912ead46ad0073c7b9`
@@ -240,13 +240,15 @@ Work and review must stop if:
 ## Current disposition
 
 ```text
-WO-005: ACTIVE - ARCHITECTURE AND PRE-EXISTING SPECIFICATION REVISION AUTHORIZED
+WO-005: ACTIVE - ACCEPTED-DESIGN CANDIDATE DESIGNATED FOR REVIEW
 Authoritative base: be7502f73b51808d54728f912ead46ad0073c7b9
+Governance amendment main: ad743b4568bbd82527f7ff192c5b10ca4d59c2e9
 Specification at base: PRE-EXISTING - PROPOSED
 Deliverable scope: FOUR EXISTING DOCUMENTATION PATHS
-Deliverable candidate designated: NO
-Architecture review: NOT STARTED
-QA review: NOT STARTED
+Deliverable candidate designated: f2376dce1bd4e312ca80a53aff9ab6212bb19289
+Candidate tree: 2b18f80f57e7b690e1773f67d20112d6dee10633
+Architecture review: PENDING
+QA review: PENDING
 Deliverable integration authority: NOT GRANTED
 Deliverable publication authority: NOT GRANTED
 Runtime implementation authority: NOT GRANTED
@@ -293,3 +295,44 @@ This amendment changes governance records only. It grants no authority to
 modify technical documents during the amendment, implement runtime code,
 change tests, integrate a deliverable, publish a deliverable, create tags or
 releases, alter rulesets, or perform cleanup.
+## Candidate designation - accepted design
+
+- Designation date: 2026-07-31
+- Authoritative architectural base: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Published governance amendment main: `ad743b4568bbd82527f7ff192c5b10ca4d59c2e9`
+- Canonical candidate: `f2376dce1bd4e312ca80a53aff9ab6212bb19289`
+- Candidate parent: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Candidate tree: `2b18f80f57e7b690e1773f67d20112d6dee10633`
+- Candidate subject: `Accept WO-005 environment interaction design`
+- Changed-path count: 4
+- Pre-existing specification disposition: accepted through bounded revision
+- Executable-code changes: 0
+- Test changes: 0
+- Dependency changes: 0
+- CI changes: 0
+- Governance changes in candidate: 0
+- Candidate worktree clean: yes
+- Architecture review: pending
+- QA review: pending
+- Integration authority: not granted
+- Publication authority: not granted
+- Runtime implementation authority: not granted
+
+### Canonical candidate paths
+
+1. `docs/adr/ADR-006-environment-interaction-layer.md`
+2. `docs/architecture/environment-interaction-layer.md`
+3. `docs/specifications/v0.5-phase-b-environment-interaction-layer.md`
+4. `docs/roadmap/ROADMAP.md`
+
+### Review authority
+
+Architecture Audit and QA & Verification are authorized to review only the
+immutable candidate SHA and tree recorded above. Review must confirm
+cross-document consistency, implementation-decision completeness,
+deterministic and security boundaries, path preservation, and the absence of
+runtime changes.
+
+Any correction creates a new candidate and requires a new designation.
+This record does not authorize integration, publication, push, modification of
+`main`, runtime implementation, tags, releases, ruleset changes, or cleanup.

@@ -547,3 +547,27 @@ The four-path deliverable boundary is unchanged. A future candidate must revise
 the existing ADR, architecture, specification, and roadmap directly from the
 exact architectural base. This amendment grants no additional technical,
 integration, publication, release, ruleset, or cleanup authority.
+## TR-009 WO-005 Accepted-Design Candidate Designation
+
+- Work order: WO-005 - Environment Interaction Layer Architecture Acceptance and Implementation Specification
+- Designation date: 2026-07-31
+- Authoritative architectural base: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Governance amendment main: `ad743b4568bbd82527f7ff192c5b10ca4d59c2e9`
+- Canonical candidate: `f2376dce1bd4e312ca80a53aff9ab6212bb19289`
+- Candidate parent: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Candidate tree: `2b18f80f57e7b690e1773f67d20112d6dee10633`
+- Candidate subject: `Accept WO-005 environment interaction design`
+- Candidate paths: exactly four existing documentation paths
+- ADR-006 state in candidate: accepted
+- Architecture state in candidate: accepted; runtime not implemented
+- Specification state in candidate: accepted implementation specification
+- Roadmap state in candidate: accepted design; runtime not implemented
+- Executable, test, dependency, CI, and governance candidate changes: none
+- Candidate state: **DESIGNATED FOR ARCHITECTURE AND QA REVIEW**
+- Integration authority: not granted
+- Publication authority: not granted
+- Runtime implementation authority: not granted
+
+Review must evaluate this immutable candidate. Any correction requires a new
+candidate and designation. No remote reference, main branch, tag, release,
+ruleset, runtime, or cleanup authority is granted.
