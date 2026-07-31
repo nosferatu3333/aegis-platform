@@ -1,6 +1,6 @@
 # Work Order WO-005: Environment Interaction Layer Architecture Acceptance and Implementation Specification
 
-**Status:** ACTIVE - ARCHITECTURE AND SPECIFICATION WORK AUTHORIZED
+**Status:** ACTIVE - ARCHITECTURE AND PRE-EXISTING SPECIFICATION REVISION AUTHORIZED
 **Authority:** Product Owner / Founder activation decision, recorded by Documentation & Governance
 **Date authorized:** 2026-07-31
 **Authoritative base:** `be7502f73b51808d54728f912ead46ad0073c7b9`
@@ -31,11 +31,14 @@ requirements to stable `ResourceReference` values. The current platform still
 has no provider-neutral environment-interaction runtime.
 
 The current roadmap identifies v0.5 Phase B as the next planned platform
-increment. The architecture document and ADR-006 are proposed and explicitly
-require an implementation specification before runtime implementation.
+increment. The architecture document and ADR-006 are proposed. A detailed
+Phase B implementation specification already exists at the authoritative base
+with status `Proposed implementation specification`.
 
-WO-005 authorizes only the bounded documentation and specification work needed
-to remove those open implementation decisions.
+WO-005 authorizes only the bounded documentation work needed to review,
+reconcile, revise, and accept the pre-existing specification together with
+ADR-006, the architecture document, and the roadmap. It does not authorize
+creation of a replacement specification or runtime implementation.
 
 ## Authoritative base
 
@@ -56,7 +59,7 @@ from the authoritative base in a WO-005 deliverable candidate:
 
 1. `docs/adr/ADR-006-environment-interaction-layer.md`
 2. `docs/architecture/environment-interaction-layer.md`
-3. `docs/specifications/v0.5-phase-b-environment-interaction-layer.md` - new
+3. `docs/specifications/v0.5-phase-b-environment-interaction-layer.md` - existing proposed specification; bounded revision authorized
 4. `docs/roadmap/ROADMAP.md`
 
 Any deliverable change outside this exact list requires a formal governance
@@ -158,7 +161,7 @@ The deliverable candidate must:
 
 1. change ADR-006 from proposed to an explicitly reviewed decision state;
 2. reconcile the architecture document with every locked decision;
-3. create the complete Phase B implementation specification;
+3. review, reconcile, and revise the existing Phase B implementation specification into an accepted implementation-ready state;
 4. update the roadmap only as required to reflect the accepted design and the
    remaining runtime boundary;
 5. identify the exact future implementation module and test paths;
@@ -237,9 +240,10 @@ Work and review must stop if:
 ## Current disposition
 
 ```text
-WO-005: ACTIVE - ARCHITECTURE AND SPECIFICATION WORK AUTHORIZED
+WO-005: ACTIVE - ARCHITECTURE AND PRE-EXISTING SPECIFICATION REVISION AUTHORIZED
 Authoritative base: be7502f73b51808d54728f912ead46ad0073c7b9
-Deliverable scope: FOUR DOCUMENTATION PATHS
+Specification at base: PRE-EXISTING - PROPOSED
+Deliverable scope: FOUR EXISTING DOCUMENTATION PATHS
 Deliverable candidate designated: NO
 Architecture review: NOT STARTED
 QA review: NOT STARTED
@@ -247,3 +251,45 @@ Deliverable integration authority: NOT GRANTED
 Deliverable publication authority: NOT GRANTED
 Runtime implementation authority: NOT GRANTED
 ```
+## Amendment 001 - Pre-existing specification correction
+
+- Amendment date: 2026-07-31
+- Amendment authority: explicit Product Owner / Founder authorization
+- Published authorization commit amended: `7a34c38d6210a2ed58f8966b3143ab67103424e4`
+- Architectural base inspected: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Existing specification: `docs/specifications/v0.5-phase-b-environment-interaction-layer.md`
+- Existing specification state: `Proposed implementation specification`
+- Amendment paths: governance records only
+- Runtime implementation: not authorized
+- Technical-document modification by this amendment: none
+
+### Correction
+
+The original WO-005 authorization incorrectly described the Phase B
+implementation specification as a new file and required its creation.
+
+The specification already exists at the exact authoritative architectural base.
+WO-005 therefore authorizes bounded review, reconciliation, revision, and
+acceptance of that existing proposed specification. It does not authorize
+replacement with an unrelated document.
+
+### Corrected deliverable interpretation
+
+The four authorized deliverable paths remain unchanged. All four are existing
+documents at the architectural base:
+
+1. `docs/adr/ADR-006-environment-interaction-layer.md`
+2. `docs/architecture/environment-interaction-layer.md`
+3. `docs/specifications/v0.5-phase-b-environment-interaction-layer.md`
+4. `docs/roadmap/ROADMAP.md`
+
+A candidate must compare directly against
+`be7502f73b51808d54728f912ead46ad0073c7b9` and may revise only these four
+existing documents.
+
+### Preservation boundary
+
+This amendment changes governance records only. It grants no authority to
+modify technical documents during the amendment, implement runtime code,
+change tests, integrate a deliverable, publish a deliverable, create tags or
+releases, alter rulesets, or perform cleanup.

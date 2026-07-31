@@ -520,10 +520,30 @@ records the completed state only and grants no additional authority.
 - Authorization-record publication: authorized for this governance commit only
 
 The authorized work accepts no runtime implementation. It may reconcile
-ADR-006, the Phase B architecture, the roadmap, and a new implementation
-specification only within the exact documented boundary.
+ADR-006, the Phase B architecture, the roadmap, and the pre-existing proposed
+implementation specification only within the exact documented boundary.
 
 The future deliverable must define provider-neutral, deterministic,
 simulation-first contracts and an exact later implementation allowlist before
 any Phase B Python work may begin. Separate explicit authority is required for
 candidate designation, integration, publication, and runtime implementation.
+## TR-008 WO-005 Governance Amendment 001
+
+- Work order: WO-005 - Environment Interaction Layer Architecture Acceptance and Implementation Specification
+- Amendment date: 2026-07-31
+- Amended authorization commit: `7a34c38d6210a2ed58f8966b3143ab67103424e4`
+- Architectural base: `be7502f73b51808d54728f912ead46ad0073c7b9`
+- Verified existing specification: `docs/specifications/v0.5-phase-b-environment-interaction-layer.md`
+- Verified base status: `Proposed implementation specification`
+- Correction: specification is pre-existing; bounded revision replaces creation
+- Amendment boundary: exactly two governance paths
+- Technical-document changes: none
+- Runtime implementation: not authorized
+- Deliverable integration: not authorized
+- Deliverable publication: not authorized
+- Amendment publication authority: granted for this governance commit only
+
+The four-path deliverable boundary is unchanged. A future candidate must revise
+the existing ADR, architecture, specification, and roadmap directly from the
+exact architectural base. This amendment grants no additional technical,
+integration, publication, release, ruleset, or cleanup authority.
