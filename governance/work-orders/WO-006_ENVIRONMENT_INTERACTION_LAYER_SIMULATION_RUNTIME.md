@@ -1,11 +1,11 @@
 # Work Order WO-006: Environment Interaction Layer Simulation Runtime
 
-**Status:** ENABLING CLOSED - SANITIZED CANDIDATE PUBLISHED; RUNTIME AND BENCHMARK IMPLEMENTATION NOT AUTHORIZED
+**Status:** RUNTIME ACTIVATION CANDIDATE - IMPLEMENTATION NOT STARTED; BENCHMARK AUTHORITY PENDING SEPARATE RECORD
 **Preparation authorized:** 2026-08-01
 **Authoritative base:** cfae92111eeb5355873a8c32c649514853564743
 **Architecture authority:** docs/adr/ADR-006-environment-interaction-layer.md
 **Implementation authority:** docs/specifications/v0.5-phase-b-environment-interaction-layer.md
-**Runtime implementation authority:** NOT GRANTED
+**Runtime implementation authority:** GRANTED BY EXPLICIT USER AUTHORIZATION; EFFECTIVE ONLY AFTER ACTIVATION-CANDIDATE REVIEW AND PUBLICATION
 **Benchmark implementation authority:** NOT GRANTED
 **Integration authority:** GRANTED AND EXHAUSTED FOR SANITIZED ENABLING CANDIDATE `39f9da8f892ee25c2ca7f24cad4d8c4ce2ddf311`
 **Remote-publication authority:** GRANTED AND EXHAUSTED FOR SANITIZED ENABLING CANDIDATE `39f9da8f892ee25c2ca7f24cad4d8c4ce2ddf311`
@@ -171,3 +171,90 @@ not activate, implement, verify, accept, or close the simulation runtime
 described by WO-006. Runtime and benchmark work require a separate explicit
 implementation authorization after this closure is independently reviewed and
 published.
+
+## Runtime implementation activation candidate
+
+- Explicit runtime authorization received: 2026-08-01
+- Activation base commit: `656fce452c9ac9fd287fd86f56dd6c1d476354c1`
+- Activation base tree: `8aca9c21817b52a2709858a0989159819a0cdbc5`
+- Accepted specification blob: `d3938dcc8d2330b2dbdd9282326485e3944ff108`
+- Runtime implementation authority: granted as a distinct decision
+- Benchmark implementation authority in this decision: not granted
+- Implementation started by this record: no
+- Integration authority: not granted
+- Remote-publication authority: not granted
+- Tag or release authority: not granted
+- Ruleset-change authority: not granted
+- Worktree-cleanup authority: not granted
+
+The authorization becomes operational only after this governance activation
+candidate is independently reviewed, promoted to local main under separate
+authority, and published to remote main under a separate exact-SHA
+authorization. Until those gates are complete, no runtime file may be created
+or modified.
+
+### Exact runtime implementation allowlist
+
+- `aegis_os/environment/__init__.py`
+- `aegis_os/environment/models.py`
+- `aegis_os/environment/errors.py`
+- `aegis_os/environment/adapter.py`
+- `aegis_os/environment/registry.py`
+- `aegis_os/environment/resolver.py`
+- `aegis_os/environment/policy.py`
+- `aegis_os/environment/approvals.py`
+- `aegis_os/environment/service.py`
+- `aegis_os/environment/simulated.py`
+
+No other `aegis_os` path is authorized.
+
+### Exact focused-test allowlist
+
+- `tests/environment/__init__.py`
+- `tests/environment/conftest.py`
+- `tests/environment/test_models.py`
+- `tests/environment/test_registry.py`
+- `tests/environment/test_resolver.py`
+- `tests/environment/test_policy.py`
+- `tests/environment/test_approvals.py`
+- `tests/environment/test_adapter.py`
+- `tests/environment/test_simulated.py`
+- `tests/environment/test_service.py`
+- `tests/environment/test_receipts.py`
+- `tests/environment/test_determinism.py`
+
+No existing test path may be modified. The complete existing suite must remain
+green.
+
+### Authorized implementation worktree
+
+- Planned branch: `implementation/wo-006-environment-runtime`
+- Planned worktree: `C:\Users\Woolis Shop\Projects\aegis-platform-wo-006-runtime`
+- Required starting point: the exact published activation-candidate HEAD
+- Runtime implementation commits: local only until independent review
+- Automatic merge, push, tag, release, or main modification: prohibited
+
+### Required runtime validation
+
+1. `python -m pytest -q tests/environment`
+2. `python -m pytest -q`
+3. `python -m ruff check aegis_os/environment tests/environment`
+4. `python -m ruff format --check aegis_os/environment tests/environment`
+5. `git diff --check`
+6. exact allowlist and commit-range validation
+7. deterministic repeated-output validation
+8. patched guards proving no filesystem, network, process, shell, environment,
+   clock, randomness, provider, credential, or machine-state access
+9. proof that Phase A resources, current pipeline, execution engine, API,
+   dashboard, benchmark legacy harness, dependencies, CI, and governance paths
+   remain unchanged by runtime implementation
+
+### Runtime preservation and stop gates
+
+Stop before or during implementation if the published activation base changes,
+the accepted specification changes, a path falls outside the exact allowlists,
+a contradiction remains, external I/O or LIVE behavior is proposed, a current
+pipeline/execution integration is proposed, Phase A resources would be
+re-resolved or modified, dependency drift appears, unrelated worktree changes
+exist, or any local or remote protected reference changes without separate
+authority.

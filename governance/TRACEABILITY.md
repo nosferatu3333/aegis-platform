@@ -723,3 +723,22 @@ publication of the exact sanitized enabling candidate. Those authorities were
 exercised and are exhausted. No continuing authority for runtime implementation,
 benchmark implementation, tagging, release creation, ruleset modification,
 branch deletion, or worktree cleanup is implied.
+
+## TR-016 WO-006 Runtime Implementation Activation
+
+- Work order: `WO-006`
+- Decision date: 2026-08-01
+- Decision type: explicit runtime implementation authorization
+- Activation base commit: `656fce452c9ac9fd287fd86f56dd6c1d476354c1`
+- Activation base tree: `8aca9c21817b52a2709858a0989159819a0cdbc5`
+- Runtime package boundary: 10 new files under `aegis_os/environment`
+- Focused-test boundary: 12 new files under `tests/environment`
+- Runtime implementation performed by this record: no
+- Benchmark implementation authority in this decision: not granted
+- Integration or publication authority: not granted
+- Current gate: independent review of the local activation candidate
+
+This decision is separate from benchmark authorization. It records the exact
+runtime and focused-test boundaries, implementation worktree, validation
+commands, preservation gates, and stop conditions required before runtime
+implementation may begin.
