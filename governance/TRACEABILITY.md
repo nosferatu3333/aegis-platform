@@ -695,3 +695,31 @@ publication-eligible WO-006 enabling candidate. It does not invalidate or
 delete the preserved private evidence lineage and does not authorize runtime
 implementation, benchmark implementation, integration, publication, tags,
 releases, ruleset changes, or worktree cleanup.
+## TR-015 WO-006 Sanitized Enabling Publication Closure
+
+- Work order: `WO-006`
+- Closed phase: governance enabling and sanitized publication only
+- Published remote-main commit: `39f9da8f892ee25c2ca7f24cad4d8c4ce2ddf311`
+- Published remote-main tree: `902adecb1679c805b297cdb41432a97fc11b4c87`
+- Published sanitized operations archive: `f38f8ef1590f6522d354533759a63f6a19010c94`
+- Published sanitized archive tree: `e5de6ba68bf58fb1704f176d9a7153de7e2dd716`
+- Publication date: 2026-08-01
+- Independent architecture review: PASS
+- Independent governance review: PASS
+- Publication blockers: NONE
+- Local main synchronized with origin/main and live remote main: YES
+- Original private candidate preserved: `0bdd8ce58566c806136f1d85347d593fb7c27cbd`
+- Runtime changes included in the published lineage: NONE
+- Test changes included in the published lineage: NONE
+- Benchmark changes included in the published lineage: NONE
+- Dependency changes included in the published lineage: NONE
+- CI changes included in the published lineage: NONE
+- Runtime implementation authority after closure: NOT GRANTED
+- Benchmark implementation authority after closure: NOT GRANTED
+- Current disposition: WO-006 ENABLING PHASE PUBLISHED AND CLOSED; IMPLEMENTATION AUTHORIZATION REQUIRED
+
+The Product Owner explicitly authorized local-main promotion and remote-main
+publication of the exact sanitized enabling candidate. Those authorities were
+exercised and are exhausted. No continuing authority for runtime implementation,
+benchmark implementation, tagging, release creation, ruleset modification,
+branch deletion, or worktree cleanup is implied.

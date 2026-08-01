@@ -1,14 +1,14 @@
 # Work Order WO-006: Environment Interaction Layer Simulation Runtime
 
-**Status:** ENABLING - LOCAL GOVERNANCE CANDIDATE; ACTIVATION NOT GRANTED
+**Status:** ENABLING CLOSED - SANITIZED CANDIDATE PUBLISHED; RUNTIME AND BENCHMARK IMPLEMENTATION NOT AUTHORIZED
 **Preparation authorized:** 2026-08-01
 **Authoritative base:** cfae92111eeb5355873a8c32c649514853564743
 **Architecture authority:** docs/adr/ADR-006-environment-interaction-layer.md
 **Implementation authority:** docs/specifications/v0.5-phase-b-environment-interaction-layer.md
 **Runtime implementation authority:** NOT GRANTED
 **Benchmark implementation authority:** NOT GRANTED
-**Integration authority:** NOT GRANTED
-**Remote-publication authority:** NOT GRANTED
+**Integration authority:** GRANTED AND EXHAUSTED FOR SANITIZED ENABLING CANDIDATE `39f9da8f892ee25c2ca7f24cad4d8c4ce2ddf311`
+**Remote-publication authority:** GRANTED AND EXHAUSTED FOR SANITIZED ENABLING CANDIDATE `39f9da8f892ee25c2ca7f24cad4d8c4ce2ddf311`
 **Tag and release authority:** NOT GRANTED
 **Ruleset-change authority:** NOT GRANTED
 **Worktree-cleanup authority:** NOT GRANTED
@@ -144,3 +144,30 @@ same accepted specification correction and WO-006 enabling boundary.
 
 The sanitization changes no architecture, runtime contract, package allowlist,
 test allowlist, benchmark obligation, security boundary, or activation gate.
+## Post-publication enabling closure
+
+- Published remote-main commit: `39f9da8f892ee25c2ca7f24cad4d8c4ce2ddf311`
+- Published remote-main tree: `902adecb1679c805b297cdb41432a97fc11b4c87`
+- Published sanitized operations archive: `f38f8ef1590f6522d354533759a63f6a19010c94`
+- Published sanitized archive tree: `e5de6ba68bf58fb1704f176d9a7153de7e2dd716`
+- Publication completed: 2026-08-01
+- Publication method: exact reviewed SHA with lease on the previously published main
+- Local main, origin/main, and live remote main synchronized: yes
+- Architecture review: pass
+- Governance review: pass
+- Blocking issues at publication: none
+- Personal path references in the sanitized archive: none detected
+- Common credential-pattern findings: none detected
+- Runtime implementation performed: no
+- Benchmark implementation performed: no
+- Runtime implementation authority: not granted
+- Benchmark implementation authority: not granted
+- Tag or release created: no
+- Ruleset changed: no
+- Branch deletion or worktree cleanup performed: no
+
+This closes only the WO-006 governance enabling and publication phase. It does
+not activate, implement, verify, accept, or close the simulation runtime
+described by WO-006. Runtime and benchmark work require a separate explicit
+implementation authorization after this closure is independently reviewed and
+published.
