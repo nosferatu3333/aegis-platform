@@ -13,9 +13,9 @@ This register links authoritative engineering reviews, decisions, and implementa
 
 | Sequence | Record | Relationship | Repository reference |
 |---|---|---|---|
-| 1 | Original Architecture Review — Canonical Runtime Architecture | Approved the canonical runtime architecture and classified the remaining findings as implementation hardening tasks rather than architectural blockers. | Canonical repository location not recorded at the time of this entry. |
-| 2 | Engineering Director Decision — Canonical Runtime Architecture Approval | Accepted the Architecture Review conclusion and authorized creation of the implementation work order. | Decision directive received 2026-07-28; canonical repository location not recorded at the time of this entry. |
-| 3 | Implementation Work Order — Canonical Runtime Contract Hardening | Defines the authorized scope, exclusions, acceptance criteria, deliverables, verification requirements, and final closure evidence for the accepted hardening work. | [`work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md`](work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md) |
+| 1 | Original Architecture Review ÔÇö Canonical Runtime Architecture | Approved the canonical runtime architecture and classified the remaining findings as implementation hardening tasks rather than architectural blockers. | Canonical repository location not recorded at the time of this entry. |
+| 2 | Engineering Director Decision ÔÇö Canonical Runtime Architecture Approval | Accepted the Architecture Review conclusion and authorized creation of the implementation work order. | Decision directive received 2026-07-28; canonical repository location not recorded at the time of this entry. |
+| 3 | Implementation Work Order ÔÇö Canonical Runtime Contract Hardening | Defines the authorized scope, exclusions, acceptance criteria, deliverables, verification requirements, and final closure evidence for the accepted hardening work. | [`work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md`](work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md) |
 
 **Implementation authority:** Work was authorized only within the scope of `WO-002`. The approved architecture remained an upstream constraint and was not reopened by this traceability entry.
 
@@ -43,16 +43,16 @@ The next approved Phase I convergence direction is recorded, without implementat
 
 ```text
 main
-→ Kernel
-→ explicit legacy compatibility adapter
-→ canonical CognitiveRuntime
+ÔåÆ Kernel
+ÔåÆ explicit legacy compatibility adapter
+ÔåÆ canonical CognitiveRuntime
 ```
 
 This direction is outside WO-002. Current post-HEAD execution-conformance work appears to be a separate slice and must remain under a separate authorization boundary. No new work order was opened as part of WO-002 closure.
 
 ### TR-002: Runtime Execution-Conformance Validation
 
-**Status:** Closed — Candidate 2 Accepted
+**Status:** Closed ÔÇö Candidate 2 Accepted
 **Recorded:** 2026-07-29
 **Amended:** 2026-07-29
 **Closed:** 2026-07-30
@@ -60,30 +60,30 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 
 | Sequence | Record | Relationship | Repository reference |
 |---|---|---|---|
-| 1 | WO-002 Closure — Canonical Runtime Contract Hardening | Closed the preceding runtime hardening work and established that execution-conformance work required a separate authorization boundary. | [`work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md`](work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md) |
-| 2 | Preserved Implementation — Runtime Execution-Conformance Validation | Contains the initial nine-file vertical implementation slice governed by WO-003. | Commit `5faf3007bf10832806647fc5835a73279cbfdf45` (`Implement execution conformance validation`) |
+| 1 | WO-002 Closure ÔÇö Canonical Runtime Contract Hardening | Closed the preceding runtime hardening work and established that execution-conformance work required a separate authorization boundary. | [`work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md`](work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md) |
+| 2 | Preserved Implementation ÔÇö Runtime Execution-Conformance Validation | Contains the initial nine-file vertical implementation slice governed by WO-003. | Commit `5faf3007bf10832806647fc5835a73279cbfdf45` (`Implement execution conformance validation`) |
 | 3 | Architecture Auditor Decision | Classified the preserved implementation as one coherent Phase I vertical slice and returned `AUTHORIZE AS ONE WORK ORDER`. | Decision received 2026-07-29; canonical repository location not recorded at the time of this entry. |
-| 4 | Engineering Director Decision — WO-003 Authorization | Assigned `WO-003`, authorized the preserved implementation boundary, and required correction of failed-conformance handling before acceptance. | Authorization directive received 2026-07-29; canonical repository location not recorded at the time of this entry. |
-| 5 | Work Order — Runtime Execution-Conformance Validation | Defines the authorized files, blocking correction, acceptance criteria, non-goals, role gates, and roadmap placement. | [`work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md`](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md) |
-| 6 | Architecture Auditor — WO-003 Architectural Scope Reconciliation | Issued `AMEND WO-003 AND RECONSTRUCT`, accepted the final runtime architecture, rejected the contaminated branch as a candidate, and fixed the bounded reconstruction scope. | Reconciliation decision received 2026-07-29; canonical repository location not recorded at the time of this entry. |
-| 7 | Engineering Director — GOV-003-A1 | Authorized the governance amendment and direct handoff to Release & Integration for bounded reconstruction. | Amendment assignment received 2026-07-29; implemented by the amended work-order record. |
-| 8 | Formal Amendment — WO-GOV-003 | Formalized the authoritative base, exact typed-simulation path scope, non-exception `conformance_failed` semantics, reconstruction limitations, and candidate evidence package. | Recorded in the authoritative amended work order on 2026-07-29. |
-| 9 | Architecture Authorization Review — WO-GOV-003 | Confirmed the amendment with a required clarification separating pre-freeze technical validation from post-freeze independent review. | `WO-003 AMENDMENT CONFIRMED WITH REQUIRED CLARIFICATIONS`, received 2026-07-29 |
+| 4 | Engineering Director Decision ÔÇö WO-003 Authorization | Assigned `WO-003`, authorized the preserved implementation boundary, and required correction of failed-conformance handling before acceptance. | Authorization directive received 2026-07-29; canonical repository location not recorded at the time of this entry. |
+| 5 | Work Order ÔÇö Runtime Execution-Conformance Validation | Defines the authorized files, blocking correction, acceptance criteria, non-goals, role gates, and roadmap placement. | [`work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md`](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md) |
+| 6 | Architecture Auditor ÔÇö WO-003 Architectural Scope Reconciliation | Issued `AMEND WO-003 AND RECONSTRUCT`, accepted the final runtime architecture, rejected the contaminated branch as a candidate, and fixed the bounded reconstruction scope. | Reconciliation decision received 2026-07-29; canonical repository location not recorded at the time of this entry. |
+| 7 | Engineering Director ÔÇö GOV-003-A1 | Authorized the governance amendment and direct handoff to Release & Integration for bounded reconstruction. | Amendment assignment received 2026-07-29; implemented by the amended work-order record. |
+| 8 | Formal Amendment ÔÇö WO-GOV-003 | Formalized the authoritative base, exact typed-simulation path scope, non-exception `conformance_failed` semantics, reconstruction limitations, and candidate evidence package. | Recorded in the authoritative amended work order on 2026-07-29. |
+| 9 | Architecture Authorization Review ÔÇö WO-GOV-003 | Confirmed the amendment with a required clarification separating pre-freeze technical validation from post-freeze independent review. | `WO-003 AMENDMENT CONFIRMED WITH REQUIRED CLARIFICATIONS`, received 2026-07-29 |
 | 10 | Candidate 1 Designation | Fixed the validated reconstruction as the immutable review target under separate release authority. | Tag `qa/wo-003-candidate-1` at `7651fe4ac2fe242459d9864fb9256920fe3b2d9f`; base `4d1842087289336675d43d7cd650bd80f57b8c8d` |
-| 11 | Documentation & Governance — GOV-003-A2 | Corrected candidate-gate sequencing and reconciled the amendment commit references without moving Candidate 1. | Governance correction recorded 2026-07-29 |
-| 12 | Candidate 1 Ratification — WO-GOV-003B | Ratified the existing annotated tag and peeled commit as immutable governance references without replacing or modifying either object. | Tag `qa/wo-003-candidate-1`; tag object `cfbefaa046b043d2fa0b099a967f2936915499f8`; candidate `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
-| 13 | Candidate 1 Final Verdict — WO-GOV-003C | Preserved Candidate 1 QA acceptance, recorded the Architecture rejection and blocking defect, and authorized a bounded Candidate 2 correction. | `CANDIDATE 1 QA ACCEPTED`; `CANDIDATE 1 ARCHITECTURE REJECTED`; recorded 2026-07-30 |
+| 11 | Documentation & Governance ÔÇö GOV-003-A2 | Corrected candidate-gate sequencing and reconciled the amendment commit references without moving Candidate 1. | Governance correction recorded 2026-07-29 |
+| 12 | Candidate 1 Ratification ÔÇö WO-GOV-003B | Ratified the existing annotated tag and peeled commit as immutable governance references without replacing or modifying either object. | Tag `qa/wo-003-candidate-1`; tag object `cfbefaa046b043d2fa0b099a967f2936915499f8`; candidate `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
+| 13 | Candidate 1 Final Verdict ÔÇö WO-GOV-003C | Preserved Candidate 1 QA acceptance, recorded the Architecture rejection and blocking defect, and authorized a bounded Candidate 2 correction. | `CANDIDATE 1 QA ACCEPTED`; `CANDIDATE 1 ARCHITECTURE REJECTED`; recorded 2026-07-30 |
 | 14 | Candidate 2 Designation | Fixed the bounded correction as the second immutable WO-003 review target without altering Candidate 1. | Tag `qa/wo-003-candidate-2`; tag object `3b674e57b18568fe1e2a4509f8448ffeaff647ee`; candidate `eee135547a768c3cad95c1e2e5342e9203620463`; parent `7651fe4ac2fe242459d9864fb9256920fe3b2d9f` |
 | 15 | Candidate 2 Final Review | Recorded QA `PASS` and Architecture `APPROVE` against the same immutable Candidate 2 SHA, with no blocking findings and no candidate change during review. | `CANDIDATE 2 ARCHITECTURE ACCEPTED`; final Architecture audit received 2026-07-30 |
 | 16 | Python 3.11 Minimum-Version Evidence | Satisfied the sole remaining closure gate through evidence-only validation against unchanged Candidate 2 using CPython 3.11.9. | `52 passed`; `97 passed`; `172 passed`; dependency integrity, Ruff lint, and Ruff formatting passed; received 2026-07-30 |
-| 17 | Final Governance Closure | Reconciled INT-004 integration verification, QA, Architecture, and Python 3.11 evidence; preserved deferred debt; formally closed WO-003 without granting integration authority. | `WO-003 CLOSED — CANDIDATE 2 ACCEPTED`; recorded 2026-07-30 |
+| 17 | Final Governance Closure | Reconciled INT-004 integration verification, QA, Architecture, and Python 3.11 evidence; preserved deferred debt; formally closed WO-003 without granting integration authority. | `WO-003 CLOSED ÔÇö CANDIDATE 2 ACCEPTED`; recorded 2026-07-30 |
 
 #### Current Governance State
 
 | Control | Status |
 |---|---|
 | Work order | `WO-003` |
-| Work-order status | **CLOSED — CANDIDATE 2 ACCEPTED** |
+| Work-order status | **CLOSED ÔÇö CANDIDATE 2 ACCEPTED** |
 | Authoritative base | `4d1842087289336675d43d7cd650bd80f57b8c8d` |
 | Candidate 1 tag | `qa/wo-003-candidate-1` |
 | Candidate 1 tag object | `cfbefaa046b043d2fa0b099a967f2936915499f8` |
@@ -101,11 +101,11 @@ This direction is outside WO-002. Current post-HEAD execution-conformance work a
 | Candidate 2 Architecture | **APPROVE** |
 | Candidate 2 disposition | **IMMUTABLE AND INDEPENDENTLY ACCEPTED** |
 | INT-004 integration verification | **PASS** |
-| Python 3.11 evidence | **PASS — CPython 3.11.9** |
+| Python 3.11 evidence | **PASS ÔÇö CPython 3.11.9** |
 | Blocking findings | **NONE** |
 | Documentation & Governance | **CLOSED** |
 | Current gate | **ALL WO-003 CLOSURE GATES SATISFIED** |
-| Next eligible owner | **Release & Integration — separate explicit integration assignment required** |
+| Next eligible owner | **Release & Integration ÔÇö separate explicit integration assignment required** |
 
 #### Authorization Boundary
 
@@ -145,7 +145,7 @@ The Candidate 2 correction contains one commit after Candidate 1 and changes onl
 
 The complete base-to-Candidate-2 delta remains the exact 16-path WO-003 allowlist. The final review confirmed the absence of infrastructure and governance ancestry, `aegis_os/core/runtime_errors.py`, `RuntimeConformanceError`, scope expansion, and new API endpoints.
 
-QA recorded `PASS`, and Architecture recorded `APPROVE — CANDIDATE 2 ARCHITECTURE ACCEPTED`, against the same exact Candidate 2 SHA. Recorded evidence includes 52 focused runtime/API tests, 97 complete WO-003 tests, 172 repository tests, Ruff lint and formatting, dependency integrity, pre-commit configuration, whitespace validation, and identity and cleanliness checks. Candidate 2 and Candidate 1 remained unchanged throughout review.
+QA recorded `PASS`, and Architecture recorded `APPROVE ÔÇö CANDIDATE 2 ARCHITECTURE ACCEPTED`, against the same exact Candidate 2 SHA. Recorded evidence includes 52 focused runtime/API tests, 97 complete WO-003 tests, 172 repository tests, Ruff lint and formatting, dependency integrity, pre-commit configuration, whitespace validation, and identity and cleanliness checks. Candidate 2 and Candidate 1 remained unchanged throughout review.
 
 The initial validation ran on Python 3.14.6, leaving the exact Python 3.11 evidence requirement from WO-GOV-003C as the sole remaining closure gate.
 
@@ -185,9 +185,9 @@ WO-003 is closed. Release & Integration is the next eligible owner but may act o
 
 | Sequence | Record | Relationship | Repository reference |
 |---|---|---|---|
-| 1 | WO-INF-001 — Repository Validation and CI Baseline | Defines and records the accepted infrastructure-only validation baseline. | [`work-orders/WO-INF-001_REPOSITORY_VALIDATION_AND_CI_BASELINE.md`](work-orders/WO-INF-001_REPOSITORY_VALIDATION_AND_CI_BASELINE.md) |
+| 1 | WO-INF-001 ÔÇö Repository Validation and CI Baseline | Defines and records the accepted infrastructure-only validation baseline. | [`work-orders/WO-INF-001_REPOSITORY_VALIDATION_AND_CI_BASELINE.md`](work-orders/WO-INF-001_REPOSITORY_VALIDATION_AND_CI_BASELINE.md) |
 | 2 | Accepted implementation commit | Implements the validation and CI baseline verified by local and remote evidence. | Commit `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` (`Establish repository validation and CI baseline`) |
-| 3 | WO-INF-002 — Remote CI Verification | Records the exact GitHub Actions run, job, branch, commit, runner, Python version, validation results, and QA disposition. | [`work-orders/WO-INF-002_REMOTE_CI_VERIFICATION.md`](work-orders/WO-INF-002_REMOTE_CI_VERIFICATION.md) |
+| 3 | WO-INF-002 ÔÇö Remote CI Verification | Records the exact GitHub Actions run, job, branch, commit, runner, Python version, validation results, and QA disposition. | [`work-orders/WO-INF-002_REMOTE_CI_VERIFICATION.md`](work-orders/WO-INF-002_REMOTE_CI_VERIFICATION.md) |
 | 4 | Independent QA decision | Accepted the authoritative remote-CI evidence with no discrepancies. | `REMOTE CI EVIDENCE ACCEPTED`, recorded 2026-07-29 |
 
 #### Closure State
@@ -200,7 +200,7 @@ WO-003 is closed. Release & Integration is the next eligible owner but may act o
 | Verified commit | `ead99d3e15ffb920541c039c8c5cef1b8f4973a0` |
 | Remote branch | `ci/wo-inf-002-ead99d3` |
 | Workflow run | [30484391539](https://github.com/nosferatu3333/aegis-platform/actions/runs/30484391539) |
-| Job | `90686292534` — `Python 3.11 validation` |
+| Job | `90686292534` ÔÇö `Python 3.11 validation` |
 | Runner | Ubuntu 24.04.4 LTS |
 | Python | CPython 3.11.15 |
 | Test result | `168 passed` |
@@ -255,8 +255,8 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | Release verdict | **PASS** |
 | QA verdict | **PASS** |
 | Architecture verdict | **APPROVE** |
-| Governance disposition | **ACCEPTED — ELIGIBLE FOR CONTROLLED PROMOTION** |
-| Promotion authorization | **AUTHORIZED — ATOMIC LOCAL-MAIN CAS ONLY** |
+| Governance disposition | **ACCEPTED ÔÇö ELIGIBLE FOR CONTROLLED PROMOTION** |
+| Promotion authorization | **AUTHORIZED ÔÇö ATOMIC LOCAL-MAIN CAS ONLY** |
 | Expected old local `main` | `c137005b08c449a8e19f7734098865dd10181955` |
 | Authorized new local `main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | Authorized new tree | `23f458c2d8a1576c8068aac3de0350dbc792d421` |
@@ -265,25 +265,25 @@ The dedicated CI branch must remain preserved. Deletion requires separate author
 | Current local `main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | Remote-tracking `origin/main` | `c137005b08c449a8e19f7734098865dd10181955` |
 | Live remote `main` | `c137005b08c449a8e19f7734098865dd10181955` |
-| Post-promotion validation | **PASS — CPython 3.11.9** |
+| Post-promotion validation | **PASS ÔÇö CPython 3.11.9** |
 | Rollback | **NOT REQUIRED** |
-| Local-promotion disposition | **ACCEPTED — ELIGIBLE FOR CONTROLLED REMOTE PUBLICATION** |
-| Remote publication authorization | **EXECUTED — COMPLETE** |
+| Local-promotion disposition | **ACCEPTED ÔÇö ELIGIBLE FOR CONTROLLED REMOTE PUBLICATION** |
+| Remote publication authorization | **EXECUTED ÔÇö COMPLETE** |
 | Expected old remote `main` | `c137005b08c449a8e19f7734098865dd10181955` |
 | Authorized publication source | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | Authorized publication tree | `23f458c2d8a1576c8068aac3de0350dbc792d421` |
 | Authorized destination | `refs/heads/main` |
 | Other branches and tags | **NOT AUTHORIZED** |
-| Remote publication result | **PASS — EXACTLY ONE DESTINATION** |
+| Remote publication result | **PASS ÔÇö EXACTLY ONE DESTINATION** |
 | Current local `main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | Current remote-tracking `origin/main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | Current live remote `main` | `f727d9f9f2b82b55f79e31008bb79b71477fbc84` |
 | Canonical remote tree | `23f458c2d8a1576c8068aac3de0350dbc792d421` |
-| Final publication disposition | **ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE** |
+| Final publication disposition | **ACCEPTED ÔÇö REMOTE MAIN PUBLICATION COMPLETE** |
 | Release created | **NO** |
 | WO-004 activated | **NO** |
-| Branch protection | **DISABLED; 0 APPLICABLE RULES — NON-BLOCKING GOVERNANCE RISK** |
-| Further authority | **NONE — SEPARATE EXPLICIT AUTHORIZATION REQUIRED** |
+| Branch protection | **DISABLED; 0 APPLICABLE RULES ÔÇö NON-BLOCKING GOVERNANCE RISK** |
+| Further authority | **NONE ÔÇö SEPARATE EXPLICIT AUTHORIZATION REQUIRED** |
 
 The original composition authorization preserves the current worktree, existing worktrees, Candidate 1, Candidate 2, their tags, and the unrelated uncommitted documentation paths. It did not itself authorize modification of `main`, push, publication, release, source-lineage merge, governance-lineage merge, cleanup, or WO-004 activation.
 
@@ -313,7 +313,7 @@ QA completed minimum-version validation on CPython 3.11.9: 52 focused tests, 97 
 
 The exact 18-path Python Ruff checks passed, and repository-wide Ruff output remained identical to the accepted three-diagnostic protected-base baseline. Candidate, recovery, local and remote `main`, unrelated-work, and clean-integration-state preservation were confirmed.
 
-The immutable composition is `ACCEPTED — ELIGIBLE FOR CONTROLLED PROMOTION`. The disposition itself granted no promotion authority. The subsequent controlled local-main authorization now grants Release & Integration only the exact bounded atomic operation and recovery described in that record.
+The immutable composition is `ACCEPTED ÔÇö ELIGIBLE FOR CONTROLLED PROMOTION`. The disposition itself granted no promotion authority. The subsequent controlled local-main authorization now grants Release & Integration only the exact bounded atomic operation and recovery described in that record.
 
 #### Controlled Local-Main Promotion Authorization
 
@@ -333,7 +333,7 @@ The preliminary read-only preflight stop was non-mutating, corrected before prom
 
 Post-promotion CPython 3.11.9 validation passed with 52 focused tests, 97 complete WO-003 tests, and 172 repository tests. Dependency integrity, exact 18-path Ruff checks, repository no-regression, whitespace, exact 21-path boundary, and clean-state controls passed. Recovery, candidate, integration, and unrelated-work preservation were confirmed. Rollback was not required.
 
-The promoted local `main` is `ACCEPTED — ELIGIBLE FOR CONTROLLED REMOTE PUBLICATION`. The disposition itself granted no remote authority. The subsequent controlled remote-publication authorization now grants Release & Integration only the exact bounded push described in that record.
+The promoted local `main` is `ACCEPTED ÔÇö ELIGIBLE FOR CONTROLLED REMOTE PUBLICATION`. The disposition itself granted no remote authority. The subsequent controlled remote-publication authorization now grants Release & Integration only the exact bounded push described in that record.
 
 #### Controlled Remote-Publication Authorization
 
@@ -353,11 +353,11 @@ Local `main`, remote-tracking `origin/main`, live remote `main`, and the integra
 
 Remote `main` reports `Protected: false` and `Applicable rules: 0`. This is recorded as a non-blocking repository-governance risk. No protection setting is changed or authorized by this disposition; any response requires a separate Infrastructure/Governance decision.
 
-The final disposition is `ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE`. No further push, release, deployment, branch-protection change, cleanup, WO-004 activation, or engineering work is authorized.
+The final disposition is `ACCEPTED ÔÇö REMOTE MAIN PUBLICATION COMPLETE`. No further push, release, deployment, branch-protection change, cleanup, WO-004 activation, or engineering work is authorized.
 
 ### TR-005: Main-Branch Protection Governance Decision
 
-**Status:** CLOSED — ACTIVE RULESET IMPLEMENTED AND VERIFIED
+**Status:** CLOSED ÔÇö ACTIVE RULESET IMPLEMENTED AND VERIFIED
 **Recorded:** 2026-07-31
 **Amended:** 2026-07-31
 **Implemented:** 2026-07-31
@@ -367,9 +367,9 @@ The final disposition is `ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE`. No fur
 | Sequence | Record | Relationship | Repository reference |
 |---|---|---|---|
 | 1 | Final Remote-Publication Governance Disposition | Established canonical remote `main` and recorded the absence of protection as a repository-governance risk requiring a separate decision. | [`work-orders/WO-002_WO-003_FINAL_REMOTE_PUBLICATION_GOVERNANCE_DISPOSITION.md`](work-orders/WO-002_WO-003_FINAL_REMOTE_PUBLICATION_GOVERNANCE_DISPOSITION.md) |
-| 2 | Product Owner / Founder Decision — Staged Policy | Approved exact-SHA identity, a minimal `Evaluate` ruleset, personal-repository retention, deferred full enforcement, and a bounded Infrastructure handoff. | Original policy commit `d6beb6422a45de8036f19ede375eab3295e4bcb9` |
+| 2 | Product Owner / Founder Decision ÔÇö Staged Policy | Approved exact-SHA identity, a minimal `Evaluate` ruleset, personal-repository retention, deferred full enforcement, and a bounded Infrastructure handoff. | Original policy commit `d6beb6422a45de8036f19ede375eab3295e4bcb9` |
 | 3 | Canonical Main-Branch Protection Policy | Defined the original staged policy, enabled and absent controls, emergency policy, implementation boundary, and non-authority controls. | [`AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_DECISION.md`](AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_DECISION.md) |
-| 4 | Evaluate-Mode Implementation Attempt | GitHub atomically rejected `Evaluate` enforcement with HTTP 422 because the current plan does not support it. No ruleset or repository state changed. | Verdict: `CAPABILITY BLOCKED — NO MUTATION` |
+| 4 | Evaluate-Mode Implementation Attempt | GitHub atomically rejected `Evaluate` enforcement with HTTP 422 because the current plan does not support it. No ruleset or repository state changed. | Verdict: `CAPABILITY BLOCKED ÔÇö NO MUTATION` |
 | 5 | Product Owner / Founder Proportionality Decision | Rejected an Enterprise upgrade as disproportionate and approved changing only enforcement from `Evaluate` to `Active`. | Decision received 2026-07-31 |
 | 6 | Minimal Active Enforcement Amendment | Recorded the capability failure, exact Active configuration, compensating controls, emergency policy, implementation limits, and required handoff. | [`AEGIS_MAIN_BRANCH_PROTECTION_ACTIVE_ENFORCEMENT_AMENDMENT.md`](AEGIS_MAIN_BRANCH_PROTECTION_ACTIVE_ENFORCEMENT_AMENDMENT.md); commit `c1cd3d0b11577eb894e121f4014efd8937258591` |
 | 7 | Infrastructure Implementation | Created exactly one Active ruleset and returned the authenticated payload, pre/post evidence, preservation checks, and final verdict. | [`AEGIS_MAIN_BRANCH_PROTECTION_RULESET_IMPLEMENTATION_REPORT.md`](AEGIS_MAIN_BRANCH_PROTECTION_RULESET_IMPLEMENTATION_REPORT.md); verdict `IMPLEMENTED AND VERIFIED` |
@@ -386,7 +386,7 @@ The final disposition is `ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE`. No fur
 | Ruleset ID | `20133752` |
 | Ruleset target | only `refs/heads/main` |
 | Exclusions | **NONE** |
-| Enforcement | **ACTIVE — VERIFIED** |
+| Enforcement | **ACTIVE ÔÇö VERIFIED** |
 | Block force pushes / non-fast-forward updates | **ENABLED** |
 | Restrict deletion | **ENABLED** |
 | Required pull requests | **DISABLED** |
@@ -399,12 +399,12 @@ The final disposition is `ACCEPTED — REMOTE MAIN PUBLICATION COMPLETE`. No fur
 | Classic branch protection | **ABSENT** |
 | Git reference preservation | **VERIFIED** |
 | Unauthorized repository mutations | **NONE OBSERVED** |
-| Enterprise upgrade | **REJECTED — DISPROPORTIONATE FOR CURRENT REQUIREMENT** |
+| Enterprise upgrade | **REJECTED ÔÇö DISPROPORTIONATE FOR CURRENT REQUIREMENT** |
 | Personal repository | **RETAINED FOR CURRENT PHASE** |
 | Organization migration | **DEFERRED UNTIL OPERATING-MODEL TRIGGERS** |
 | WO-004 | **NOT ACTIVATED** |
 | Work-item status | **CLOSED** |
-| Next eligible owner | **NONE — SEPARATE EXPLICIT GOVERNANCE DECISION REQUIRED** |
+| Next eligible owner | **NONE ÔÇö SEPARATE EXPLICIT GOVERNANCE DECISION REQUIRED** |
 
 The original `Evaluate` request failed atomically and caused no mutation. The approved amendment changed only enforcement to `Active`.
 
@@ -420,28 +420,28 @@ No standing push authority, ruleset-change authority, emergency suspension, rele
 
 Final governance decision:
 
-`APPROVED — IMPLEMENTATION ACCEPTED AND CONTROL OPERATIONAL`
+`APPROVED ÔÇö IMPLEMENTATION ACCEPTED AND CONTROL OPERATIONAL`
 
 ### TR-006: Kernel Canonical Runtime Convergence
 
-**Status:** Active — Implementation Authorized
+**Status:** Active ÔÇö Implementation Authorized
 **Recorded:** 2026-07-31
 **Subject:** Convergence of the Kernel and application entry point onto the canonical runtime
 
 | Sequence | Record | Relationship | Repository reference |
 |---|---|---|---|
-| 1 | WO-002 Closure Direction | Recorded the future Phase I convergence direction `main → Kernel → explicit legacy compatibility adapter → canonical CognitiveRuntime` without implementation authority. | [`work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md`](work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md) |
+| 1 | WO-002 Closure Direction | Recorded the future Phase I convergence direction `main ÔåÆ Kernel ÔåÆ explicit legacy compatibility adapter ÔåÆ canonical CognitiveRuntime` without implementation authority. | [`work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md`](work-orders/WO-002_CANONICAL_RUNTIME_CONTRACT_HARDENING.md) |
 | 2 | WO-003 Explicit Exclusion | Confirmed that Kernel/main convergence was outside WO-003 and required a separate authorization boundary. | [`work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md`](work-orders/WO-003_RUNTIME_EXECUTION_CONFORMANCE_VALIDATION.md) |
 | 3 | Main-Integrity Governance Closure | Closed the repository-protection work and preserved WO-004 as not activated pending a separate Product Owner decision. | [`AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_CLOSURE.md`](AEGIS_MAIN_BRANCH_PROTECTION_GOVERNANCE_CLOSURE.md) |
 | 4 | Product Owner / Founder Activation | Explicitly approved activation of WO-004 for bounded Kernel canonical-runtime convergence. | Decision received 2026-07-31 |
-| 5 | Work Order — Kernel Canonical Runtime Convergence | Defines the exact base, implementation allowlist, architectural decisions, compatibility guarantees, exclusions, acceptance criteria, validation evidence, review sequence, and authority boundaries. | [`work-orders/WO-004_KERNEL_CANONICAL_RUNTIME_CONVERGENCE.md`](work-orders/WO-004_KERNEL_CANONICAL_RUNTIME_CONVERGENCE.md) |
+| 5 | Work Order ÔÇö Kernel Canonical Runtime Convergence | Defines the exact base, implementation allowlist, architectural decisions, compatibility guarantees, exclusions, acceptance criteria, validation evidence, review sequence, and authority boundaries. | [`work-orders/WO-004_KERNEL_CANONICAL_RUNTIME_CONVERGENCE.md`](work-orders/WO-004_KERNEL_CANONICAL_RUNTIME_CONVERGENCE.md) |
 
 #### Current Governance State
 
 | Control | Status |
 |---|---|
 | Work order | `WO-004` |
-| Work-order status | **ACTIVE — IMPLEMENTATION AUTHORIZED** |
+| Work-order status | **ACTIVE ÔÇö IMPLEMENTATION AUTHORIZED** |
 | Authoritative base | `8514de1f4e1bafb73748ec74a9b29e8b2f83d952` |
 | Implementation boundary | **EXACT EIGHT-PATH ALLOWLIST** |
 | Canonical Kernel path | **AUTHORIZED FOR IMPLEMENTATION** |
@@ -464,7 +464,7 @@ Implementation must remain inside the exact allowlist and preserve the typed can
 
 Final governance state:
 
-`WO-004 ACTIVE — BOUNDED IMPLEMENTATION AUTHORIZED`
+`WO-004 ACTIVE ÔÇö BOUNDED IMPLEMENTATION AUTHORIZED`
 ## TR-006 Candidate Review Evidence
 
 - Work order: WO-004 - Kernel Canonical Runtime Convergence
@@ -650,3 +650,48 @@ The exact reviewed design and governance records were published as a linear
 five-commit fast-forward from the amended governance main. This closure records
 the completed documentation state only and grants no runtime, provider,
 integration, release, ruleset, or cleanup authority.
+## TR-014 WO-006 Enabling Boundary
+
+- Record date: 2026-08-01
+- Work order: WO-006 - Environment Interaction Layer Simulation Runtime
+- Authoritative base: cfae92111eeb5355873a8c32c649514853564743
+- Parent local operations-archive commit: f38f8ef1590f6522d354533759a63f6a19010c94
+- ADR-006 authoritative state: ACCEPTED
+- Contradiction found: sections 45, 47, and 49 retained stale pre-acceptance language
+- Correction result: Accepted ADR state preserved; stale Proposed-transition language removed
+- Runtime package allowlist: 10 future paths
+- Focused-test allowlist: 12 future paths
+- Benchmark path authority: not granted; separate exact-path task required
+- Runtime implementation authority: not granted
+- Integration authority: not granted
+- Remote-publication authority: not granted
+- Tag, release, and ruleset authority: not granted
+- Worktree cleanup: not authorized
+- Current disposition: LOCAL ENABLING CANDIDATE - REVIEW REQUIRED
+
+The local enabling candidate reconciles the already Accepted ADR-006 state with
+the accepted Phase B specification and creates the bounded WO-006 preparation
+record. It does not create or modify runtime, tests, benchmarks, dependencies,
+CI, API, dashboard, execution, providers, or external integrations.
+
+A later activation requires independent review and separate explicit Product
+Owner / Founder authorization.
+### Sanitized reconstruction
+
+- Original local archive commit: `12486b34f46f82bd9103fa339a5cc0e849261bf6`
+- Original local enabling candidate: `0bdd8ce58566c806136f1d85347d593fb7c27cbd`
+- Original local candidate disposition: preserved as private operational evidence; not eligible for publication
+- Sanitized operations-archive commit: `f38f8ef1590f6522d354533759a63f6a19010c94`
+- Sanitized archive tree: `e5de6ba68bf58fb1704f176d9a7153de7e2dd716`
+- Personal absolute paths removed: yes
+- Common credential-pattern scan: pass
+- Hash inventories regenerated: yes
+- Runtime, tests, benchmarks, dependencies, and CI changes: none
+- Main and remote references changed: no
+- Publication authority granted by reconstruction: no
+
+This reconstruction supersedes the original local candidate only as the
+publication-eligible WO-006 enabling candidate. It does not invalidate or
+delete the preserved private evidence lineage and does not authorize runtime
+implementation, benchmark implementation, integration, publication, tags,
+releases, ruleset changes, or worktree cleanup.
