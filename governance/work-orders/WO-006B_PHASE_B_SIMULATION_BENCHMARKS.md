@@ -38,8 +38,7 @@ authority.
 
 ## Legacy benchmark baseline
 
-The repository contains 18 JSON cases across four legacy mission files. Exactly
-17 are enabled. The sole disabled record is
+The repository contains 18 JSON cases across four legacy mission files. Exactly 17 are enabled. The sole disabled record is
 `execution-disabled-example`. Therefore the specification's "existing 17
 missions" refers to the 17 enabled missions, not the raw JSON object count.
 
@@ -133,7 +132,7 @@ candidate has completed its own pre-freeze validation.
 After that candidate exists:
 
 - planned branch: `implementation/wo-006b-environment-benchmarks`;
-- planned worktree: `C:\Users\Woolis Shop\Projects\aegis-platform-wo-006b-benchmarks`;
+- planned worktree identifier: `aegis-platform-wo-006b-benchmarks`;
 - required starting point: the exact reviewed runtime candidate SHA;
 - benchmark commits: local only until independent review;
 - automatic merge, push, tag, release, or main modification: prohibited.
@@ -181,3 +180,26 @@ Remote-publication authority: NOT GRANTED
 Tag or release authority: NOT GRANTED
 Ruleset-change authority: NOT GRANTED
 Worktree-cleanup authority: NOT GRANTED
+## Activation Candidate 1 review and Candidate 2 correction
+
+- Rejected Candidate 1: `0b3b96137762f3472e3669304ddd737bdb10e673`
+- Candidate 1 architecture-boundary review: pass
+- Candidate 1 governance review: pass
+- Candidate 1 publication-hygiene review: fail
+- Candidate 1 blocking issues relevant to WO-006B:
+  - machine-specific planned-worktree path;
+  - review-sensitive line wrapping in the statement that exactly 17 legacy
+    cases are enabled.
+- Candidate 2 corrections:
+  - replace the machine-specific path with the neutral worktree identifier
+    `aegis-platform-wo-006b-benchmarks`;
+  - record the baseline sentence continuously as “Exactly 17 are enabled.”
+- Benchmark implementation performed: no
+- Benchmark allowlist changed: no
+- Legacy mission, schema, harness, test, or report content changed: no
+- Implementation authority broadened: no
+- Integration or publication authority granted: no
+
+Candidate 1 remains immutable and rejected for publication. Candidate 2 is a
+new bounded governance commit whose exact SHA is established after commit
+creation and must undergo a new independent review.

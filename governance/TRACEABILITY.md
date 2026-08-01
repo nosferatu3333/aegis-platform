@@ -762,3 +762,35 @@ The new Phase B corpus is isolated under `benchmarks/phase_b` so the legacy
 directory loader continues to discover exactly the same 17 enabled missions.
 Benchmark implementation is authorized but sequenced after an exact reviewed
 runtime candidate exists.
+## TR-018 WO-006 Activation Candidate 2 Publication-Hygiene Correction
+
+- Parent work orders: `WO-006` and `WO-006B`
+- Correction date: 2026-08-01
+- Rejected Candidate 1: `0b3b96137762f3472e3669304ddd737bdb10e673`
+- Candidate 1 tree: `93a5a318d70238dbed2ee0a85d60c1050a509e7a`
+- Candidate 1 review result: architecture pass; governance pass; publication
+  hygiene fail
+- Candidate 1 disposition: immutable and rejected for publication
+- Candidate 2 parent: exact rejected Candidate 1
+- Candidate 2 commit subject: `Correct WO-006 activation publication hygiene`
+- Candidate 2 maximum correction boundary:
+  - `governance/TRACEABILITY.md`
+  - `governance/work-orders/WO-006_ENVIRONMENT_INTERACTION_LAYER_SIMULATION_RUNTIME.md`
+  - `governance/work-orders/WO-006B_PHASE_B_SIMULATION_BENCHMARKS.md`
+- Candidate 2 correction:
+  - remove two newly introduced machine-specific worktree paths;
+  - preserve neutral worktree identifiers only;
+  - make the “Exactly 17 are enabled” baseline sentence continuous;
+  - preserve historical traceability content already present at the base.
+- Runtime implementation performed: no
+- Benchmark implementation performed: no
+- Runtime, focused-test, and benchmark allowlists changed: no
+- Main or remote modification authorized: no
+- Integration, publication, tag, release, ruleset, or cleanup authority: not
+  granted
+- Current gate: new independent review against the exact Candidate 2 SHA and
+  tree
+
+Historical machine-specific text that predates WO-006 remains outside this
+bounded correction and must be assessed by review as unchanged base content,
+not as material introduced by Candidate 2.

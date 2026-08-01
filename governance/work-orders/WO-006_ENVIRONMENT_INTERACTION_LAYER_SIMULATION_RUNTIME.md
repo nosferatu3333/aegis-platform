@@ -229,7 +229,7 @@ green.
 ### Authorized implementation worktree
 
 - Planned branch: `implementation/wo-006-environment-runtime`
-- Planned worktree: `C:\Users\Woolis Shop\Projects\aegis-platform-wo-006-runtime`
+- Planned worktree identifier: `aegis-platform-wo-006-runtime`
 - Required starting point: the exact published activation-candidate HEAD
 - Runtime implementation commits: local only until independent review
 - Automatic merge, push, tag, release, or main modification: prohibited
@@ -265,3 +265,20 @@ The distinct benchmark authorization is recorded in
 not broaden the runtime allowlist. Benchmark implementation is sequenced after
 an exact reviewed runtime candidate exists and must use a separate worktree and
 commit lineage.
+## Activation Candidate 1 review and Candidate 2 correction
+
+- Rejected Candidate 1: `0b3b96137762f3472e3669304ddd737bdb10e673`
+- Candidate 1 architecture-boundary review: pass
+- Candidate 1 governance review: pass
+- Candidate 1 publication-hygiene review: fail
+- Candidate 1 blocking issue relevant to WO-006: machine-specific planned-worktree path
+- Candidate 2 correction: replace the machine-specific path with the neutral
+  worktree identifier `aegis-platform-wo-006-runtime`
+- Runtime implementation performed: no
+- Runtime or focused-test allowlist changed: no
+- Implementation authority broadened: no
+- Integration or publication authority granted: no
+
+Candidate 1 remains immutable and rejected for publication. Candidate 2 is a
+new bounded governance commit whose exact SHA is established after commit
+creation and must undergo a new independent review.
