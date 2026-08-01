@@ -742,3 +742,23 @@ This decision is separate from benchmark authorization. It records the exact
 runtime and focused-test boundaries, implementation worktree, validation
 commands, preservation gates, and stop conditions required before runtime
 implementation may begin.
+## TR-017 WO-006B Phase B Simulation Benchmark Activation
+
+- Work order: `WO-006B`
+- Parent runtime work order: `WO-006`
+- Decision date: 2026-08-01
+- Decision type: explicit benchmark implementation authorization, separate from runtime
+- Activation base commit: `656fce452c9ac9fd287fd86f56dd6c1d476354c1`
+- Activation base tree: `8aca9c21817b52a2709858a0989159819a0cdbc5`
+- Legacy benchmark baseline: 18 total JSON cases, 17 enabled, 1 disabled
+- Preserved disabled case: `execution-disabled-example`
+- New benchmark implementation boundary: 17 exact new paths
+- Existing mission, schema, harness, tests, reports, pipeline, and execution paths: preservation-only
+- Benchmark implementation performed by this record: no
+- Integration or publication authority: not granted
+- Current gate: independent review of the two-commit local activation candidate
+
+The new Phase B corpus is isolated under `benchmarks/phase_b` so the legacy
+directory loader continues to discover exactly the same 17 enabled missions.
+Benchmark implementation is authorized but sequenced after an exact reviewed
+runtime candidate exists.

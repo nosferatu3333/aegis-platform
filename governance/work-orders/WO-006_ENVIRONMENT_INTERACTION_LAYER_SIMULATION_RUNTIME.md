@@ -1,12 +1,12 @@
 # Work Order WO-006: Environment Interaction Layer Simulation Runtime
 
-**Status:** RUNTIME ACTIVATION CANDIDATE - IMPLEMENTATION NOT STARTED; BENCHMARK AUTHORITY PENDING SEPARATE RECORD
+**Status:** IMPLEMENTATION ACTIVATION CANDIDATE - RUNTIME AUTHORIZED; BENCHMARKS AUTHORIZED SEPARATELY UNDER WO-006B; IMPLEMENTATION NOT STARTED
 **Preparation authorized:** 2026-08-01
 **Authoritative base:** cfae92111eeb5355873a8c32c649514853564743
 **Architecture authority:** docs/adr/ADR-006-environment-interaction-layer.md
 **Implementation authority:** docs/specifications/v0.5-phase-b-environment-interaction-layer.md
 **Runtime implementation authority:** GRANTED BY EXPLICIT USER AUTHORIZATION; EFFECTIVE ONLY AFTER ACTIVATION-CANDIDATE REVIEW AND PUBLICATION
-**Benchmark implementation authority:** NOT GRANTED
+**Benchmark implementation authority:** GRANTED SEPARATELY UNDER WO-006B; EFFECTIVE ONLY AFTER ACTIVATION-CANDIDATE REVIEW AND PUBLICATION
 **Integration authority:** GRANTED AND EXHAUSTED FOR SANITIZED ENABLING CANDIDATE `39f9da8f892ee25c2ca7f24cad4d8c4ce2ddf311`
 **Remote-publication authority:** GRANTED AND EXHAUSTED FOR SANITIZED ENABLING CANDIDATE `39f9da8f892ee25c2ca7f24cad4d8c4ce2ddf311`
 **Tag and release authority:** NOT GRANTED
@@ -258,3 +258,10 @@ pipeline/execution integration is proposed, Phase A resources would be
 re-resolved or modified, dependency drift appears, unrelated worktree changes
 exist, or any local or remote protected reference changes without separate
 authority.
+## Separate benchmark activation reference
+
+The distinct benchmark authorization is recorded in
+`governance/work-orders/WO-006B_PHASE_B_SIMULATION_BENCHMARKS.md`. It does
+not broaden the runtime allowlist. Benchmark implementation is sequenced after
+an exact reviewed runtime candidate exists and must use a separate worktree and
+commit lineage.
