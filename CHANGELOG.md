@@ -1,3 +1,10 @@
+## 1.1.0
+
+- Added signing-key trust policies with explicit active, retiring, and revoked states.
+- Added deterministic key rotation lineage and validity windows.
+- Added full and future-only revocation semantics.
+- Added trust-policy-aware attestation verification and operator CLI commands.
+
 ## 1.0.0
 
 - Add Ed25519 distribution signing and detached provenance attestations.

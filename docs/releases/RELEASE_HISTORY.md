@@ -1,3 +1,7 @@
+## 1.1.0
+
+Signing-key lifecycle, rotation, revocation, and trust-policy enforcement.
+
 # AEGIS release history
 
 This history is derived from annotated tags, peeled commit IDs, commit dates,

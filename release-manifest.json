@@ -20,12 +20,12 @@
     "verify_package": "python scripts/build_distribution.py --verify <bundle.zip>"
   },
   "execution_mode": "deterministic simulation only",
-  "platform_version": "1.0.0",
+  "platform_version": "1.1.0",
   "python": ">=3.11",
   "real_world_effects_verified": false,
   "release": "AEGIS Platform MVP",
   "release_status": "signed-distribution-capable",
-  "release_tag": "v1.0.0",
+  "release_tag": "v1.1.0",
   "schema_versions": {
     "execution": "1.0",
     "pipeline": "1.0",

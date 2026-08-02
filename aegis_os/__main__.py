@@ -15,6 +15,12 @@ from aegis_os.attestation import (
 )
 from aegis_os.distribution import build_distribution_bundle, verify_distribution_bundle
 from aegis_os.operator import build_operator_readiness
+from aegis_os.trust import (
+    initialize_trust_policy,
+    revoke_trust_key,
+    rotate_trust_key,
+    verify_attestation_with_trust_policy,
+)
 from aegis_os.release import build_diagnostic_report
 
 
@@ -97,6 +103,29 @@ def main() -> int:
     verify_attestation.add_argument("--signature", type=Path, required=True)
     verify_attestation.add_argument("--public-key", type=Path, required=True)
 
+    trust_init = subparsers.add_parser("trust-init", help="Create a signing-key trust policy.")
+    trust_init.add_argument("--public-key", type=Path, required=True)
+    trust_init.add_argument("--policy", type=Path, required=True)
+    trust_init.add_argument("--overwrite", action="store_true")
+
+    trust_rotate = subparsers.add_parser("trust-rotate", help="Rotate the active trusted signing key.")
+    trust_rotate.add_argument("--policy", type=Path, required=True)
+    trust_rotate.add_argument("--new-public-key", type=Path, required=True)
+    trust_rotate.add_argument("--effective-at")
+
+    trust_revoke = subparsers.add_parser("trust-revoke", help="Revoke a trusted signing key.")
+    trust_revoke.add_argument("--policy", type=Path, required=True)
+    trust_revoke.add_argument("--key-id", required=True)
+    trust_revoke.add_argument("--reason", required=True)
+    trust_revoke.add_argument("--revoked-at")
+    trust_revoke.add_argument("--future-only", action="store_true")
+
+    verify_trusted = subparsers.add_parser("verify-trusted-attestation", help="Verify an attestation against a trust policy.")
+    verify_trusted.add_argument("bundle", type=Path)
+    verify_trusted.add_argument("--attestation", type=Path, required=True)
+    verify_trusted.add_argument("--signature", type=Path, required=True)
+    verify_trusted.add_argument("--policy", type=Path, required=True)
+
     serve = subparsers.add_parser("serve", help="Start the local API and dashboard.")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", default=8000, type=int)
@@ -127,6 +156,28 @@ def main() -> int:
         return 0
     if arguments.command == "verify-attestation":
         result = verify_distribution_attestation(arguments.bundle, arguments.attestation, arguments.signature, arguments.public_key)
+        print(result.to_json())
+        return 0 if result.status == "verified" else 2
+    if arguments.command == "trust-init":
+        policy = initialize_trust_policy(arguments.public_key, arguments.policy, overwrite=arguments.overwrite)
+        print(policy.to_json(), end="")
+        return 0
+    if arguments.command == "trust-rotate":
+        policy = rotate_trust_key(arguments.policy, arguments.new_public_key, effective_at=arguments.effective_at)
+        print(policy.to_json(), end="")
+        return 0
+    if arguments.command == "trust-revoke":
+        policy = revoke_trust_key(
+            arguments.policy, arguments.key_id, arguments.reason,
+            revoked_at=arguments.revoked_at,
+            revoke_all_signatures=not arguments.future_only,
+        )
+        print(policy.to_json(), end="")
+        return 0
+    if arguments.command == "verify-trusted-attestation":
+        result = verify_attestation_with_trust_policy(
+            arguments.bundle, arguments.attestation, arguments.signature, arguments.policy
+        )
         print(result.to_json())
         return 0 if result.status == "verified" else 2
     return _serve(arguments.host, arguments.port, arguments.reload)
