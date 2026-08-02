@@ -84,3 +84,10 @@ Detailed release pages: [v0.1.0](v0.1.0.md), [v0.2.0](v0.2.0.md),
 - **Major capabilities:** canonical selection intake, bounded planning, authority gating, deterministic simulated execution, conformance, evidence reconciliation, result trace, API, and dashboard demonstration surface.
 - **Acceptance:** diagnostics ready; repository validation passing; full suite passing; analyzed, completed, paused, denied, and failed scenarios verified.
 - **Known boundary:** execution remains deterministic simulation only; no real-world effect is verified.
+
+## 0.9.0 — Distribution integrity
+
+- Added deterministic source distribution packaging.
+- Added embedded source provenance and per-file SHA-256 inventory.
+- Added offline bundle verification and tamper detection.
+- Required a clean Git worktree before packaging.

@@ -1,3 +1,7 @@
+## 0.9.0
+
+- Added reproducible distribution bundles, source provenance, and offline integrity verification.
+
 # Changelog
 
 ## 0.7.0 - MVP RC1 hardening

@@ -6,6 +6,9 @@ import argparse
 import subprocess
 import sys
 
+from pathlib import Path
+
+from aegis_os.distribution import build_distribution_bundle, verify_distribution_bundle
 from aegis_os.operator import build_operator_readiness
 from aegis_os.release import build_diagnostic_report
 
@@ -63,6 +66,15 @@ def main() -> int:
     ready.add_argument("--port", default=8000, type=int)
     ready.add_argument("--json", action="store_true", dest="json_output")
 
+    package = subparsers.add_parser("package", help="Build a verified distribution bundle.")
+    package.add_argument("--output-dir", type=Path, default=Path("dist"))
+
+    verify_package = subparsers.add_parser(
+        "verify-package", help="Verify a distribution bundle."
+    )
+    verify_package.add_argument("bundle", type=Path)
+    verify_package.add_argument("--json", action="store_true", dest="json_output")
+
     serve = subparsers.add_parser("serve", help="Start the local API and dashboard.")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", default=8000, type=int)
@@ -73,6 +85,15 @@ def main() -> int:
         return _doctor(arguments.json_output)
     if arguments.command == "ready":
         return _ready(arguments.host, arguments.port, arguments.json_output)
+    if arguments.command == "package":
+        bundle = build_distribution_bundle(arguments.output_dir)
+        result = verify_distribution_bundle(bundle)
+        print(result.to_json())
+        return 0 if result.status == "verified" else 2
+    if arguments.command == "verify-package":
+        result = verify_distribution_bundle(arguments.bundle)
+        print(result.to_json() if arguments.json_output else f"Distribution: {result.status}")
+        return 0 if result.status == "verified" else 2
     return _serve(arguments.host, arguments.port, arguments.reload)
 
 

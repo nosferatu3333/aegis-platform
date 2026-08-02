@@ -12,5 +12,7 @@ case "$COMMAND" in
   serve) exec "$PYTHON" -m aegis_os serve ;;
   acceptance) exec "$PYTHON" scripts/release_acceptance.py ;;
   validate) exec "$PYTHON" scripts/validate.py ;;
+  package) exec "$PYTHON" scripts/build_distribution.py ;;
+  verify-package) shift; exec "$PYTHON" scripts/build_distribution.py --verify "$1" ;;
   *) echo "Unknown command: $COMMAND" >&2; exit 2 ;;
 esac

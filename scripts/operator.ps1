@@ -1,9 +1,10 @@
 param(
-    [ValidateSet("bootstrap", "doctor", "ready", "serve", "acceptance", "validate")]
+    [ValidateSet("bootstrap", "doctor", "ready", "serve", "acceptance", "validate", "package", "verify-package")]
     [string]$Command = "ready",
     [string]$CorePath = "",
     [string]$HostAddress = "127.0.0.1",
-    [int]$Port = 8000
+    [int]$Port = 8000,
+    [string]$BundlePath = ""
 )
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
@@ -23,5 +24,7 @@ switch ($Command) {
     "serve" { & $Python -m aegis_os serve --host $HostAddress --port $Port }
     "acceptance" { & $Python scripts/release_acceptance.py }
     "validate" { & $Python scripts/validate.py }
+    "package" { & $Python scripts/build_distribution.py }
+    "verify-package" { if (-not $BundlePath) { throw "BundlePath is required." }; & $Python scripts/build_distribution.py --verify $BundlePath }
 }
 exit $LASTEXITCODE
