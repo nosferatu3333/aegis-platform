@@ -39,3 +39,10 @@ def create_default_runtime(
         pipeline=create_default_pipeline(),
         execution_engine=execution_engine,
     )
+
+
+def create_governed_runtime():
+    """Build the end-to-end governed runtime over the canonical pipeline."""
+    from aegis_os.core.governed_runtime import GovernedRuntime
+
+    return GovernedRuntime(pipeline=create_default_pipeline())

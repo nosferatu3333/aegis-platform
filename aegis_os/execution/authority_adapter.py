@@ -54,6 +54,7 @@ class AuthorityGatedExecutionAdapter:
         grants: Iterable[AuthorityGrant] = (),
         denials: Iterable[AuthorityDenial] = (),
         revocations: Iterable[RevocationRecord] = (),
+        capability_id: str | None = None,
     ) -> AuthorityGatedExecution:
         clean_agent = selected_agent.strip()
         if not clean_agent:
@@ -84,6 +85,7 @@ class AuthorityGatedExecutionAdapter:
                     "description": step.summary,
                     "step_id": step.step_id,
                     "completion_criteria": list(step.completion_criteria),
+                    "capability_id": capability_id,
                 }
                 for step in plan.steps
             ],
