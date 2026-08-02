@@ -8,6 +8,10 @@ const errorMessage = document.querySelector("#error-message");
 const resultPanel = document.querySelector("#result-panel");
 const executionPanel = document.querySelector("#execution-panel");
 const validationPanel = document.querySelector("#validation-panel");
+const governedButton = document.querySelector("#governed-button");
+const governedButtonLabel = governedButton.querySelector(".button-label");
+const governedPanel = document.querySelector("#governed-panel");
+let latestAnalysis = null;
 
 function setText(selector, value, fallback = "Not available") {
   const element = document.querySelector(selector);
@@ -67,6 +71,7 @@ function renderWorkflow(steps) {
 }
 
 function renderResult(payload) {
+  latestAnalysis = payload;
   const intent = payload.intent || {};
   const capability = payload.capability || {};
   const secondaryIntents = intent.secondary_intents || [];
@@ -180,6 +185,66 @@ function renderValidation(validation) {
   validationPanel.hidden = false;
 }
 
+
+function canonicalToken(prefix) {
+  const token = crypto.randomUUID().replaceAll("-", "");
+  return `${prefix}_${token}`;
+}
+
+function canonicalCapabilityId(value) {
+  const normalized = String(value || "demo")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  return `cap_${normalized || "demo"}`;
+}
+
+function buildGovernedRequest() {
+  if (!latestAnalysis || latestAnalysis.status !== "ready") {
+    throw new Error("Analyze a supported mission before running the governed demo.");
+  }
+
+  const capability = latestAnalysis.capability || {};
+  return {
+    task: taskInput.value,
+    interpretation_id: canonicalToken("int"),
+    selection: {
+      request_id: canonicalToken("req"),
+      capability_id: canonicalCapabilityId(capability.capability_id || capability.name),
+      capability_version: "0.1.0-demo",
+      eligibility: "eligible",
+      rationale: "Explicit browser demonstration selection derived from the visible analysis result.",
+      health_state: "healthy",
+      authority_requirement: "none",
+      selection_id: canonicalToken("sel"),
+    },
+    selected_agent: capability.name || "Demonstration Agent",
+    workflow_definition: (latestAnalysis.workflow || []).map(
+      (step) => step.description || step.title,
+    ),
+    execute: true,
+  };
+}
+
+function renderGoverned(payload) {
+  const authority = payload.authority || {};
+  const reconciliation = payload.reconciliation || {};
+
+  setText("#governed-status", payload.status);
+  setText(
+    "#authority-outcome",
+    authority.ready ? "allowed" : authority.denied ? "denied" : "paused",
+  );
+  setText("#governed-execution-performed", payload.execution_performed);
+  setText("#reconciliation-outcome", reconciliation.outcome, "not produced");
+  document.querySelector("#governed-json").textContent = JSON.stringify(
+    payload,
+    null,
+    2,
+  );
+  governedPanel.hidden = false;
+}
+
 function describeError(payload, status) {
   if (payload && typeof payload.detail === "string") {
     return payload.detail;
@@ -265,5 +330,38 @@ executeButton.addEventListener("click", async () => {
     executeButton.disabled = false;
     analyzeButton.disabled = false;
     executeButtonLabel.textContent = "Simulate Execution";
+  }
+});
+
+
+governedButton.addEventListener("click", async () => {
+  errorMessage.hidden = true;
+  governedPanel.hidden = true;
+  governedButton.disabled = true;
+  analyzeButton.disabled = true;
+  executeButton.disabled = true;
+  governedButtonLabel.textContent = "Running…";
+
+  try {
+    const response = await fetch(governedButton.dataset.endpoint, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(buildGovernedRequest()),
+    });
+    const payload = await response.json();
+    if (!response.ok) {
+      throw new Error(describeError(payload, response.status));
+    }
+    renderGoverned(payload);
+    governedPanel.scrollIntoView({behavior: "smooth", block: "start"});
+  } catch (error) {
+    errorMessage.textContent =
+      error instanceof Error ? error.message : "Unable to run governed demo.";
+    errorMessage.hidden = false;
+  } finally {
+    governedButton.disabled = false;
+    analyzeButton.disabled = false;
+    executeButton.disabled = false;
+    governedButtonLabel.textContent = "Run Governed Demo";
   }
 });

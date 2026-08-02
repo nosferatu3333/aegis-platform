@@ -11,6 +11,12 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
+from aegis_core.contracts import (
+    AuthorityRequirement,
+    CapabilitySelection,
+    EligibilityState,
+    OperationalState,
+)
 from aegis_os.core.cognitive_runtime import (
     RUNTIME_SCHEMA_VERSION,
     CanonicalRuntimeStatus,
@@ -19,6 +25,7 @@ from aegis_os.core.runtime_errors import RuntimeIntegrityError
 from aegis_os.pipeline.composition import (
     create_default_pipeline,
     create_default_runtime,
+    create_governed_runtime,
 )
 from aegis_os.pipeline.models import SCHEMA_VERSION
 
@@ -33,12 +40,12 @@ logger.setLevel(logging.INFO)
 try:
     APPLICATION_VERSION = version("aegis-os")
 except PackageNotFoundError:
-    APPLICATION_VERSION = "0.5.0"
+    APPLICATION_VERSION = "0.6.0"
 
 # Source checkouts may coexist with an older editable installation.  The
 # repository release version remains authoritative for this service build.
-if APPLICATION_VERSION != "0.5.0":
-    APPLICATION_VERSION = "0.5.0"
+if APPLICATION_VERSION != "0.6.0":
+    APPLICATION_VERSION = "0.6.0"
 
 
 class AnalyzeTaskRequest(BaseModel):
@@ -52,6 +59,45 @@ class AnalyzeTaskRequest(BaseModel):
         return value
 
 
+class GovernedSelectionRequest(BaseModel):
+    request_id: str = Field(pattern=r"^req_[A-Za-z0-9]+$")
+    capability_id: str = Field(pattern=r"^cap_[A-Za-z0-9_]+$")
+    capability_version: str = Field(min_length=1)
+    eligibility: EligibilityState = EligibilityState.ELIGIBLE
+    rationale: str = Field(min_length=1)
+    health_state: OperationalState = OperationalState.HEALTHY
+    authority_requirement: AuthorityRequirement = AuthorityRequirement.NONE
+    selection_id: str = Field(pattern=r"^sel_[A-Za-z0-9]+$")
+
+    def to_contract(self) -> CapabilitySelection:
+        return CapabilitySelection(
+            request_id=self.request_id,
+            capability_id=self.capability_id,
+            capability_version=self.capability_version,
+            eligibility=self.eligibility,
+            rationale=self.rationale,
+            health_state=self.health_state,
+            authority_requirement=self.authority_requirement,
+            selection_id=self.selection_id,
+        )
+
+
+class GovernedRuntimeApiRequest(BaseModel):
+    task: str = Field(min_length=1)
+    interpretation_id: str = Field(pattern=r"^int_[A-Za-z0-9]+$")
+    selection: GovernedSelectionRequest
+    selected_agent: str = Field(min_length=1)
+    workflow_definition: list[str] | None = None
+    execute: bool = False
+
+    @field_validator("task", "selected_agent")
+    @classmethod
+    def governed_text_must_not_be_blank(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("Value cannot be blank.")
+        return value
+
+
 create_pipeline = create_default_pipeline
 create_runtime = create_default_runtime
 
@@ -62,6 +108,7 @@ def create_app() -> FastAPI:
         version=APPLICATION_VERSION,
     )
     runtime = create_runtime()
+    governed_runtime = create_governed_runtime()
 
     @application.middleware("http")
     async def correlate_request(
@@ -76,7 +123,7 @@ def create_app() -> FastAPI:
         )
         request.state.request_id = request_id
 
-        if request.url.path in {"/analyze-task", "/execute-task"}:
+        if request.url.path in {"/analyze-task", "/execute-task", "/governed-runtime"}:
             logger.info(
                 "event=request_received request_id=%s",
                 request_id,
@@ -234,6 +281,47 @@ def create_app() -> FastAPI:
                 ),
             )
         return response_payload
+
+
+    @application.post("/governed-runtime")
+    def governed_runtime_endpoint(
+        body: GovernedRuntimeApiRequest,
+        request: Request,
+    ) -> dict:
+        """Run the canonical governed pipeline from an explicit selection.
+
+        This endpoint never infers authority and never treats simulation as
+        evidence of a real-world effect. Approval-required requests without a
+        matching grant stop in the paused state.
+        """
+        from aegis_os.core.governed_runtime import GovernedRuntimeRequest
+
+        request_id = request.state.request_id
+        try:
+            result = governed_runtime.process(
+                GovernedRuntimeRequest(
+                    task=body.task,
+                    interpretation_id=body.interpretation_id,
+                    selection=body.selection.to_contract(),
+                    selected_agent=body.selected_agent,
+                    workflow_definition=body.workflow_definition,
+                    execute=body.execute,
+                )
+            )
+        except ValueError as error:
+            raise HTTPException(status_code=422, detail=str(error)) from error
+
+        payload = result.to_dict()
+        payload["correlation_id"] = request_id
+        logger.info(
+            "event=governed_runtime_completed request_id=%s "
+            "canonical_request_id=%s runtime_status=%s execution_performed=%s",
+            request_id,
+            result.request_id,
+            result.status.value,
+            result.execution_performed,
+        )
+        return payload
 
     return application
 

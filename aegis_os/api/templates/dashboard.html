@@ -51,6 +51,13 @@
             >
               <span class="button-label">Simulate Execution</span>
             </button>
+            <button
+              id="governed-button"
+              type="button"
+              data-endpoint="/governed-runtime"
+            >
+              <span class="button-label">Run Governed Demo</span>
+            </button>
           </div>
         </div>
       </form>
@@ -208,6 +215,43 @@
       <details class="raw-panel">
         <summary>Raw validation result</summary>
         <pre id="validation-json"></pre>
+      </details>
+    </section>
+
+    <section id="governed-panel" class="result-panel" aria-live="polite" hidden>
+      <div class="section-heading result-heading">
+        <div>
+          <p class="step-label">05 / Governed runtime</p>
+          <h2>End-to-end governed result</h2>
+        </div>
+        <span id="governed-status" class="status-badge"></span>
+      </div>
+
+      <aside class="simulation-notice simulation-warning">
+        <strong>DEMONSTRATION SURFACE</strong>
+        The browser creates an explicit canonical demo selection. Platform does
+        not infer approval, and simulated completion is not proof of a
+        real-world effect.
+      </aside>
+
+      <div class="result-grid">
+        <article class="card">
+          <p class="field-label">Authority outcome</p>
+          <p id="authority-outcome" class="primary-value"></p>
+        </article>
+        <article class="card">
+          <p class="field-label">Execution performed</p>
+          <p id="governed-execution-performed" class="primary-value"></p>
+        </article>
+        <article class="card">
+          <p class="field-label">Reconciliation</p>
+          <p id="reconciliation-outcome" class="primary-value"></p>
+        </article>
+      </div>
+
+      <details class="raw-panel">
+        <summary>Raw governed runtime result</summary>
+        <pre id="governed-json"></pre>
       </details>
     </section>
   </main>

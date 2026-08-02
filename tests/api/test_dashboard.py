@@ -14,6 +14,10 @@ def test_dashboard_serves_mission_interface():
     assert 'id="mission-task"' in response.text
     assert "Analyze Mission" in response.text
     assert "Simulate Execution" in response.text
+    assert "Run Governed Demo" in response.text
+    assert 'data-endpoint="/governed-runtime"' in response.text
+    assert 'id="governed-panel"' in response.text
+    assert "DEMONSTRATION SURFACE" in response.text
     assert 'data-endpoint="/analyze-task"' in response.text
     assert 'data-endpoint="/execute-task"' in response.text
     assert "SIMULATED EXECUTION ONLY" in response.text
@@ -60,3 +64,14 @@ def test_dashboard_script_renders_validation_separately_from_execution():
     assert '"#operation-outcome"' in response.text
     assert '"#validation-checks"' in response.text
     assert '"#validation-evidence"' in response.text
+
+
+def test_dashboard_script_exposes_governed_runtime_demo_separately():
+    response = client.get("/static/dashboard.js")
+
+    assert response.status_code == 200
+    assert "function buildGovernedRequest()" in response.text
+    assert "function renderGoverned(payload)" in response.text
+    assert 'governedButton.dataset.endpoint' in response.text
+    assert 'authority_requirement: "none"' in response.text
+    assert '"#reconciliation-outcome"' in response.text
