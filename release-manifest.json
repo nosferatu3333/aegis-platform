@@ -1,0 +1,18 @@
+{
+  "release": "AEGIS Platform MVP RC1",
+  "platform_version": "0.7.0",
+  "core_compatibility": ">=0.3.0,<0.4.0",
+  "python": ">=3.11",
+  "schema_versions": {
+    "pipeline": "1.0",
+    "execution": "1.0",
+    "runtime": "1.0"
+  },
+  "entrypoints": {
+    "diagnostics": "python -m aegis_os doctor",
+    "serve": "python -m aegis_os serve",
+    "validation": "python scripts/validate.py"
+  },
+  "execution_mode": "deterministic simulation only",
+  "real_world_effects_verified": false
+}

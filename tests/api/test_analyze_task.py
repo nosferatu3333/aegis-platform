@@ -100,6 +100,6 @@ def test_health_reports_pipeline_availability():
     assert response.json() == {
         "service": "aegis-platform",
         "status": "ok",
-        "version": "0.6.0",
+        "version": "0.7.0",
         "pipeline_available": True,
     }

@@ -110,13 +110,14 @@ Python 3.11 or newer is required.
 python -m venv env
 .\env\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install -e ".[test]"
+python scripts/bootstrap.py --core-path "C:\\path\\to\\aegis-core"
 ```
 
 ## Run the application
 
 ```powershell
-.\env\Scripts\python.exe -m uvicorn aegis_os.api.app:app --reload
+python -m aegis_os doctor
+python -m aegis_os serve --reload
 ```
 
 Open:
@@ -296,3 +297,7 @@ and `docs/stabilization-phase-2-5.md` for the legacy stabilization boundary.
 ## Execution evidence reconciliation
 
 Terminal execution receipts are reconciled into canonical Core evidence, results, and trace lineage. See `docs/EXECUTION_EVIDENCE_RECONCILIATION.md`.
+
+## Release candidate
+
+Release metadata, compatibility policy, rollback instructions, and acceptance criteria are documented in `docs/release/MVP_RC1.md`. The machine-readable contract is `release-manifest.json`.

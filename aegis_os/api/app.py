@@ -40,12 +40,12 @@ logger.setLevel(logging.INFO)
 try:
     APPLICATION_VERSION = version("aegis-os")
 except PackageNotFoundError:
-    APPLICATION_VERSION = "0.6.0"
+    APPLICATION_VERSION = "0.7.0"
 
 # Source checkouts may coexist with an older editable installation.  The
 # repository release version remains authoritative for this service build.
-if APPLICATION_VERSION != "0.6.0":
-    APPLICATION_VERSION = "0.6.0"
+if APPLICATION_VERSION != "0.7.0":
+    APPLICATION_VERSION = "0.7.0"
 
 
 class AnalyzeTaskRequest(BaseModel):

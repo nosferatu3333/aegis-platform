@@ -100,6 +100,7 @@ def main() -> int:
     environment["PYTHONDONTWRITEBYTECODE"] = "1"
     commands = [
         ("Dependency integrity", [sys.executable, "-m", "pip", "check"]),
+        ("Release diagnostics", [sys.executable, "-m", "aegis_os", "doctor"]),
         (
             "Pre-commit configuration",
             [sys.executable, "-m", "pre_commit", "validate-config"],
