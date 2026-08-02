@@ -301,3 +301,8 @@ Terminal execution receipts are reconciled into canonical Core evidence, results
 ## Release candidate
 
 Formal MVP release notes are documented in `docs/releases/v0.7.0.md`; the original release-candidate boundary remains in `docs/release/MVP_RC1.md`. The machine-readable contract is `release-manifest.json`, and deterministic acceptance evidence is stored in `docs/release/MVP_ACCEPTANCE_0.7.0.json`.
+
+
+## Operator quick start
+
+See `docs/OPERATOR_HANDOFF.md`. Use `python -m aegis_os ready` before serving the governed MVP.

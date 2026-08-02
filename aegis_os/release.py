@@ -13,7 +13,7 @@ from pathlib import Path
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 
-PLATFORM_VERSION = "0.7.0"
+PLATFORM_VERSION = "0.8.0"
 CORE_VERSION_SPEC = SpecifierSet(">=0.3.0,<0.4.0")
 MINIMUM_PYTHON = (3, 11)
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]

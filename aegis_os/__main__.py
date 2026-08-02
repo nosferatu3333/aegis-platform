@@ -6,6 +6,7 @@ import argparse
 import subprocess
 import sys
 
+from aegis_os.operator import build_operator_readiness
 from aegis_os.release import build_diagnostic_report
 
 
@@ -38,12 +39,29 @@ def _serve(host: str, port: int, reload: bool) -> int:
     return subprocess.call(command)
 
 
+def _ready(host: str, port: int, json_output: bool) -> int:
+    readiness = build_operator_readiness(host, port)
+    if json_output:
+        print(readiness.to_json())
+    else:
+        print(f"AEGIS Platform {readiness.platform_version}: {readiness.status}")
+        print(f"Endpoint: {readiness.endpoint}")
+        for limitation in readiness.limitations:
+            print(f"LIMITATION: {limitation}")
+    return 0 if readiness.status == "ready" else 2
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(prog="python -m aegis_os")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     doctor = subparsers.add_parser("doctor", help="Validate the local runtime.")
     doctor.add_argument("--json", action="store_true", dest="json_output")
+
+    ready = subparsers.add_parser("ready", help="Check operator launch readiness.")
+    ready.add_argument("--host", default="127.0.0.1")
+    ready.add_argument("--port", default=8000, type=int)
+    ready.add_argument("--json", action="store_true", dest="json_output")
 
     serve = subparsers.add_parser("serve", help="Start the local API and dashboard.")
     serve.add_argument("--host", default="127.0.0.1")
@@ -53,6 +71,8 @@ def main() -> int:
     arguments = parser.parse_args()
     if arguments.command == "doctor":
         return _doctor(arguments.json_output)
+    if arguments.command == "ready":
+        return _ready(arguments.host, arguments.port, arguments.json_output)
     return _serve(arguments.host, arguments.port, arguments.reload)
 
 
