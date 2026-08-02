@@ -2,7 +2,7 @@
 
 ## Supported release
 
-AEGIS Platform 0.9.0 requires AEGIS Core `>=0.3.0,<0.4.0` and Python 3.11 or newer.
+AEGIS Platform 1.0.0 requires AEGIS Core `>=0.3.0,<0.4.0` and Python 3.11 or newer.
 
 ## Windows one-command workflow
 

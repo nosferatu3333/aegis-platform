@@ -54,6 +54,8 @@ class DistributionVerification:
     bundle: str
     platform_version: str | None
     source_commit: str | None
+    source_tree: str | None
+    source_branch: str | None
     verified_files: int
     errors: tuple[str, ...]
 
@@ -155,6 +157,8 @@ def verify_distribution_bundle(bundle: Path) -> DistributionVerification:
     errors: list[str] = []
     platform_version: str | None = None
     source_commit: str | None = None
+    source_tree: str | None = None
+    source_branch: str | None = None
     verified = 0
     try:
         with zipfile.ZipFile(bundle) as archive:
@@ -167,6 +171,8 @@ def verify_distribution_bundle(bundle: Path) -> DistributionVerification:
             manifest = json.loads(archive.read(manifest_path))
             platform_version = manifest.get("platform_version")
             source_commit = manifest.get("source_commit")
+            source_tree = manifest.get("source_tree")
+            source_branch = manifest.get("source_branch")
             for entry in manifest.get("files", []):
                 path = entry["path"]
                 if path not in names:
@@ -202,6 +208,8 @@ def verify_distribution_bundle(bundle: Path) -> DistributionVerification:
         bundle=str(bundle.resolve()),
         platform_version=platform_version,
         source_commit=source_commit,
+        source_tree=source_tree,
+        source_branch=source_branch,
         verified_files=verified,
         errors=tuple(errors),
     )

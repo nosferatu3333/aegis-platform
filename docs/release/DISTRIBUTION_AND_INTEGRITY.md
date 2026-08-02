@@ -1,6 +1,6 @@
 # AEGIS Platform Distribution and Integrity
 
-AEGIS Platform 0.9.0 adds a reproducible operator source bundle with embedded provenance and integrity verification.
+AEGIS Platform 1.0.0 adds a reproducible operator source bundle with embedded provenance and integrity verification.
 
 ## Build
 
@@ -10,12 +10,12 @@ The builder refuses a dirty Git worktree. From a clean release checkout:
 python scripts/build_distribution.py --output-dir dist
 ```
 
-The output is `dist/aegis-platform-0.9.0.zip`.
+The output is `dist/aegis-platform-1.0.0.zip`.
 
 ## Verify
 
 ```powershell
-python scripts/build_distribution.py --verify dist/aegis-platform-0.9.0.zip
+python scripts/build_distribution.py --verify dist/aegis-platform-1.0.0.zip
 ```
 
 A valid package reports `Distribution: verified` and the source commit from which it was created.

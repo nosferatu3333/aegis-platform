@@ -1,3 +1,9 @@
+## 1.0.0
+
+- Add Ed25519 distribution signing and detached provenance attestations.
+- Add key generation, signing, and attestation verification commands.
+- Bind signed bundles to source commit, tree, branch, digest, size, version, and signer key ID.
+
 ## 0.9.0
 
 - Added reproducible distribution bundles, source provenance, and offline integrity verification.

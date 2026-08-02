@@ -1,34 +1,35 @@
 {
-  "release": "AEGIS Platform MVP",
-  "platform_version": "0.9.0",
+  "acceptance": "python scripts/release_acceptance.py",
+  "attestation": "Ed25519 detached provenance v1",
   "core_compatibility": ">=0.3.0,<0.4.0",
-  "python": ">=3.11",
-  "schema_versions": {
-    "pipeline": "1.0",
-    "execution": "1.0",
-    "runtime": "1.0"
+  "distribution": {
+    "checksums": "SHA256SUMS",
+    "format": "zip",
+    "manifest": "DISTRIBUTION_MANIFEST.json",
+    "reproducible": true,
+    "requires_clean_worktree": true
   },
   "entrypoints": {
     "diagnostics": "python -m aegis_os doctor",
+    "operator_posix": "scripts/operator.sh",
+    "operator_windows": "scripts/operator.ps1",
+    "package": "python scripts/build_distribution.py",
+    "readiness": "python -m aegis_os ready",
     "serve": "python -m aegis_os serve",
     "validation": "python scripts/validate.py",
-    "readiness": "python -m aegis_os ready",
-    "operator_windows": "scripts/operator.ps1",
-    "operator_posix": "scripts/operator.sh",
-    "package": "python scripts/build_distribution.py",
     "verify_package": "python scripts/build_distribution.py --verify <bundle.zip>"
   },
   "execution_mode": "deterministic simulation only",
+  "platform_version": "1.0.0",
+  "python": ">=3.11",
   "real_world_effects_verified": false,
-  "release_status": "distribution-ready",
-  "release_tag": "v0.9.0",
-  "acceptance": "python scripts/release_acceptance.py",
-  "validation": "python scripts/validate.py",
-  "distribution": {
-    "format": "zip",
-    "manifest": "DISTRIBUTION_MANIFEST.json",
-    "checksums": "SHA256SUMS",
-    "reproducible": true,
-    "requires_clean_worktree": true
-  }
+  "release": "AEGIS Platform MVP",
+  "release_status": "signed-distribution-capable",
+  "release_tag": "v1.0.0",
+  "schema_versions": {
+    "execution": "1.0",
+    "pipeline": "1.0",
+    "runtime": "1.0"
+  },
+  "validation": "python scripts/validate.py"
 }
