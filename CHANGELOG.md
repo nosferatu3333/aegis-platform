@@ -31,3 +31,9 @@
 - Added deterministic governed acceptance scenarios covering analyzed, completed, paused, denied, and failed outcomes.
 - Added machine-readable formal release status, tag, and acceptance commands.
 - Added the formal v0.7.0 release page and explicit simulation boundary.
+
+## 1.2.0
+
+- Add append-only release transparency ledger with SHA-256 hash chaining.
+- Add human-readable and JSON trust reports.
+- Add transparency append, verify, and trust-report CLI commands.

@@ -22,6 +22,7 @@ from aegis_os.trust import (
     verify_attestation_with_trust_policy,
 )
 from aegis_os.release import build_diagnostic_report
+from aegis_os.transparency import append_transparency_event, build_trust_report, verify_transparency_ledger
 
 
 def _doctor(json_output: bool) -> int:
@@ -126,6 +127,24 @@ def main() -> int:
     verify_trusted.add_argument("--signature", type=Path, required=True)
     verify_trusted.add_argument("--policy", type=Path, required=True)
 
+    trust_report = subparsers.add_parser("trust-report", help="Produce a human-readable release trust verdict.")
+    trust_report.add_argument("bundle", type=Path)
+    trust_report.add_argument("--attestation", type=Path, required=True)
+    trust_report.add_argument("--signature", type=Path, required=True)
+    trust_report.add_argument("--policy", type=Path, required=True)
+    trust_report.add_argument("--ledger", type=Path)
+    trust_report.add_argument("--json", action="store_true", dest="json_output")
+    trust_report.add_argument("--output", type=Path)
+
+    transparency_append = subparsers.add_parser("transparency-append", help="Append an event to the release transparency ledger.")
+    transparency_append.add_argument("--ledger", type=Path, required=True)
+    transparency_append.add_argument("--event-type", required=True)
+    transparency_append.add_argument("--subject", required=True)
+    transparency_append.add_argument("--details-json", default="{}")
+
+    transparency_verify = subparsers.add_parser("transparency-verify", help="Verify the transparency ledger hash chain.")
+    transparency_verify.add_argument("--ledger", type=Path, required=True)
+
     serve = subparsers.add_parser("serve", help="Start the local API and dashboard.")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", default=8000, type=int)
@@ -174,6 +193,22 @@ def main() -> int:
         )
         print(policy.to_json(), end="")
         return 0
+    if arguments.command == "trust-report":
+        report = build_trust_report(arguments.bundle, arguments.attestation, arguments.signature, arguments.policy, arguments.ledger)
+        rendered = report.to_json() if arguments.json_output else report.to_text()
+        if arguments.output:
+            arguments.output.write_text(rendered + "\n", encoding="utf-8", newline="\n")
+        print(rendered)
+        return 0 if report.overall_verdict == "TRUSTED" else 2
+    if arguments.command == "transparency-append":
+        import json
+        event = append_transparency_event(arguments.ledger, arguments.event_type, arguments.subject, json.loads(arguments.details_json))
+        print(json.dumps(event.to_dict(), indent=2, sort_keys=True))
+        return 0
+    if arguments.command == "transparency-verify":
+        result = verify_transparency_ledger(arguments.ledger)
+        print(result.to_json())
+        return 0 if result.status == "verified" else 2
     if arguments.command == "verify-trusted-attestation":
         result = verify_attestation_with_trust_policy(
             arguments.bundle, arguments.attestation, arguments.signature, arguments.policy
