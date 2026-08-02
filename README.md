@@ -306,3 +306,13 @@ Formal MVP release notes are documented in `docs/releases/v0.7.0.md`; the origin
 ## Operator quick start
 
 See `docs/OPERATOR_HANDOFF.md`. Use `python -m aegis_os ready` before serving the governed MVP.
+
+## Fresh-machine operator trial
+
+Run the deployment rehearsal and write an audit report:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\operator_trial.ps1 -CorePath "C:\path\to\aegis-core-clean"
+```
+
+The trial covers diagnostics, readiness, governed acceptance scenarios, port-conflict handling, timing, friction, recovery commands, and optional release-trust verification.

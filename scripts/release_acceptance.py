@@ -20,8 +20,9 @@ from aegis_os.core.governed_runtime import (
     GovernedRuntimeStatus,
 )
 from aegis_os.pipeline.composition import create_governed_runtime
+from aegis_os.release import PLATFORM_VERSION
 
-RELEASE = "0.7.0"
+RELEASE = PLATFORM_VERSION
 REQUEST_ID = "req_1234567890abcdef"
 INTERPRETATION_ID = "int_1234567890abcdef"
 SELECTION_ID = "sel_1234567890abcdef"

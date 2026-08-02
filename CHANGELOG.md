@@ -37,3 +37,10 @@
 - Add append-only release transparency ledger with SHA-256 hash chaining.
 - Add human-readable and JSON trust reports.
 - Add transparency append, verify, and trust-report CLI commands.
+
+## 1.3.0
+
+- Added fresh-machine operator-trial orchestration and JSON audit reports.
+- Added deterministic governed-scenario and occupied-port rehearsal checks.
+- Added optional signed-release trust verification to deployment rehearsal.
+- Added a one-command Windows operator trial script and formal work-order documentation.

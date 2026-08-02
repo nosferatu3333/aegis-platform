@@ -99,3 +99,7 @@ Detailed release pages: [v0.1.0](v0.1.0.md), [v0.2.0](v0.2.0.md),
 ## 1.0.0
 
 Cryptographic distribution signing and provenance attestation.
+
+## 1.3.0 — WO-MVP-018
+
+Fresh-machine operator-trial and deployment-rehearsal tooling with auditable pass/fail evidence.

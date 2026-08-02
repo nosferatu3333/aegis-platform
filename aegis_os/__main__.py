@@ -15,6 +15,7 @@ from aegis_os.attestation import (
 )
 from aegis_os.distribution import build_distribution_bundle, verify_distribution_bundle
 from aegis_os.operator import build_operator_readiness
+from aegis_os.trial import run_operator_trial, write_trial_report
 from aegis_os.trust import (
     initialize_trust_policy,
     revoke_trust_key,
@@ -145,6 +146,17 @@ def main() -> int:
     transparency_verify = subparsers.add_parser("transparency-verify", help="Verify the transparency ledger hash chain.")
     transparency_verify.add_argument("--ledger", type=Path, required=True)
 
+    operator_trial = subparsers.add_parser("operator-trial", help="Run the fresh-machine deployment rehearsal.")
+    operator_trial.add_argument("--host", default="127.0.0.1")
+    operator_trial.add_argument("--port", default=8000, type=int)
+    operator_trial.add_argument("--bundle", type=Path)
+    operator_trial.add_argument("--attestation", type=Path)
+    operator_trial.add_argument("--signature", type=Path)
+    operator_trial.add_argument("--policy", type=Path)
+    operator_trial.add_argument("--ledger", type=Path)
+    operator_trial.add_argument("--output", type=Path)
+    operator_trial.add_argument("--json", action="store_true", dest="json_output")
+
     serve = subparsers.add_parser("serve", help="Start the local API and dashboard.")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", default=8000, type=int)
@@ -209,6 +221,16 @@ def main() -> int:
         result = verify_transparency_ledger(arguments.ledger)
         print(result.to_json())
         return 0 if result.status == "verified" else 2
+    if arguments.command == "operator-trial":
+        report = run_operator_trial(
+            host=arguments.host, port=arguments.port, bundle=arguments.bundle,
+            attestation=arguments.attestation, signature=arguments.signature,
+            policy=arguments.policy, ledger=arguments.ledger,
+        )
+        if arguments.output:
+            write_trial_report(report, arguments.output)
+        print(report.to_json() if arguments.json_output else report.to_text())
+        return 0 if report.passed else 2
     if arguments.command == "verify-trusted-attestation":
         result = verify_attestation_with_trust_policy(
             arguments.bundle, arguments.attestation, arguments.signature, arguments.policy

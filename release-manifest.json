@@ -12,6 +12,7 @@
   "entrypoints": {
     "diagnostics": "python -m aegis_os doctor",
     "operator_posix": "scripts/operator.sh",
+    "operator_trial": "python -m aegis_os operator-trial --output artifacts/operator-trial-report.json",
     "operator_windows": "scripts/operator.ps1",
     "package": "python scripts/build_distribution.py",
     "readiness": "python -m aegis_os ready",
@@ -20,12 +21,12 @@
     "verify_package": "python scripts/build_distribution.py --verify <bundle.zip>"
   },
   "execution_mode": "deterministic simulation only",
-  "platform_version": "1.2.0",
+  "platform_version": "1.3.0",
   "python": ">=3.11",
   "real_world_effects_verified": false,
   "release": "AEGIS Platform MVP",
   "release_status": "signed-distribution-capable",
-  "release_tag": "v1.2.0",
+  "release_tag": "v1.3.0",
   "schema_versions": {
     "execution": "1.0",
     "pipeline": "1.0",
