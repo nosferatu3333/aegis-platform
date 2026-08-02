@@ -33,3 +33,9 @@ __all__ = [
     "ExecutionStepStatus",
     "build_execution_request",
 ]
+
+from aegis_os.execution.reconciliation import (
+    ExecutionResultReconciler,
+    ReconciledExecutionResult,
+    ReconciliationOutcome,
+)

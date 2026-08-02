@@ -34,6 +34,7 @@ class ExecutionEngine:
             selected_agent=request.selected_agent,
             execution_mode=request.execution_mode,
             steps=steps,
+            metadata=dict(request.metadata),
         )
 
         self._transition(receipt, ExecutionStatus.READY)
@@ -141,7 +142,7 @@ class ExecutionEngine:
             display_description = f"{title}: {description}" if title else description
             result.append(
                 ExecutionStep(
-                    step_id=f"step-{order}",
+                    step_id=str(cls._read_value(raw_step, "step_id", f"step-{order}")),
                     order=order,
                     description=display_description,
                     inputs={"mission": "provided"},

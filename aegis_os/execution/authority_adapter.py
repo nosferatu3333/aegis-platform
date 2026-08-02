@@ -97,6 +97,7 @@ class AuthorityGatedExecutionAdapter:
                 "canonical_plan_id": plan.plan_id,
                 "canonical_selection_id": plan.selection_id,
                 "authority_gate": "all_steps_allowed",
+                "canonical_expected_evidence": list(plan.expected_evidence),
                 "authority_audit_event_ids": [
                     decision.audit_event.event_id for decision in decisions
                 ],

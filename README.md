@@ -284,3 +284,8 @@ durable audit storage.
 
 See `docs/AEGIS_CURRENT_STATE_DIAGNOSTIC.md` for the detailed repository audit
 and `docs/stabilization-phase-2-5.md` for the legacy stabilization boundary.
+
+
+## Execution evidence reconciliation
+
+Terminal execution receipts are reconciled into canonical Core evidence, results, and trace lineage. See `docs/EXECUTION_EVIDENCE_RECONCILIATION.md`.
