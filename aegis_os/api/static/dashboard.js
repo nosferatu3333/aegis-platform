@@ -11,6 +11,8 @@ const validationPanel = document.querySelector("#validation-panel");
 const governedButton = document.querySelector("#governed-button");
 const governedButtonLabel = governedButton.querySelector(".button-label");
 const governedPanel = document.querySelector("#governed-panel");
+const authorityRequirement = document.querySelector("#authority-requirement");
+const scenarioList = document.querySelector("#scenario-list");
 let latestAnalysis = null;
 
 function setText(selector, value, fallback = "Not available") {
@@ -38,6 +40,16 @@ function renderChips(containerSelector, values) {
     chip.className = "chip";
     chip.textContent = value;
     container.append(chip);
+  });
+}
+
+function renderEvidenceList(selector, values) {
+  const list = document.querySelector(selector);
+  list.replaceChildren();
+  (values && values.length ? values : ["No rationale supplied."]).forEach((value) => {
+    const item = document.createElement("li");
+    item.textContent = value;
+    list.append(item);
   });
 }
 
@@ -84,6 +96,13 @@ function renderResult(payload) {
   setText("#selected-capability", capability.name || capability.capability_id);
   setText("#confidence", capability.confidence);
   setText("#score", capability.score);
+  setText(
+    "#capability-source",
+    payload.metadata?.capability_source === "aegis-ops"
+      ? `Live OPS · ${payload.metadata?.capability_source_path || "configured repository"}`
+      : "Bounded Platform fallback",
+  );
+  renderEvidenceList("#selection-rationale", capability.reasons || []);
 
   renderChips("#required-capabilities", intent.required_capabilities);
   renderChips("#secondary-intents", secondaryIntents);
@@ -215,7 +234,7 @@ function buildGovernedRequest() {
       eligibility: "eligible",
       rationale: "Explicit browser demonstration selection derived from the visible analysis result.",
       health_state: "healthy",
-      authority_requirement: "none",
+      authority_requirement: authorityRequirement.value,
       selection_id: canonicalToken("sel"),
     },
     selected_agent: capability.name || "Demonstration Agent",
@@ -237,12 +256,61 @@ function renderGoverned(payload) {
   );
   setText("#governed-execution-performed", payload.execution_performed);
   setText("#reconciliation-outcome", reconciliation.outcome, "not produced");
+
+  const verdicts = {
+    completed: ["ACCEPTED", "Authority allowed the bounded plan, simulated execution completed, and evidence reconciled."],
+    analyzed: ["REVIEW READY", "The mission was analyzed and bounded without execution."],
+    paused: ["AWAITING AUTHORITY", "Execution stopped because the required approval was not supplied."],
+    denied: ["REJECTED", "Authority explicitly denied the requested execution."],
+    failed: ["FAILED", "Execution produced a failure receipt and did not satisfy the mission flow."],
+    conformance_failed: ["REJECTED", "Runtime evidence did not conform to the canonical request."],
+  };
+  const [verdict, reason] = verdicts[payload.status] || ["REVIEW REQUIRED", "Inspect the canonical runtime record."];
+  setText("#operator-verdict", verdict);
+  setText("#verdict-reason", reason);
+  document.querySelector("#verdict-banner").dataset.verdict = payload.status;
+  renderChips("#audit-identifiers", [
+    payload.request_id,
+    payload.correlation_id,
+    reconciliation.trace_id,
+    reconciliation.result_id,
+  ].filter(Boolean));
+
   document.querySelector("#governed-json").textContent = JSON.stringify(
     payload,
     null,
     2,
   );
   governedPanel.hidden = false;
+}
+
+async function loadDemoSurface() {
+  try {
+    const [scenariosResponse, statusResponse] = await Promise.all([
+      fetch("/demo/scenarios"),
+      fetch("/capabilities/status"),
+    ]);
+    const scenarios = await scenariosResponse.json();
+    const status = await statusResponse.json();
+    scenarioList.replaceChildren();
+    (scenarios.scenarios || []).forEach((scenario) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "scenario-button";
+      button.innerHTML = `<strong>${scenario.title}</strong><span>${scenario.expected_outcome}</span>`;
+      button.addEventListener("click", () => {
+        taskInput.value = scenario.task;
+        authorityRequirement.value = scenario.authority_requirement;
+        taskInput.focus();
+      });
+      scenarioList.append(button);
+    });
+    const ops = status.ops || {};
+    setText("#ops-status", ops.available ? "OPS live" : "OPS fallback");
+    document.querySelector("#ops-status").dataset.available = String(Boolean(ops.available));
+  } catch (_) {
+    setText("#ops-status", "Status unavailable");
+  }
 }
 
 function describeError(payload, status) {
@@ -365,3 +433,5 @@ governedButton.addEventListener("click", async () => {
     governedButtonLabel.textContent = "Run Governed Demo";
   }
 });
+
+loadDemoSurface();

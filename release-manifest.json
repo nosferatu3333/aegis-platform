@@ -21,7 +21,7 @@
     "verify_package": "python scripts/build_distribution.py --verify <bundle.zip>"
   },
   "execution_mode": "deterministic simulation only",
-  "platform_version": "1.5.0",
+  "platform_version": "1.6.0",
   "python": ">=3.11",
   "real_world_effects_verified": false,
   "release": "AEGIS Platform MVP",

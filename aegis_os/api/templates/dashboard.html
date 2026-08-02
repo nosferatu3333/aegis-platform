@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AEGIS Mission Console</title>
+  <title>AEGIS Operator Console</title>
   <link rel="stylesheet" href="/static/dashboard.css">
   <script src="/static/dashboard.js" defer></script>
 </head>
@@ -11,248 +11,87 @@
   <main class="shell">
     <header class="masthead">
       <div>
-        <p class="eyebrow">Cognitive systems platform</p>
+        <p class="eyebrow">Governed cognitive operating system</p>
         <h1>AEGIS</h1>
+        <p class="masthead-copy">From mission intent to an auditable, authority-bounded execution verdict.</p>
       </div>
-      <span class="prototype-badge">Backend MVP · Prototype</span>
+      <div class="header-status">
+        <span class="prototype-badge">MVP demonstration</span>
+        <span id="ops-status" class="status-badge">OPS checking</span>
+      </div>
     </header>
+
+    <nav class="stage-rail" aria-label="Demonstration stages">
+      <span class="stage active">01 Request</span><span class="stage">02 Capability</span>
+      <span class="stage">03 Plan</span><span class="stage">04 Authority</span>
+      <span class="stage">05 Execution</span><span class="stage">06 Evidence</span>
+      <span class="stage">07 Verdict</span>
+    </nav>
 
     <section class="mission-panel" aria-labelledby="mission-heading">
       <div class="section-heading">
-        <div>
-          <p class="step-label">01 / Mission input</p>
-          <h2 id="mission-heading">Analyze a mission</h2>
-        </div>
-        <p class="section-note">
-          AEGIS will classify intent, select a capability, and generate
-          a proposed workflow.
-        </p>
+        <div><p class="step-label">01 / Operator request</p><h2 id="mission-heading">Define the mission</h2></div>
+        <p class="section-note">Use a preset or enter a concrete objective. AEGIS will expose every decision boundary instead of hiding the workflow behind a single answer.</p>
       </div>
+
+      <div id="scenario-list" class="scenario-list" aria-label="Demonstration scenarios"></div>
 
       <form id="mission-form" data-endpoint="/analyze-task">
         <label for="mission-task">Mission</label>
-        <textarea
-          id="mission-task"
-          name="task"
-          rows="5"
-          required
-          placeholder="Research competitors in the cognitive systems market"
-        ></textarea>
+        <textarea id="mission-task" name="task" rows="5" required placeholder="Design and validate a bounded AI development workflow with tests and release evidence"></textarea>
+        <div class="governance-controls">
+          <label for="authority-requirement">Authority policy</label>
+          <select id="authority-requirement">
+            <option value="none">No additional approval required</option>
+            <option value="approval_required">Explicit approval required</option>
+          </select>
+          <p class="input-hint">Approval-required demonstrations must pause because this surface never fabricates a grant.</p>
+        </div>
         <div class="form-actions">
-          <p class="input-hint">Enter a concrete objective or task.</p>
+          <p class="input-hint">Execution remains deterministic simulation only.</p>
           <div class="button-group">
-            <button id="analyze-button" type="submit">
-              <span class="button-label">Analyze Mission</span>
-            </button>
-            <button
-              id="execute-button"
-              type="button"
-              data-endpoint="/execute-task"
-            >
-              <span class="button-label">Simulate Execution</span>
-            </button>
-            <button
-              id="governed-button"
-              type="button"
-              data-endpoint="/governed-runtime"
-            >
-              <span class="button-label">Run Governed Demo</span>
-            </button>
+            <button id="analyze-button" type="submit"><span class="button-label">Analyze Mission</span></button>
+            <button id="execute-button" type="button" data-endpoint="/execute-task"><span class="button-label">Simulate Execution</span></button>
+            <button id="governed-button" type="button" data-endpoint="/governed-runtime"><span class="button-label">Run Governed Demo</span></button>
           </div>
         </div>
       </form>
-
       <div id="error-message" class="error-message" role="alert" hidden></div>
     </section>
 
     <section id="result-panel" class="result-panel" aria-live="polite" hidden>
-      <div class="section-heading result-heading">
-        <div>
-          <p class="step-label">02 / Cognitive result</p>
-          <h2>Mission analysis</h2>
-        </div>
-        <span id="pipeline-status" class="status-badge"></span>
-      </div>
-
+      <div class="section-heading result-heading"><div><p class="step-label">02–03 / Selection and plan</p><h2>Cognitive analysis</h2></div><span id="pipeline-status" class="status-badge"></span></div>
       <div class="result-grid">
-        <article class="card card-wide">
-          <p class="field-label">Original task</p>
-          <p id="original-task" class="task-output"></p>
-        </article>
-
-        <article class="card">
-          <p class="field-label">Primary intent</p>
-          <p id="primary-intent" class="primary-value"></p>
-          <div id="secondary-intents-group" class="subfield" hidden>
-            <p class="field-label">Secondary intents</p>
-            <div id="secondary-intents" class="chip-list"></div>
-          </div>
-        </article>
-
-        <article class="card">
-          <p class="field-label">Required capabilities</p>
-          <div id="required-capabilities" class="chip-list"></div>
-          <dl class="metric-list">
-            <div>
-              <dt>Complexity</dt>
-              <dd id="complexity"></dd>
-            </div>
-            <div>
-              <dt>Risk</dt>
-              <dd id="risk-level"></dd>
-            </div>
-          </dl>
-        </article>
-
-        <article class="card">
-          <p class="field-label">Selected agent or capability</p>
-          <p id="selected-capability" class="primary-value"></p>
-          <dl class="metric-list">
-            <div>
-              <dt>Confidence</dt>
-              <dd id="confidence"></dd>
-            </div>
-            <div>
-              <dt>Score</dt>
-              <dd id="score"></dd>
-            </div>
-          </dl>
-        </article>
-
-        <article class="card workflow-card">
-          <div class="workflow-heading">
-            <div>
-              <p class="field-label">Generated workflow</p>
-              <h3>Proposed sequence</h3>
-            </div>
-            <span id="workflow-count" class="workflow-count"></span>
-          </div>
-          <ol id="workflow-steps" class="workflow-list"></ol>
-        </article>
+        <article class="card card-wide"><p class="field-label">Original task</p><p id="original-task" class="task-output"></p></article>
+        <article class="card"><p class="field-label">Intent</p><p id="primary-intent" class="primary-value"></p><div id="secondary-intents-group" class="subfield" hidden><p class="field-label">Secondary intents</p><div id="secondary-intents" class="chip-list"></div></div></article>
+        <article class="card"><p class="field-label">Requirements</p><div id="required-capabilities" class="chip-list"></div><dl class="metric-list"><div><dt>Complexity</dt><dd id="complexity"></dd></div><div><dt>Risk</dt><dd id="risk-level"></dd></div></dl></article>
+        <article class="card capability-card"><p class="field-label">Live capability selection</p><p id="selected-capability" class="primary-value"></p><p id="capability-source" class="source-line"></p><dl class="metric-list"><div><dt>Confidence</dt><dd id="confidence"></dd></div><div><dt>Score</dt><dd id="score"></dd></div></dl><div class="subfield"><p class="field-label">Selection rationale</p><ul id="selection-rationale" class="evidence-list"></ul></div></article>
+        <article class="card workflow-card"><div class="workflow-heading"><div><p class="field-label">Bounded plan</p><h3>Proposed sequence</h3></div><span id="workflow-count" class="workflow-count"></span></div><ol id="workflow-steps" class="workflow-list"></ol></article>
       </div>
-
-      <aside class="simulation-notice">
-        <strong>Simulation boundary</strong>
-        This workflow is generated for review and is not yet autonomously
-        executed.
-      </aside>
-
-      <details class="raw-panel">
-        <summary>Raw JSON response</summary>
-        <pre id="raw-json"></pre>
-      </details>
+      <aside class="simulation-notice"><strong>Planning boundary</strong>The workflow is reviewable, not yet autonomously executed, and remains non-executing until the operator explicitly chooses an execution path.</aside>
+      <details class="raw-panel"><summary>Raw analysis contract</summary><pre id="raw-json"></pre></details>
     </section>
 
     <section id="execution-panel" class="result-panel" aria-live="polite" hidden>
-      <div class="section-heading result-heading">
-        <div>
-          <p class="step-label">03 / Governed execution</p>
-          <h2>Simulated execution receipt</h2>
-        </div>
-        <span id="execution-status" class="status-badge"></span>
-      </div>
-
-      <aside class="simulation-notice simulation-warning">
-        <strong>SIMULATED EXECUTION ONLY</strong>
-        No external tools, systems, files, or services are accessed or changed.
-      </aside>
-
-      <article class="card workflow-card">
-        <div class="workflow-heading">
-          <div>
-            <p class="field-label">Execution steps</p>
-            <h3 id="receipt-summary">Receipt summary</h3>
-          </div>
-          <span id="execution-count" class="workflow-count"></span>
-        </div>
-        <ol id="execution-steps" class="workflow-list"></ol>
-      </article>
-
-      <details class="raw-panel">
-        <summary>Raw execution receipt</summary>
-        <pre id="execution-json"></pre>
-      </details>
+      <div class="section-heading result-heading"><div><p class="step-label">05 / Execution</p><h2>Simulated execution receipt</h2></div><span id="execution-status" class="status-badge"></span></div>
+      <aside class="simulation-notice simulation-warning"><strong>SIMULATED EXECUTION ONLY</strong>No external tools, systems, files, or services are accessed or changed.</aside>
+      <article class="card workflow-card"><div class="workflow-heading"><div><p class="field-label">Execution trace</p><h3 id="receipt-summary">Receipt summary</h3></div><span id="execution-count" class="workflow-count"></span></div><ol id="execution-steps" class="workflow-list"></ol></article>
+      <details class="raw-panel"><summary>Raw execution receipt</summary><pre id="execution-json"></pre></details>
     </section>
 
     <section id="validation-panel" class="result-panel" aria-live="polite" hidden>
-      <div class="section-heading result-heading">
-        <div>
-          <p class="step-label">04 / Execution conformance</p>
-          <h2>Runtime validation</h2>
-        </div>
-        <span id="validation-status" class="status-badge"></span>
-      </div>
-
-      <aside class="simulation-notice">
-        <strong>CONFORMANCE ONLY</strong>
-        Confirms runtime consistency, not mission success, quality evaluation,
-        governance approval, or execution authorization.
-      </aside>
-
-      <div class="result-grid">
-        <article class="card">
-          <p class="field-label">Operation outcome</p>
-          <p id="operation-outcome" class="primary-value"></p>
-        </article>
-
-        <article class="card workflow-card">
-          <div class="workflow-heading">
-            <div>
-              <p class="field-label">Validation checks</p>
-              <h3>Execution conformance</h3>
-            </div>
-            <span id="validation-count" class="workflow-count"></span>
-          </div>
-          <ol id="validation-checks" class="workflow-list"></ol>
-        </article>
-
-        <article class="card card-wide">
-          <p class="field-label">Validation evidence</p>
-          <ul id="validation-evidence"></ul>
-        </article>
-      </div>
-
-      <details class="raw-panel">
-        <summary>Raw validation result</summary>
-        <pre id="validation-json"></pre>
-      </details>
+      <div class="section-heading result-heading"><div><p class="step-label">06 / Evidence</p><h2>Runtime validation</h2></div><span id="validation-status" class="status-badge"></span></div>
+      <aside class="simulation-notice"><strong>CONFORMANCE ONLY</strong>Confirms runtime consistency, not mission success, quality evaluation, governance approval, or execution authorization.</aside>
+      <div class="result-grid"><article class="card"><p class="field-label">Operation outcome</p><p id="operation-outcome" class="primary-value"></p></article><article class="card workflow-card"><div class="workflow-heading"><div><p class="field-label">Validation checks</p><h3>Execution conformance</h3></div><span id="validation-count" class="workflow-count"></span></div><ol id="validation-checks" class="workflow-list"></ol></article><article class="card card-wide"><p class="field-label">Validation evidence</p><ul id="validation-evidence" class="evidence-list"></ul></article></div>
+      <details class="raw-panel"><summary>Raw validation result</summary><pre id="validation-json"></pre></details>
     </section>
 
-    <section id="governed-panel" class="result-panel" aria-live="polite" hidden>
-      <div class="section-heading result-heading">
-        <div>
-          <p class="step-label">05 / Governed runtime</p>
-          <h2>End-to-end governed result</h2>
-        </div>
-        <span id="governed-status" class="status-badge"></span>
-      </div>
-
-      <aside class="simulation-notice simulation-warning">
-        <strong>DEMONSTRATION SURFACE</strong>
-        The browser creates an explicit canonical demo selection. Platform does
-        not infer approval, and simulated completion is not proof of a
-        real-world effect.
-      </aside>
-
-      <div class="result-grid">
-        <article class="card">
-          <p class="field-label">Authority outcome</p>
-          <p id="authority-outcome" class="primary-value"></p>
-        </article>
-        <article class="card">
-          <p class="field-label">Execution performed</p>
-          <p id="governed-execution-performed" class="primary-value"></p>
-        </article>
-        <article class="card">
-          <p class="field-label">Reconciliation</p>
-          <p id="reconciliation-outcome" class="primary-value"></p>
-        </article>
-      </div>
-
-      <details class="raw-panel">
-        <summary>Raw governed runtime result</summary>
-        <pre id="governed-json"></pre>
-      </details>
+    <section id="governed-panel" class="result-panel verdict-panel" aria-live="polite" hidden>
+      <div class="section-heading result-heading"><div><p class="step-label">04–07 / Authority to verdict</p><h2>Governed mission verdict</h2></div><span id="governed-status" class="status-badge"></span></div>
+      <div id="verdict-banner" class="verdict-banner"><p class="field-label">Operator verdict</p><p id="operator-verdict" class="verdict-value"></p><p id="verdict-reason" class="verdict-reason"></p></div>
+      <div class="result-grid"><article class="card"><p class="field-label">Authority outcome</p><p id="authority-outcome" class="primary-value"></p></article><article class="card"><p class="field-label">Execution performed</p><p id="governed-execution-performed" class="primary-value"></p></article><article class="card"><p class="field-label">Reconciliation</p><p id="reconciliation-outcome" class="primary-value"></p></article><article class="card card-wide"><p class="field-label">Audit identifiers</p><div id="audit-identifiers" class="chip-list"></div></article></div>
+      <aside class="simulation-notice simulation-warning"><strong>DEMONSTRATION SURFACE</strong>Platform does not infer approval, and simulated completion is not proof of a real-world effect.</aside>
+      <details class="raw-panel"><summary>Raw governed runtime result</summary><pre id="governed-json"></pre></details>
     </section>
   </main>
 </body>

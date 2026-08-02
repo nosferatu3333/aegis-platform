@@ -73,5 +73,5 @@ def test_dashboard_script_exposes_governed_runtime_demo_separately():
     assert "function buildGovernedRequest()" in response.text
     assert "function renderGoverned(payload)" in response.text
     assert 'governedButton.dataset.endpoint' in response.text
-    assert 'authority_requirement: "none"' in response.text
+    assert "authority_requirement: authorityRequirement.value" in response.text
     assert '"#reconciliation-outcome"' in response.text

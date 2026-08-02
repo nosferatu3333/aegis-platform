@@ -19,7 +19,7 @@ function Write-FailureReport {
     if ($Directory) { New-Item -ItemType Directory -Force $Directory | Out-Null }
     $Payload = [ordered]@{
         schema_version = "1.0"
-        platform_version = "1.5.0"
+        platform_version = "1.6.0"
         overall_status = "failed"
         failed_stage = $Stage
         error = $Message

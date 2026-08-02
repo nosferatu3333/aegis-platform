@@ -37,15 +37,39 @@ REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]{1,128}$")
 logger = logging.getLogger("aegis.api")
 logger.setLevel(logging.INFO)
 
+DEMO_SCENARIOS = (
+    {
+        "id": "live-ops-development",
+        "title": "Live OPS development mission",
+        "task": "Design and validate a bounded AI development workflow with tests and release evidence",
+        "authority_requirement": "none",
+        "expected_outcome": "completed",
+    },
+    {
+        "id": "approval-gated-change",
+        "title": "Approval-gated operational change",
+        "task": "Prepare a controlled deployment change and stop until explicit approval is granted",
+        "authority_requirement": "approval_required",
+        "expected_outcome": "paused",
+    },
+    {
+        "id": "analysis-only-research",
+        "title": "Analysis-only research mission",
+        "task": "Research competitors in the cognitive systems market",
+        "authority_requirement": "none",
+        "expected_outcome": "analyzed",
+    },
+)
+
 try:
     APPLICATION_VERSION = version("aegis-os")
 except PackageNotFoundError:
-    APPLICATION_VERSION = "0.7.0"
+    APPLICATION_VERSION = "1.6.0"
 
 # Source checkouts may coexist with an older editable installation.  The
 # repository release version remains authoritative for this service build.
 if APPLICATION_VERSION != "0.7.0":
-    APPLICATION_VERSION = "0.7.0"
+    APPLICATION_VERSION = "1.6.0"
 
 
 class AnalyzeTaskRequest(BaseModel):
@@ -189,6 +213,15 @@ def create_app() -> FastAPI:
             "status": "ok",
             "version": APPLICATION_VERSION,
             "pipeline_available": runtime.pipeline is not None,
+        }
+
+    @application.get("/demo/scenarios")
+    def demo_scenarios() -> dict:
+        return {
+            "service": SERVICE_NAME,
+            "platform_version": APPLICATION_VERSION,
+            "execution_boundary": "deterministic simulation only",
+            "scenarios": list(DEMO_SCENARIOS),
         }
 
     @application.get("/capabilities/status")

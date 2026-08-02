@@ -1,3 +1,11 @@
+## 1.6.0 — WO-MVP-021
+
+- Refined the dashboard into a seven-stage operator demonstration.
+- Added curated demo scenarios and live OPS status visibility.
+- Exposed capability source and selection rationale.
+- Added explicit authority-policy controls and human-readable governed verdicts.
+- Preserved deterministic simulation and canonical runtime boundaries.
+
 ## 1.5.0 — WO-MVP-020
 
 - Added live AEGIS OPS capability loading, selection evidence, and bounded fallback behavior.
