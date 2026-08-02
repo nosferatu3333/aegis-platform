@@ -300,4 +300,4 @@ Terminal execution receipts are reconciled into canonical Core evidence, results
 
 ## Release candidate
 
-Release metadata, compatibility policy, rollback instructions, and acceptance criteria are documented in `docs/release/MVP_RC1.md`. The machine-readable contract is `release-manifest.json`.
+Formal MVP release notes are documented in `docs/releases/v0.7.0.md`; the original release-candidate boundary remains in `docs/release/MVP_RC1.md`. The machine-readable contract is `release-manifest.json`, and deterministic acceptance evidence is stored in `docs/release/MVP_ACCEPTANCE_0.7.0.json`.

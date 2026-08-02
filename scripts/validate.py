@@ -102,6 +102,10 @@ def main() -> int:
         ("Dependency integrity", [sys.executable, "-m", "pip", "check"]),
         ("Release diagnostics", [sys.executable, "-m", "aegis_os", "doctor"]),
         (
+            "Governed release acceptance",
+            [sys.executable, "scripts/release_acceptance.py"],
+        ),
+        (
             "Pre-commit configuration",
             [sys.executable, "-m", "pre_commit", "validate-config"],
         ),

@@ -76,3 +76,11 @@ and changed files in the repository.
 Detailed release pages: [v0.1.0](v0.1.0.md), [v0.2.0](v0.2.0.md),
 [v0.3.0](v0.3.0.md), and [v0.4.0](v0.4.0.md). See the
 [roadmap](../roadmap/ROADMAP.md) for proposed future milestones.
+
+## 2026-08-02 — v0.7.0 governed runtime MVP
+
+- **Tag:** `v0.7.0`
+- **Purpose:** formally release the governed runtime MVP after reproducible installation, diagnostics, automated validation, and governed scenario acceptance.
+- **Major capabilities:** canonical selection intake, bounded planning, authority gating, deterministic simulated execution, conformance, evidence reconciliation, result trace, API, and dashboard demonstration surface.
+- **Acceptance:** diagnostics ready; repository validation passing; full suite passing; analyzed, completed, paused, denied, and failed scenarios verified.
+- **Known boundary:** execution remains deterministic simulation only; no real-world effect is verified.
