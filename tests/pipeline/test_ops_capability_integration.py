@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pytest
@@ -11,7 +12,12 @@ from aegis_os.pipeline.ops_capability_adapter import (
 from aegis_os.pipeline.request_pipeline import CognitiveRequestPipeline
 
 
-OPS_ROOT = Path(__file__).resolve().parents[4] / "ops"
+OPS_ROOT = Path(
+    os.environ.get(
+        "AEGIS_OPS_PATH",
+        Path(__file__).resolve().parents[3] / "aegis-ops",
+    )
+).resolve()
 
 
 def test_live_ops_selects_real_capability_and_workflow():
