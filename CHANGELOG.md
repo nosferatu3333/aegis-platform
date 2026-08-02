@@ -1,3 +1,9 @@
+## 1.7.0
+
+- Add one-command signed external MVP release-candidate assembly.
+- Freeze external demonstration runbook and bounded release claims.
+- Export acceptance, provenance, trust, and transparency evidence together.
+
 ## 1.1.0
 
 - Added signing-key trust policies with explicit active, retiring, and revoked states.

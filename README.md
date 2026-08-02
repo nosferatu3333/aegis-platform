@@ -316,3 +316,14 @@ powershell -ExecutionPolicy Bypass -File .\scripts\operator_trial.ps1 -CorePath 
 ```
 
 The trial covers diagnostics, readiness, governed acceptance scenarios, port-conflict handling, timing, friction, recovery commands, and optional release-trust verification.
+
+
+## External MVP release candidate
+
+AEGIS Platform 1.7.0 can assemble the complete external demonstration evidence set in one command:
+
+```powershell
+python scripts/build_release_candidate.py --output-dir ".\release-candidate" --private-key "C:\secure\aegis-release-private.pem" --public-key "C:\secure\aegis-release-public.pem"
+```
+
+The output includes the reproducible distribution, detached Ed25519 attestation and signature, public key, trust policy, transparency ledger, trust report, governed acceptance report, and a manifest binding the artifacts to the source commit and tree. The private key is never copied into the release directory. Execution remains deterministic simulation only.

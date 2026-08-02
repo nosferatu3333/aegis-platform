@@ -23,6 +23,7 @@ from aegis_os.trust import (
     verify_attestation_with_trust_policy,
 )
 from aegis_os.release import build_diagnostic_report
+from aegis_os.release_candidate import build_external_release_candidate
 from aegis_os.transparency import append_transparency_event, build_trust_report, verify_transparency_ledger
 
 
@@ -146,6 +147,14 @@ def main() -> int:
     transparency_verify = subparsers.add_parser("transparency-verify", help="Verify the transparency ledger hash chain.")
     transparency_verify.add_argument("--ledger", type=Path, required=True)
 
+    release_candidate = subparsers.add_parser(
+        "release-candidate", help="Build the signed external MVP release candidate."
+    )
+    release_candidate.add_argument("--output-dir", type=Path, default=Path("release-candidate"))
+    release_candidate.add_argument("--private-key", type=Path, required=True)
+    release_candidate.add_argument("--public-key", type=Path, required=True)
+    release_candidate.add_argument("--generate-key", action="store_true")
+
     operator_trial = subparsers.add_parser("operator-trial", help="Run the fresh-machine deployment rehearsal.")
     operator_trial.add_argument("--host", default="127.0.0.1")
     operator_trial.add_argument("--port", default=8000, type=int)
@@ -221,6 +230,15 @@ def main() -> int:
         result = verify_transparency_ledger(arguments.ledger)
         print(result.to_json())
         return 0 if result.status == "verified" else 2
+    if arguments.command == "release-candidate":
+        result = build_external_release_candidate(
+            arguments.output_dir,
+            private_key=arguments.private_key,
+            public_key=arguments.public_key,
+            generate_key=arguments.generate_key,
+        )
+        print(result.to_json())
+        return 0
     if arguments.command == "operator-trial":
         report = run_operator_trial(
             host=arguments.host, port=arguments.port, bundle=arguments.bundle,
