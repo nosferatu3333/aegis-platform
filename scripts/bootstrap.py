@@ -54,6 +54,7 @@ def main() -> int:
             "requirements/release.txt",
         ]
     )
+    _run([sys.executable, "-m", "pip", "check"])
     _run([sys.executable, "-m", "aegis_os", "doctor"])
     if not arguments.skip_tests:
         _run([sys.executable, "-m", "pytest", "-q"])

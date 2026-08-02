@@ -1,3 +1,11 @@
+
+## 1.4.0 — WO-MVP-019
+
+- Remediate fresh-machine dependency installation for cryptographic attestation.
+- Add dependency consistency validation with `pip check`.
+- Preserve partial JSON failure evidence from the Windows operator-trial wrapper.
+- Support temporary trust-policy initialization from a supplied public key.
+
 ## 1.1.0
 
 Signing-key lifecycle, rotation, revocation, and trust-policy enforcement.
