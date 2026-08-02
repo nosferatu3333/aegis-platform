@@ -191,6 +191,21 @@ def create_app() -> FastAPI:
             "pipeline_available": runtime.pipeline is not None,
         }
 
+    @application.get("/capabilities/status")
+    def capability_status() -> dict:
+        selector = runtime.pipeline.capability_selector
+        ops_selector = getattr(selector, "ops_selector", None)
+        diagnostic = getattr(ops_selector, "diagnostic", None)
+        return {
+            "service": SERVICE_NAME,
+            "selection_mode": (
+                "live-ops-with-bounded-fallback"
+                if ops_selector is not None
+                else "platform-internal"
+            ),
+            "ops": diagnostic,
+        }
+
     @application.post("/analyze-task")
     def analyze_task(
         body: AnalyzeTaskRequest,

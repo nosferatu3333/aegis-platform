@@ -106,8 +106,14 @@ class CognitiveRequestPipeline:
             workflow=workflow,
             status=PipelineStatus.READY,
             metadata={
-                "pipeline_version": "0.1.0",
+                "pipeline_version": "0.3.0",
                 "workflow_steps": len(workflow),
+                "capability_source": self._read_value(
+                    selection, "source", default="platform-internal"
+                ),
+                "capability_source_path": self._read_value(
+                    selection, "source_path", default=None
+                ),
             },
         )
 

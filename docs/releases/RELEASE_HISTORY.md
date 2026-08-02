@@ -1,3 +1,7 @@
+## 1.5.0 — WO-MVP-020
+
+- Added live AEGIS OPS capability loading, selection evidence, and bounded fallback behavior.
+
 
 ## 1.4.0 — WO-MVP-019
 

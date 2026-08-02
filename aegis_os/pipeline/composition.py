@@ -6,6 +6,10 @@ from aegis_os.core.cognitive_runtime import CognitiveRuntime
 from aegis_os.execution.execution_engine import ExecutionEngine
 from aegis_os.pipeline.agent_selector_adapter import AgentSelectorAdapter
 from aegis_os.pipeline.request_pipeline import CognitiveRequestPipeline
+from aegis_os.pipeline.ops_capability_adapter import (
+    HybridCapabilitySelector,
+    OpsCapabilitySelectorAdapter,
+)
 
 
 def create_default_pipeline() -> CognitiveRequestPipeline:
@@ -23,9 +27,13 @@ def create_default_pipeline() -> CognitiveRequestPipeline:
             [Capability("analysis"), Capability("evaluation")],
         )
     )
-    selector = AgentSelectorAdapter(
+    fallback_selector = AgentSelectorAdapter(
         registry=registry,
         matcher=CapabilityMatcher(),
+    )
+    selector = HybridCapabilitySelector(
+        ops_selector=OpsCapabilitySelectorAdapter(),
+        fallback_selector=fallback_selector,
     )
     return CognitiveRequestPipeline(capability_selector=selector)
 
