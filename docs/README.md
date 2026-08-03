@@ -226,3 +226,5 @@ License to be defined.
 Built with the vision of creating a new paradigm for autonomous intelligence.
 
 **Aegis Labs**
+
+- [Cryptographic signing and attestation](release/CRYPTOGRAPHIC_SIGNING_AND_ATTESTATION.md)

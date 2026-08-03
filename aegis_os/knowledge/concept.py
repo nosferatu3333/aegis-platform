@@ -9,11 +9,6 @@ class Concept:
 
         self.category = category
 
-
     def __repr__(self):
 
-        return (
-            f"Concept("
-            f"name={self.name}, "
-            f"category={self.category})"
-        )
+        return f"Concept(name={self.name}, category={self.category})"

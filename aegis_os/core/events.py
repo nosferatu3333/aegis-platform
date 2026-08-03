@@ -12,10 +12,7 @@ class Event:
         self.timestamp = datetime.now()
 
     def __repr__(self):
-        return (
-            f"Event(type={self.event_type}, "
-            f"time={self.timestamp})"
-        )
+        return f"Event(type={self.event_type}, time={self.timestamp})"
 
 
 class EventBus:
@@ -31,9 +28,7 @@ class EventBus:
     def publish(self, event):
         self.events.append(event)
 
-        print(
-            f"Event published: {event.event_type}"
-        )
+        print(f"Event published: {event.event_type}")
 
     def history(self):
         return self.events

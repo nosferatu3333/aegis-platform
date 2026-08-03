@@ -105,7 +105,6 @@ def test_package_import_does_not_populate_a_catalog():
     import aegis_os.resources as resources
 
     assert not any(
-        isinstance(value, ResourceCatalog)
-        for value in vars(resources).values()
+        isinstance(value, ResourceCatalog) for value in vars(resources).values()
     )
     assert ResourceCatalog().list_descriptors() == ()

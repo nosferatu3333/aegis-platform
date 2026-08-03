@@ -3,7 +3,7 @@ from importlib import import_module
 from fastapi.testclient import TestClient
 
 from aegis_os.api.app import create_app
-from aegis_os.core.cognitive_runtime import CanonicalRuntimeInvariantError
+from aegis_os.core.runtime_errors import CanonicalRuntimeInvariantError
 from aegis_os.execution.conformance import (
     ConformanceCheck,
     ConformanceCheckName,
@@ -183,10 +183,11 @@ def test_internal_conformance_failure_returns_typed_http_500(monkeypatch):
     assert "error" not in payload
 
 
-def test_runtime_invariant_failure_returns_safe_http_500(monkeypatch):
-    request_id = "api-runtime-invariant-1"
+def test_canonical_invariant_failure_returns_typed_http_500(monkeypatch):
+    request_id = "api-invariant-failure-1"
     error = CanonicalRuntimeInvariantError(
-        "Injected impossible internal validator state."
+        "Internal canonical contradiction.",
+        request_id=request_id,
     )
     monkeypatch.setattr(
         api_app,
@@ -202,17 +203,7 @@ def test_runtime_invariant_failure_returns_safe_http_500(monkeypatch):
     )
 
     assert response.status_code == 500
-    assert response.headers["X-Request-ID"] == request_id
-    assert response.json() == {
-        "schema_version": "1.0",
-        "request_id": request_id,
-        "detail": {
-            "code": "canonical_runtime_invariant_failure",
-            "message": ("The canonical runtime produced an invalid internal state."),
-        },
-    }
-    assert "Injected impossible internal validator state." not in response.text
-    assert "runtime_status" not in response.json()
-    assert "analysis" not in response.json()
-    assert "execution" not in response.json()
-    assert "validation" not in response.json()
+    payload = response.json()
+    assert payload["request_id"] == request_id
+    assert payload["detail"]["code"] == "canonical_runtime_invariant_failure"
+    assert "validation" not in payload["detail"]

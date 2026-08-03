@@ -11,24 +11,14 @@ class BaseAgent:
 
         self.state = "initialized"
 
-
     def start(self):
 
         self.state = "active"
 
-
     def execute(self, task):
 
-        raise NotImplementedError(
-            "Agent must implement execute method"
-        )
-
+        raise NotImplementedError("Agent must implement execute method")
 
     def __repr__(self):
 
-        return (
-            f"Agent("
-            f"name={self.name}, "
-            f"role={self.role}, "
-            f"state={self.state})"
-        )
+        return f"Agent(name={self.name}, role={self.role}, state={self.state})"

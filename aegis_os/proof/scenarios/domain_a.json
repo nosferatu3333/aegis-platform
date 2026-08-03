@@ -1,0 +1,126 @@
+﻿{
+  "schema_version": "1.0",
+  "suite_version": "1.0",
+  "release_version": "1.7.0-rc1",
+  "domain": "A",
+  "domain_title": "Request interpretation and capability routing",
+  "declared_boundary": {
+    "execution_mode": "deterministic governed simulation",
+    "real_world_execution_claimed": false,
+    "production_readiness_claimed": false
+  },
+  "scenarios": [
+    {
+      "scenario_id": "AEGIS-RC1-S01",
+      "title": "Analysis-only mission",
+      "description": "Prove that AEGIS can interpret and plan a mission without executing it.",
+      "mission": "Analyze the implementation requirements for adding a repository health endpoint. Produce a bounded plan but do not execute any change.",
+      "execution_requested": false,
+      "required_dependency_state": "platform pipeline available",
+      "expected_semantic_outcome": "REVIEW READY",
+      "expected_canonical_fields": [
+        "status",
+        "intent",
+        "capability",
+        "workflow",
+        "metadata"
+      ],
+      "prohibited_outcomes": [
+        "execution performed",
+        "external side effect",
+        "false execution evidence"
+      ],
+      "evidence_requirements": [
+        "pipeline result",
+        "workflow",
+        "capability selection",
+        "execution flags"
+      ],
+      "execution_method": "canonical Platform request pipeline"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S02",
+      "title": "Positive live OPS capability match",
+      "description": "Prove that the live OPS adapter returns a positive capability match.",
+      "mission": "Build an AI software feature iteratively, validating each increment before continuing.",
+      "execution_requested": false,
+      "required_dependency_state": "live AEGIS OPS available",
+      "expected_semantic_outcome": "POSITIVE OPS MATCH",
+      "expected_canonical_fields": [
+        "capability",
+        "score",
+        "reasons",
+        "source",
+        "source_path"
+      ],
+      "prohibited_outcomes": [
+        "fallback reported as live OPS",
+        "unknown capability",
+        "zero-score selection"
+      ],
+      "evidence_requirements": [
+        "capability ID",
+        "capability version",
+        "score",
+        "matched evidence",
+        "OPS source path",
+        "workflow"
+      ],
+      "execution_method": "live OpsCapabilitySelectorAdapter"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S03",
+      "title": "Competing capability selection",
+      "description": "Prove production selector ranking with controlled in-memory capabilities because the live OPS registry currently contains only one capability.",
+      "mission": "Inspect a software task, create an implementation plan, run validation, and prepare evidence for review.",
+      "execution_requested": false,
+      "required_dependency_state": "production OPS selector importable",
+      "expected_semantic_outcome": "HIGHEST-RANKED VALID CAPABILITY SELECTED",
+      "expected_canonical_fields": [
+        "candidate rankings",
+        "scores",
+        "matched terms",
+        "selected capability"
+      ],
+      "prohibited_outcomes": [
+        "production OPS definitions modified",
+        "hard-coded ranking result",
+        "non-production selector used"
+      ],
+      "evidence_requirements": [
+        "two valid candidates",
+        "ordered scores",
+        "selected capability",
+        "selector class",
+        "controlled-fixture disclosure"
+      ],
+      "execution_method": "production CapabilitySelector with controlled in-memory capability fixture"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S04",
+      "title": "No positive capability match",
+      "description": "Prove that an unrelated mission does not produce a false positive live OPS match.",
+      "mission": "Design a weekly meal plan for a tropical bird sanctuary.",
+      "execution_requested": false,
+      "required_dependency_state": "live AEGIS OPS available",
+      "expected_semantic_outcome": "NO SUITABLE CAPABILITY",
+      "expected_canonical_fields": [
+        "live OPS result",
+        "pipeline status",
+        "failure or fallback metadata",
+        "execution flags"
+      ],
+      "prohibited_outcomes": [
+        "irrelevant positive OPS match",
+        "execution performed",
+        "false capability-source claim"
+      ],
+      "evidence_requirements": [
+        "null live OPS match",
+        "structurally valid pipeline result",
+        "canonical fallback or failure status"
+      ],
+      "execution_method": "live OPS adapter plus canonical Platform pipeline"
+    }
+  ]
+}

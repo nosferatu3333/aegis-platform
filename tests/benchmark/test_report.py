@@ -16,9 +16,7 @@ def test_json_and_markdown_reports_are_generated(workspace_tmp):
         workspace_tmp / "report.md",
     )
 
-    assert json.loads(json_path.read_text(encoding="utf-8"))[
-        "overall_score"
-    ] == 0.0
+    assert json.loads(json_path.read_text(encoding="utf-8"))["overall_score"] == 0.0
     markdown = markdown_path.read_text(encoding="utf-8")
     assert "# AEGIS Benchmark Suite v0.1" in markdown
     assert "## Category breakdown" in markdown

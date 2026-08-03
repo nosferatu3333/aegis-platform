@@ -5,6 +5,7 @@ from enum import StrEnum
 from typing import Any
 
 from aegis_os.cognition.orchestrator import CognitiveOrchestrator
+from aegis_os.core.runtime_errors import CanonicalRuntimeInvariantError
 from aegis_os.execution.adapter import build_execution_request
 from aegis_os.execution.conformance import (
     ConformanceContractError,
@@ -31,13 +32,6 @@ TERMINAL_EXECUTION_STATUSES = frozenset(
         ExecutionStatus.CANCELLED,
     }
 )
-
-
-class CanonicalRuntimeInvariantError(RuntimeError):
-    """Raised when the server produces an invalid canonical runtime state."""
-
-    error_code = "canonical_runtime_invariant_failure"
-    public_message = "The canonical runtime produced an invalid internal state."
 
 
 class CanonicalRuntimeStatus(StrEnum):
@@ -341,19 +335,23 @@ class CognitiveRuntime:
                 )
             except ConformanceContractError as error:
                 raise CanonicalRuntimeInvariantError(
-                    "Conformance validator produced an invalid result contract."
+                    "Conformance validator produced an invalid result contract.",
+                    request_id=request.request_id,
                 ) from error
             if not isinstance(validation, ExecutionConformanceResult):
                 raise CanonicalRuntimeInvariantError(
-                    "Conformance validator returned an unsupported result."
+                    "Conformance validator returned an unsupported result.",
+                    request_id=request.request_id,
                 )
             if validation.request_id != request.request_id:
                 raise CanonicalRuntimeInvariantError(
-                    "Validation request_id must match the runtime request."
+                    "Validation request_id must match the runtime request.",
+                    request_id=request.request_id,
                 )
             if validation.operation_outcome is not receipt.status:
                 raise CanonicalRuntimeInvariantError(
-                    "Validation outcome must match the execution receipt."
+                    "Validation outcome must match the execution receipt.",
+                    request_id=request.request_id,
                 )
         return CanonicalRuntimeResult(
             request_id=request.request_id,

@@ -1,5 +1,5 @@
-from aegis_os.agents.base_agent import BaseAgent
 from aegis_os.agents.agent_profile import AgentProfile
+from aegis_os.agents.base_agent import BaseAgent
 
 
 class ExecutionAgent(BaseAgent):
@@ -9,27 +9,14 @@ class ExecutionAgent(BaseAgent):
 
     def __init__(self):
 
-        super().__init__(
-            name="Execution Agent",
-            role="Task Execution"
-        )
-
+        super().__init__(name="Execution Agent", role="Task Execution")
 
         self.profile = AgentProfile(
-            self.name,
-            [
-                "execution",
-                "action",
-                "operations",
-                "implementation"
-            ]
+            self.name, ["execution", "action", "operations", "implementation"]
         )
-
 
     def execute(self, task):
 
         self.start()
 
-        return (
-            f"Execution completed for: {task}"
-        )
+        return f"Execution completed for: {task}"

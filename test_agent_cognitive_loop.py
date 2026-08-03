@@ -2,9 +2,9 @@
 
 import contextlib
 import io
+import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
-import unittest
 
 from aegis_os.cognition.orchestrator import CognitiveOrchestrator
 from aegis_os.memory.memory_manager import MemoryManager
@@ -13,19 +13,11 @@ from aegis_os.memory.memory_manager import MemoryManager
 class CognitiveOrchestratorTests(unittest.TestCase):
     def test_orchestrator_exposes_all_placeholder_boundaries(self):
         with TemporaryDirectory() as directory:
-            memory = MemoryManager(
-                state_path=str(
-                    Path(directory) / "aegis_state.json"
-                )
-            )
-            aegis = CognitiveOrchestrator(
-                memory_manager=memory
-            )
+            memory = MemoryManager(state_path=str(Path(directory) / "aegis_state.json"))
+            aegis = CognitiveOrchestrator(memory_manager=memory)
 
             with contextlib.redirect_stdout(io.StringIO()):
-                result = aegis.process(
-                    "Develop autonomous intelligence"
-                )
+                result = aegis.process("Develop autonomous intelligence")
 
         self.assertEqual(
             result["decision"].score_basis,

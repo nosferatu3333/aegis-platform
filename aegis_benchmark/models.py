@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-
 BENCHMARK_VERSION = "0.1"
 
 
@@ -20,11 +19,7 @@ class BenchmarkExpectation:
     workflow_order_valid: bool | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
-            key: value
-            for key, value in asdict(self).items()
-            if value is not None
-        }
+        return {key: value for key, value in asdict(self).items() if value is not None}
 
 
 @dataclass
@@ -92,9 +87,7 @@ class BenchmarkResult:
             "category": self.category,
             "passed": self.passed,
             "score": self.score,
-            "criteria": [
-                criterion.to_dict() for criterion in self.criteria
-            ],
+            "criteria": [criterion.to_dict() for criterion in self.criteria],
             "actual": self.actual.to_dict() if self.actual else None,
         }
 
@@ -114,9 +107,7 @@ class BenchmarkRunSummary:
     analysis_status_accuracy: float
     execution_accuracy: float
     simulation_compliance_accuracy: float
-    category_breakdown: dict[str, dict[str, Any]] = field(
-        default_factory=dict
-    )
+    category_breakdown: dict[str, dict[str, Any]] = field(default_factory=dict)
     results: list[BenchmarkResult] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:

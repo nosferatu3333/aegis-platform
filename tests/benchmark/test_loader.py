@@ -29,10 +29,7 @@ def test_loads_valid_file_and_skips_disabled_cases(workspace_tmp):
     source = workspace_tmp / "cases.json"
     source.write_text(
         json.dumps(
-            {
-                "cases": payload("enabled")["cases"]
-                + payload("disabled", False)["cases"]
-            }
+            {"cases": payload("enabled")["cases"] + payload("disabled", False)["cases"]}
         ),
         encoding="utf-8",
     )

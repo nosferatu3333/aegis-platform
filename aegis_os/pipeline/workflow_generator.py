@@ -92,15 +92,19 @@ class WorkflowGenerator:
             ).strip()
 
             description = str(
-                raw_step.get("description")
-                or raw_step.get("instruction")
-                or title
+                raw_step.get("description") or raw_step.get("instruction") or title
             ).strip()
 
             return title, description
 
-        title = getattr(raw_step, "title", None)
-        description = getattr(raw_step, "description", None)
+        title = (
+            getattr(raw_step, "title", None)
+            or getattr(raw_step, "action", None)
+        )
+        description = (
+            getattr(raw_step, "description", None)
+            or getattr(raw_step, "expected_result", None)
+        )
 
         return (
             str(title or f"Workflow step {index}").strip(),

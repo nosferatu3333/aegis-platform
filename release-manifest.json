@@ -1,0 +1,37 @@
+{
+  "acceptance": "python scripts/release_acceptance.py",
+  "attestation": "Ed25519 detached provenance v1",
+  "core_compatibility": ">=0.3.0,<0.4.0",
+  "distribution": {
+    "checksums": "SHA256SUMS",
+    "format": "zip",
+    "manifest": "DISTRIBUTION_MANIFEST.json",
+    "reproducible": true,
+    "requires_clean_worktree": true
+  },
+  "entrypoints": {
+    "diagnostics": "python -m aegis_os doctor",
+    "operator_posix": "scripts/operator.sh",
+    "operator_trial": "python -m aegis_os operator-trial --output artifacts/operator-trial-report.json",
+    "operator_windows": "scripts/operator.ps1",
+    "package": "python scripts/build_distribution.py",
+    "readiness": "python -m aegis_os ready",
+    "release_candidate": "python scripts/build_release_candidate.py --private-key <private.pem> --public-key <public.pem>",
+    "serve": "python -m aegis_os serve",
+    "validation": "python scripts/validate.py",
+    "verify_package": "python scripts/build_distribution.py --verify <bundle.zip>"
+  },
+  "execution_mode": "deterministic simulation only",
+  "platform_version": "1.7.0",
+  "python": ">=3.11",
+  "real_world_effects_verified": false,
+  "release": "AEGIS Platform MVP",
+  "release_status": "external-mvp-release-candidate",
+  "release_tag": "v1.7.0-rc1",
+  "schema_versions": {
+    "execution": "1.0",
+    "pipeline": "1.0",
+    "runtime": "1.0"
+  },
+  "validation": "python scripts/validate.py"
+}

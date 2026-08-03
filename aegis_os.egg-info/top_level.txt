@@ -1,7 +1,0 @@
-aegis_os
-backend
-docs
-env
-frontend
-infraestructure
-tests

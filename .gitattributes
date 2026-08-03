@@ -1,0 +1,9 @@
+* text=auto eol=lf
+
+# Windows-native command files retain CRLF.
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Shell scripts must remain executable on POSIX systems.
+*.sh text eol=lf

@@ -77,13 +77,10 @@ def _parse_case(raw: Any, source: Path) -> BenchmarkCase:
     unknown = sorted(set(raw["expected"]) - allowed_expectations)
     if unknown:
         raise BenchmarkLoadError(
-            f"Malformed case {raw['id']}: unknown expectations "
-            f"{', '.join(unknown)}."
+            f"Malformed case {raw['id']}: unknown expectations {', '.join(unknown)}."
         )
     tags = raw.get("tags", [])
-    if not isinstance(tags, list) or not all(
-        isinstance(tag, str) for tag in tags
-    ):
+    if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):
         raise BenchmarkLoadError(f"Malformed case {raw['id']}: invalid tags.")
     enabled = raw.get("enabled", True)
     if not isinstance(enabled, bool):
@@ -97,9 +94,8 @@ def _parse_case(raw: Any, source: Path) -> BenchmarkCase:
         raise BenchmarkLoadError(
             f"Malformed expectations for case {raw['id']}: {error}"
         ) from error
-    if (
-        expectation.required_capabilities is not None
-        and not isinstance(expectation.required_capabilities, list)
+    if expectation.required_capabilities is not None and not isinstance(
+        expectation.required_capabilities, list
     ):
         raise BenchmarkLoadError(
             f"Malformed case {raw['id']}: required_capabilities must be a list."

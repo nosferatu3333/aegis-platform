@@ -89,10 +89,11 @@ class ExecutionReceipt:
     failed_steps: int = 0
     logs: list[str] = field(default_factory=list)
     simulated: bool = True
+    metadata: dict[str, Any] = field(default_factory=dict)
     schema_version: str = EXECUTION_SCHEMA_VERSION
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload = {
             "request_id": self.request_id,
             "mission": self.mission,
             "selected_agent": self.selected_agent,
@@ -107,3 +108,4 @@ class ExecutionReceipt:
             "simulated": self.simulated,
             "schema_version": self.schema_version,
         }
+        return payload

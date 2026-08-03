@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -95,9 +95,7 @@ def test_descriptor_copies_nested_metadata_and_serializes_safely(
     serialized = descriptor.to_dict()
     serialized["metadata"]["nested"]["values"].append(4)
 
-    assert descriptor.to_dict()["metadata"] == {
-        "nested": {"values": [1, 2]}
-    }
+    assert descriptor.to_dict()["metadata"] == {"nested": {"values": [1, 2]}}
     assert json.loads(json.dumps(descriptor.to_dict()))["schema_version"] == (
         RESOURCE_SCHEMA_VERSION
     )
@@ -131,15 +129,13 @@ def test_descriptor_requires_consistent_state(descriptor_factory):
     with pytest.raises(ResourceValidationError):
         ResourceDescriptor(
             identity=base.identity,
-            state=ResourceState(
-                status=ResourceLifecycleStatus.UNAVAILABLE
-            ),
+            state=ResourceState(status=ResourceLifecycleStatus.UNAVAILABLE),
         )
 
 
 def test_resource_state_requires_timezone_and_valid_range():
     naive = datetime(2026, 1, 1)
-    now = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    now = datetime(2026, 1, 1, tzinfo=UTC)
 
     with pytest.raises(ResourceValidationError):
         ResourceState(

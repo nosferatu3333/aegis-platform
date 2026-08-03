@@ -4,6 +4,7 @@ from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any
 
+from aegis_core.contracts import BoundedPlan
 
 SCHEMA_VERSION = "1.0"
 
@@ -101,6 +102,7 @@ class CognitiveRequestResult:
     workflow: list[WorkflowStep] = field(default_factory=list)
     status: PipelineStatus = PipelineStatus.READY
     metadata: dict[str, Any] = field(default_factory=dict)
+    canonical_plan: BoundedPlan | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -111,4 +113,9 @@ class CognitiveRequestResult:
             "workflow": [step.to_dict() for step in self.workflow],
             "status": self.status.value,
             "metadata": self.metadata,
+            "canonical_plan": (
+                self.canonical_plan.to_dict()
+                if self.canonical_plan is not None
+                else None
+            ),
         }

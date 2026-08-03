@@ -107,26 +107,10 @@ Conformance status and operation outcome are independent. A controlled
 execution failure can therefore return operation outcome `failed` with
 conformance status `passed`.
 
-### Normal conformance failure
-
-Failed conformance remains a valid canonical result with runtime status
-`conformance_failed`; it is not raised as an exception. The result retains the
-analysis, execution receipt, individual checks, evidence, operation outcome,
-and correlated request identity. The execution receipt outcome remains
-independent from the conformance outcome. The API returns this complete
-canonical evidence as a structured HTTP 500 response.
-
-### Runtime invariant failure
-
-A runtime invariant failure means the server produced or encountered an
-impossible canonical or validator contract state. In this case, an ordinary
-canonical conformance result cannot be trusted or constructed. The runtime
-uses the dedicated `CanonicalRuntimeInvariantError` classification, and the
-API returns HTTP 500 with a stable error code and safe description.
-
-This classification is not a client-input or readiness failure, ordinary
-execution failure, or normal failed-conformance result. It carries no
-`conformance_failed` payload because no valid canonical result exists.
+Failed conformance is represented by `RuntimeConformanceError`, a typed
+internal exception that retains the complete failed
+`ExecutionConformanceResult`. A contradictory canonical envelope raises
+`CanonicalRuntimeInvariantError`.
 
 ## Receipt and audit evidence
 
@@ -172,15 +156,8 @@ API failure classification is:
 | Invalid request body or blank task | 422 | Request-validation detail |
 | Analysis not ready for execution | 422 | Existing analysis-rejection detail |
 | Faithfully represented execution failure | 200 | Execution `failed`, conformance `passed` |
-| Failed execution conformance | 500 | Structured canonical result with `conformance_failed`, receipt, and validation evidence |
-| Internal canonical runtime invariant failure | 500 | Stable internal error code and safe description; no canonical conformance payload |
-
-The HTTP 500 mapping identifies a server-side conformance failure without
-discarding the canonical result. It does not reinterpret the failure as invalid
-client input. A separate HTTP 500 contract classifies impossible internal
-runtime states without presenting them as valid conformance results or exposing
-internal details. Execution remains synchronous, in-memory, and simulated; no
-external execution is introduced.
+| Failed execution conformance | 500 | `execution_conformance_failure` with validation |
+| Canonical runtime contradiction | 500 | `canonical_runtime_invariant_failure` |
 
 ## API compatibility decision
 

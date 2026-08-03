@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "suite_version": "1.0",
+  "release_version": "1.7.0-rc1",
+  "domain": "E",
+  "domain_title": "Operational resilience",
+  "declared_boundary": {
+    "selection_mode": "live OPS with bounded Platform fallback",
+    "automatic_retry_present": false,
+    "timeout_policy_present": false,
+    "circuit_breaker_present": false,
+    "real_world_execution_claimed": false,
+    "production_readiness_claimed": false
+  },
+  "scenarios": [
+    {
+      "scenario_id": "AEGIS-RC1-S17",
+      "title": "OPS unavailable",
+      "description": "The live OPS adapter exposes a typed unavailable diagnostic, while the hybrid selector may use the declared bounded Platform fallback without claiming a live OPS selection.",
+      "expected_canonical_outcome": "bounded_fallback"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S18",
+      "title": "Malformed capability input",
+      "description": "Malformed external capability content is rejected at the live OPS loading boundary and cannot enter registry, selection, planning, or execution.",
+      "expected_canonical_outcome": "malformed_capability_rejected"
+    }
+  ]
+}

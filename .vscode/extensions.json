@@ -1,0 +1,24 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+    "github.vscode-pull-request-github",
+    "github.vscode-github-actions",
+    "eamodio.gitlens",
+    "humao.rest-client",
+    "42crunch.vscode-openapi",
+    "mtxr.sqltools",
+    "ms-azuretools.vscode-containers",
+    "ms-vscode-remote.vscode-remote-extensionpack",
+    "davidanson.vscode-markdownlint",
+    "hediet.vscode-drawio",
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "sonarsource.sonarlint-vscode",
+    "ms-vscode.hexeditor",
+    "editorconfig.editorconfig",
+    "openai.chatgpt"
+  ]
+}

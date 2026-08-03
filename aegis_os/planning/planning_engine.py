@@ -11,14 +11,8 @@ class PlanningEngine:
 
         self.decomposer = TaskDecomposer()
 
-
     def create_plan(self, goal):
 
-        tasks = self.decomposer.decompose(
-            goal
-        )
+        tasks = self.decomposer.decompose(goal)
 
-        return Plan(
-            goal,
-            tasks
-        )
+        return Plan(goal, tasks)

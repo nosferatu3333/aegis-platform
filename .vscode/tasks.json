@@ -1,0 +1,76 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Ruff Check",
+      "type": "shell",
+      "command": "python -m ruff check .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Ruff Format Check",
+      "type": "shell",
+      "command": "python -m ruff format --check .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Pytest",
+      "type": "shell",
+      "command": "python -m pytest",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Pre-commit All Files",
+      "type": "shell",
+      "command": "python -m pre_commit run --all-files",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Full Local Validation",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Ruff Check",
+        "Ruff Format Check",
+        "Pytest",
+        "Pre-commit All Files"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "API: Start (reload)",
+      "type": "shell",
+      "command": "python -m uvicorn aegis_os.api.app:app --reload",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}

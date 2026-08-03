@@ -1,3 +1,27 @@
+## 1.6.0 — WO-MVP-021
+
+- Refined the dashboard into a seven-stage operator demonstration.
+- Added curated demo scenarios and live OPS status visibility.
+- Exposed capability source and selection rationale.
+- Added explicit authority-policy controls and human-readable governed verdicts.
+- Preserved deterministic simulation and canonical runtime boundaries.
+
+## 1.5.0 — WO-MVP-020
+
+- Added live AEGIS OPS capability loading, selection evidence, and bounded fallback behavior.
+
+
+## 1.4.0 — WO-MVP-019
+
+- Remediate fresh-machine dependency installation for cryptographic attestation.
+- Add dependency consistency validation with `pip check`.
+- Preserve partial JSON failure evidence from the Windows operator-trial wrapper.
+- Support temporary trust-policy initialization from a supplied public key.
+
+## 1.1.0
+
+Signing-key lifecycle, rotation, revocation, and trust-policy enforcement.
+
 # AEGIS release history
 
 This history is derived from annotated tags, peeled commit IDs, commit dates,
@@ -76,3 +100,26 @@ and changed files in the repository.
 Detailed release pages: [v0.1.0](v0.1.0.md), [v0.2.0](v0.2.0.md),
 [v0.3.0](v0.3.0.md), and [v0.4.0](v0.4.0.md). See the
 [roadmap](../roadmap/ROADMAP.md) for proposed future milestones.
+
+## 2026-08-02 — v0.7.0 governed runtime MVP
+
+- **Tag:** `v0.7.0`
+- **Purpose:** formally release the governed runtime MVP after reproducible installation, diagnostics, automated validation, and governed scenario acceptance.
+- **Major capabilities:** canonical selection intake, bounded planning, authority gating, deterministic simulated execution, conformance, evidence reconciliation, result trace, API, and dashboard demonstration surface.
+- **Acceptance:** diagnostics ready; repository validation passing; full suite passing; analyzed, completed, paused, denied, and failed scenarios verified.
+- **Known boundary:** execution remains deterministic simulation only; no real-world effect is verified.
+
+## 0.9.0 — Distribution integrity
+
+- Added deterministic source distribution packaging.
+- Added embedded source provenance and per-file SHA-256 inventory.
+- Added offline bundle verification and tamper detection.
+- Required a clean Git worktree before packaging.
+
+## 1.0.0
+
+Cryptographic distribution signing and provenance attestation.
+
+## 1.3.0 — WO-MVP-018
+
+Fresh-machine operator-trial and deployment-rehearsal tooling with auditable pass/fail evidence.

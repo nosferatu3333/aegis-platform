@@ -1,8 +1,8 @@
 # CONSTITUTION OF AEGIS
 
-**Document:** Constitution  
-**Version:** 1.0.0  
-**Status:** Ratified  
+**Document:** Constitution
+**Version:** 1.0.0
+**Status:** Ratified
 **Authority:** Highest Governing Document
 
 ---
@@ -264,9 +264,9 @@ This Constitution stands as the enduring foundation of the AEGIS project and the
 
 # ARCHITECTURE OF AEGIS
 
-**Document:** Architecture  
-**Version:** 1.0.0  
-**Status:** Canonical Architecture  
+**Document:** Architecture
+**Version:** 1.0.0
+**Status:** Canonical Architecture
 **Authority:** Subordinate to the Constitution
 
 ---
@@ -389,9 +389,9 @@ Subsequent sections define each layer independently.
 
 # COGNITIVE MODEL OF AEGIS
 
-**Document:** Cognitive Model  
-**Version:** 1.0.0  
-**Status:** Canonical Cognitive Model  
+**Document:** Cognitive Model
+**Version:** 1.0.0
+**Status:** Canonical Cognitive Model
 **Authority:** Subordinate to the Architecture
 
 ---
@@ -577,9 +577,9 @@ No cognitive capability shall violate these principles regardless of its technic
 
 # CAPABILITY FRAMEWORK OF AEGIS
 
-**Document:** Capability Framework  
-**Version:** 1.0.0  
-**Status:** Canonical Framework  
+**Document:** Capability Framework
+**Version:** 1.0.0
+**Status:** Canonical Framework
 **Authority:** Subordinate to the Cognitive Model
 
 ---

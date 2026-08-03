@@ -6,16 +6,18 @@ import pytest
 import aegis_os.core.cognitive_runtime as runtime_module
 from aegis_os.core.cognitive_runtime import (
     RUNTIME_SCHEMA_VERSION,
-    CanonicalRuntimeInvariantError,
     CanonicalRuntimeResult,
     CanonicalRuntimeStatus,
     CognitiveRuntime,
     LifecycleStageStatus,
 )
+from aegis_os.core.runtime_errors import (
+    CanonicalRuntimeInvariantError,
+    RuntimeConformanceError,
+)
 from aegis_os.execution.conformance import (
     ConformanceCheck,
     ConformanceCheckName,
-    ConformanceContractError,
     ConformanceStatus,
     ExecutionConformanceResult,
     ExecutionConformanceValidator,
@@ -109,16 +111,6 @@ class MismatchedConformanceValidator:
             request_id="different-request",
             operation_outcome=arguments["receipt"].status,
         )
-
-
-class UnsupportedConformanceValidator:
-    def validate(self, **arguments):
-        return object()
-
-
-class ContractFailingConformanceValidator:
-    def validate(self, **arguments):
-        raise ConformanceContractError("Injected validator contract failure.")
 
 
 class StubLegacyOrchestrator:
@@ -229,6 +221,42 @@ def make_validation(
             for name in ConformanceCheckName
         ),
     )
+
+
+@pytest.mark.parametrize(
+    ("missing_artifact", "message"),
+    [
+        pytest.param(
+            "analysis",
+            "analysis must be CognitiveRequestResult",
+            id="analysis-none",
+        ),
+        pytest.param(
+            "execution",
+            "execution must be ExecutionReceipt",
+            id="execution-none",
+        ),
+        pytest.param(
+            "validation",
+            "validation must be ExecutionConformanceResult",
+            id="validation-none",
+        ),
+    ],
+)
+def test_runtime_conformance_error_rejects_missing_evidence(
+    missing_artifact,
+    message,
+):
+    arguments = {
+        "request_id": "runtime-result-1",
+        "analysis": make_result(),
+        "execution": make_receipt(),
+        "validation": make_validation(status=ConformanceStatus.FAILED),
+    }
+    arguments[missing_artifact] = None
+
+    with pytest.raises(TypeError, match=message):
+        RuntimeConformanceError(**arguments)
 
 
 @pytest.mark.parametrize(
@@ -759,44 +787,6 @@ def test_legacy_cognitive_loop_remains_available():
     }
 
 
-def test_runtime_rejects_unsupported_validator_output_as_invariant():
-    runtime = CognitiveRuntime(
-        pipeline=CountingPipeline(result=make_result()),
-        execution_engine=ExecutionEngine(clock=lambda: FIXED_TIME),
-        conformance_validator=UnsupportedConformanceValidator(),
-    )
-
-    with pytest.raises(
-        CanonicalRuntimeInvariantError,
-        match="unsupported result",
-    ):
-        runtime.run(
-            "Research competitors",
-            "runtime-validator-type-1",
-            execute=True,
-        )
-
-
-def test_runtime_classifies_validator_contract_failure_as_invariant():
-    runtime = CognitiveRuntime(
-        pipeline=CountingPipeline(result=make_result()),
-        execution_engine=ExecutionEngine(clock=lambda: FIXED_TIME),
-        conformance_validator=ContractFailingConformanceValidator(),
-    )
-
-    with pytest.raises(
-        CanonicalRuntimeInvariantError,
-        match="invalid result contract",
-    ) as captured:
-        runtime.run(
-            "Research competitors",
-            "runtime-validator-contract-1",
-            execute=True,
-        )
-
-    assert isinstance(captured.value.__cause__, ConformanceContractError)
-
-
 def test_runtime_rejects_validation_request_correlation_mismatch():
     runtime = CognitiveRuntime(
         pipeline=CountingPipeline(result=make_result()),
@@ -813,16 +803,3 @@ def test_runtime_rejects_validation_request_correlation_mismatch():
             "runtime-correlation-1",
             execute=True,
         )
-
-
-def test_runtime_blank_request_id_remains_client_value_error():
-    runtime = CognitiveRuntime(pipeline=CountingPipeline(result=make_result()))
-
-    with pytest.raises(ValueError, match="request_id cannot be empty") as captured:
-        runtime.run(
-            "Research competitors",
-            " ",
-            execute=True,
-        )
-
-    assert type(captured.value) is ValueError

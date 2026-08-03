@@ -11,34 +11,19 @@ class DecisionEngine:
 
         self.evaluator = Evaluator()
 
-
     def decide(self, options):
 
         decisions = []
 
-
         for option in options:
+            decision = Decision(option)
 
-            decision = Decision(
-                option
-            )
+            self.evaluator.evaluate(decision)
 
-            self.evaluator.evaluate(
-                decision
-            )
+            decisions.append(decision)
 
-            decisions.append(
-                decision
-            )
-
-
-        selected = max(
-            decisions,
-            key=lambda x: x.score
-        )
-
+        selected = max(decisions, key=lambda x: x.score)
 
         selected.select()
-
 
         return selected

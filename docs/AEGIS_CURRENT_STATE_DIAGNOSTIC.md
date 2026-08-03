@@ -1,7 +1,7 @@
 # AEGIS Current State Diagnostic
 
-Audit date: 2026-07-26  
-Repository: `C:\Users\Woolis Shop\Projects\aegis-platform`  
+Audit date: 2026-07-26
+Repository: `C:\Users\Woolis Shop\Projects\aegis-platform`
 Audited revision: `fe4321e` (`platform-phase-2.5-stabilized`) plus the current working-tree changes
 
 ## Executive Summary

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "suite_version": "1.0",
+  "release_version": "1.7.0-rc1",
+  "domain": "D",
+  "domain_title": "Execution, evidence, and reconciliation",
+  "declared_boundary": {
+    "execution_mode": "deterministic governed simulation",
+    "automatic_post_reconciliation_integrity_verifier_present": false,
+    "external_effect_verification_present": false,
+    "real_world_execution_claimed": false,
+    "production_readiness_claimed": false
+  },
+  "scenarios": [
+    {
+      "scenario_id": "AEGIS-RC1-S12",
+      "title": "Successful execution and valid evidence",
+      "description": "A conformant completed simulated execution reconciles into verified evidence, a complete result, and trace lineage.",
+      "expected_canonical_outcome": "complete"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S13",
+      "title": "Failed execution and failure evidence",
+      "description": "A controlled simulated failure remains failed through conformance and reconciliation and preserves skipped work.",
+      "expected_canonical_outcome": "failed"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S14",
+      "title": "Invalid execution result rejection",
+      "description": "A non-terminal receipt is rejected by the production reconciliation boundary and cannot emit a reconciled result.",
+      "expected_canonical_outcome": "invalid_receipt_rejected"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S15",
+      "title": "Evidence mismatch detection",
+      "description": "A controlled post-reconciliation receipt mutation changes the canonical digest and no longer matches stored provenance.",
+      "expected_canonical_outcome": "evidence_hash_mismatch_detected"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S16",
+      "title": "Complete trace continuity",
+      "description": "The reconciliation trace links request to plan, plan to result, and result to every evidence record.",
+      "expected_canonical_outcome": "complete_trace"
+    }
+  ]
+}

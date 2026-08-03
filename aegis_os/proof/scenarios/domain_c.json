@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "suite_version": "1.0",
+  "release_version": "1.7.0-rc1",
+  "domain": "C",
+  "domain_title": "Authority and governance",
+  "declared_boundary": {
+    "execution_mode": "deterministic governed simulation",
+    "authority_is_inferred": false,
+    "real_world_execution_claimed": false,
+    "production_readiness_claimed": false
+  },
+  "scenarios": [
+    {
+      "scenario_id": "AEGIS-RC1-S08",
+      "title": "Authorized execution",
+      "description": "A valid full-scope grant authorizes every bounded step and permits simulated governed execution.",
+      "expected_canonical_outcome": "completed"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S09",
+      "title": "Missing approval",
+      "description": "Approval-required work without an effective grant pauses before execution.",
+      "expected_canonical_outcome": "paused"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S10",
+      "title": "Explicit authority denial",
+      "description": "An overlapping explicit denial overrides an otherwise valid grant and blocks execution.",
+      "expected_canonical_outcome": "denied"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S11",
+      "title": "Authority scope mismatch",
+      "description": "A grant lacking required step scope pauses before execution.",
+      "expected_canonical_outcome": "paused"
+    }
+  ]
+}

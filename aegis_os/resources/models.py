@@ -1,16 +1,16 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Mapping
+from typing import Any
 
 from aegis_os.resources.errors import (
     ResourceErrorCode,
     ResourceValidationError,
 )
-
 
 RESOURCE_SCHEMA_VERSION = "1.0"
 IDENTIFIER_PATTERN = re.compile(r"^[A-Za-z0-9._:-]{1,128}$")
@@ -158,9 +158,7 @@ def _unique_identifiers(
 
 
 def _validate_timestamp(value: datetime | None, field_name: str) -> None:
-    if value is not None and (
-        not isinstance(value, datetime) or value.tzinfo is None
-    ):
+    if value is not None and (not isinstance(value, datetime) or value.tzinfo is None):
         raise ResourceValidationError(
             ResourceErrorCode.INVALID_DESCRIPTOR,
             f"{field_name} must be timezone-aware.",
@@ -297,9 +295,7 @@ class ResourceIdentity:
     owner_id: str | None = None
     authority_id: str | None = None
     tenant_id: str | None = None
-    lifecycle_status: ResourceLifecycleStatus = (
-        ResourceLifecycleStatus.DECLARED
-    )
+    lifecycle_status: ResourceLifecycleStatus = ResourceLifecycleStatus.DECLARED
     schema_version: str = RESOURCE_SCHEMA_VERSION
 
     def __post_init__(self) -> None:
@@ -423,9 +419,7 @@ class ResourceState:
     content_hash: str | None = None
     observed_at: datetime | None = None
     valid_until: datetime | None = None
-    verification_status: VerificationStatus = (
-        VerificationStatus.UNVERIFIED
-    )
+    verification_status: VerificationStatus = VerificationStatus.UNVERIFIED
     source_reference: str | None = None
 
     def __post_init__(self) -> None:
@@ -461,9 +455,7 @@ class ResourceRelation:
     source: ResourceReference
     target: ResourceReference
     provenance_reference: str | None = None
-    verification_status: VerificationStatus = (
-        VerificationStatus.UNVERIFIED
-    )
+    verification_status: VerificationStatus = VerificationStatus.UNVERIFIED
 
     def __post_init__(self) -> None:
         validate_identifier(

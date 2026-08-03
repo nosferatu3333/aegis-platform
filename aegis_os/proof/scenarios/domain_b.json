@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "suite_version": "1.0",
+  "release_version": "1.7.0-rc1",
+  "domain": "B",
+  "domain_title": "Planning and execution boundaries",
+  "declared_boundary": {
+    "execution_mode": "deterministic governed simulation",
+    "semantic_scope_classifier_present": false,
+    "live_stop_request_hook_present": false,
+    "real_world_execution_claimed": false,
+    "production_readiness_claimed": false
+  },
+  "scenarios": [
+    {
+      "scenario_id": "AEGIS-RC1-S05",
+      "title": "Bounded plan generation",
+      "description": "Prove that a canonical selection becomes a finite, explicit, non-executing bounded plan.",
+      "mission": "Prepare a controlled workflow for adding one validated API response field.",
+      "execution_requested": false,
+      "required_dependency_state": "canonical planning contracts available",
+      "expected_semantic_outcome": "BOUNDED PLAN READY",
+      "expected_canonical_fields": [
+        "request_id",
+        "selection_id",
+        "objective",
+        "steps",
+        "expected_evidence",
+        "limitations",
+        "consequence_class"
+      ],
+      "prohibited_outcomes": [
+        "empty plan",
+        "unbounded workflow",
+        "missing completion criteria",
+        "execution performed"
+      ],
+      "evidence_requirements": [
+        "canonical plan",
+        "contiguous step sequence",
+        "completion criteria",
+        "planning-only limitation"
+      ],
+      "execution_method": "CognitiveRequestPipeline.process_selection with BoundedPlanningAdapter"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S06",
+      "title": "Out-of-scope expansion rejection",
+      "description": "Prove that attempted workflow expansion beyond the declared plan-size boundary is rejected before an expanded canonical plan is emitted.",
+      "mission": "Update one API response field only.",
+      "execution_requested": false,
+      "required_dependency_state": "PlanningBounds enforcement available",
+      "expected_semantic_outcome": "SCOPE EXPANSION REJECTED",
+      "expected_canonical_fields": [
+        "configured maximum",
+        "accepted baseline plan",
+        "rejected expanded workflow",
+        "planning error"
+      ],
+      "prohibited_outcomes": [
+        "expanded plan accepted",
+        "unrelated authentication action planned",
+        "execution performed"
+      ],
+      "evidence_requirements": [
+        "three-step accepted baseline",
+        "fourth injected unrelated step",
+        "BoundedPlanningAdapterError",
+        "no expanded canonical plan"
+      ],
+      "execution_method": "production BoundedPlanningAdapter with PlanningBounds(max_steps=3)",
+      "known_limitation": "RC1 enforces explicit workflow bounds but does not semantically classify step meaning."
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S07",
+      "title": "Stop-condition cancellation contract",
+      "description": "Prove that activation of a recorded stop condition produces a canonical cancelled receipt with completed work preserved and remaining work skipped.",
+      "mission": "Continue only while the repository baseline remains unchanged.",
+      "execution_requested": true,
+      "required_dependency_state": "canonical cancellation and conformance contracts available",
+      "expected_semantic_outcome": "STOPPED",
+      "expected_canonical_fields": [
+        "stop_conditions",
+        "cancelled receipt",
+        "completed prefix",
+        "skipped suffix",
+        "conformance result"
+      ],
+      "prohibited_outcomes": [
+        "remaining steps completed",
+        "false completed verdict",
+        "failure step fabricated"
+      ],
+      "evidence_requirements": [
+        "recorded stop condition",
+        "controlled trigger",
+        "cancelled receipt",
+        "passed conformance",
+        "preserved completed evidence"
+      ],
+      "execution_method": "controlled canonical cancellation fixture using production execution and conformance contracts",
+      "known_limitation": "RC1 has no live runtime stop-request hook; this scenario proves the terminal cancellation contract."
+    }
+  ]
+}

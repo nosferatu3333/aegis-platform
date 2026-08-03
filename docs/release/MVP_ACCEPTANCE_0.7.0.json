@@ -1,0 +1,65 @@
+{
+  "accepted": true,
+  "execution_mode": "deterministic simulation only",
+  "platform_version": "0.7.0",
+  "real_world_effects_verified": false,
+  "release": "AEGIS Platform MVP 0.7.0",
+  "scenario_count": 5,
+  "scenarios": [
+    {
+      "actual_status": "analyzed",
+      "authority_ready": null,
+      "execution_performed": false,
+      "execution_requested": false,
+      "expected_status": "analyzed",
+      "passed": true,
+      "reconciliation_outcome": null,
+      "scenario": "analyzed",
+      "simulated": true
+    },
+    {
+      "actual_status": "completed",
+      "authority_ready": true,
+      "execution_performed": true,
+      "execution_requested": true,
+      "expected_status": "completed",
+      "passed": true,
+      "reconciliation_outcome": "complete",
+      "scenario": "completed",
+      "simulated": true
+    },
+    {
+      "actual_status": "paused",
+      "authority_ready": false,
+      "execution_performed": false,
+      "execution_requested": true,
+      "expected_status": "paused",
+      "passed": true,
+      "reconciliation_outcome": null,
+      "scenario": "paused",
+      "simulated": true
+    },
+    {
+      "actual_status": "denied",
+      "authority_ready": false,
+      "execution_performed": false,
+      "execution_requested": true,
+      "expected_status": "denied",
+      "passed": true,
+      "reconciliation_outcome": null,
+      "scenario": "denied",
+      "simulated": true
+    },
+    {
+      "actual_status": "failed",
+      "authority_ready": true,
+      "execution_performed": true,
+      "execution_requested": true,
+      "expected_status": "failed",
+      "passed": true,
+      "reconciliation_outcome": "failed",
+      "scenario": "failed",
+      "simulated": true
+    }
+  ]
+}

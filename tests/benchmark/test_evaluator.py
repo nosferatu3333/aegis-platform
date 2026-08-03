@@ -67,9 +67,7 @@ def test_required_capability_comparison_is_order_independent():
         "research",
         "easy",
         "Research systems",
-        BenchmarkExpectation(
-            required_capabilities=["research", "analysis"]
-        ),
+        BenchmarkExpectation(required_capabilities=["research", "analysis"]),
     )
 
     assert BenchmarkEvaluator().evaluate(case, actual).passed is True

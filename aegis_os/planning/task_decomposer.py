@@ -6,8 +6,4 @@ class TaskDecomposer:
 
     def decompose(self, goal):
 
-        return [
-            f"Research: {goal}",
-            f"Analyze: {goal}",
-            f"Execute: {goal}"
-        ]
+        return [f"Research: {goal}", f"Analyze: {goal}", f"Execute: {goal}"]

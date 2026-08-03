@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "suite_version": "1.0",
+  "release_version": "1.7.0-rc1",
+  "domain": "F",
+  "domain_title": "Release integrity and trust",
+  "declared_boundary": {
+    "verification_only": true,
+    "private_signing_material_accessed": false,
+    "signing_operation_performed": false,
+    "release_build_performed": false,
+    "official_release_modified": false,
+    "temporary_tampering_isolated_to_ephemeral_copy": true,
+    "real_world_effects_verified": false,
+    "production_readiness_claimed": false,
+    "absence_of_undiscovered_defects_claimed": false
+  },
+  "expected_release_profile": {
+    "outer_sha256": "fff6e6f75baf562700c11379e7a20f700d5b10005a70e18a95c8ab11d429d8d4",
+    "bundle_sha256": "2ce5e2fae6b4189729b936374551ec7c5c6685b89d8b27510c52dfac907c7f9f",
+    "bundle_size": 439703,
+    "platform_version": "1.7.0",
+    "source_branch": "feat/wo-mvp-022-external-release-candidate",
+    "source_commit": "314279b0b410b5b8a936bd139c64b35d136f70c8",
+    "source_tree": "80d7beee20d38f60a5bbe74a67eb6c7ffa0559b9",
+    "signer_key_id": "ed25519:a4e70afdfd0036a07890d5ecd0528643",
+    "verified_files": 262
+  },
+  "scenarios": [
+    {
+      "scenario_id": "AEGIS-RC1-S19",
+      "title": "Valid signed RC1 distribution",
+      "description": "The preserved official RC1 package is verified through the production distribution, detached-attestation, trust-policy, transparency-ledger, and composed trust-report contracts using published public material only.",
+      "expected_canonical_outcome": "signed_rc1_verified"
+    },
+    {
+      "scenario_id": "AEGIS-RC1-S20",
+      "title": "Tampered distribution rejection",
+      "description": "A controlled temporary copy of the signed inner distribution is modified and must be rejected by the production integrity, attestation, trust-policy, and composed trust-report verifiers without modifying the official release.",
+      "expected_canonical_outcome": "tampered_distribution_rejected"
+    }
+  ]
+}

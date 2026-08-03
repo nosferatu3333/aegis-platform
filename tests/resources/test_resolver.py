@@ -82,9 +82,7 @@ def test_preference_resolves_semantic_ambiguity(
 
     result = resolve(
         catalog,
-        requirement(
-            preferred_environment_id="environment:preferred"
-        ),
+        requirement(preferred_environment_id="environment:preferred"),
     )
 
     assert result.status is ResourceResolutionStatus.RESOLVED
@@ -105,10 +103,10 @@ def test_multiple_cardinalities_select_all_in_canonical_order(
     )
 
     assert result.status is ResourceResolutionStatus.RESOLVED
-    assert [
-        reference.resource_id
-        for reference in result.selected_references
-    ] == ["resource:alpha", "resource:beta"]
+    assert [reference.resource_id for reference in result.selected_references] == [
+        "resource:alpha",
+        "resource:beta",
+    ]
     assert result.reason_codes == (ReasonCode.MULTIPLE_RESOLVED,)
 
 
@@ -186,9 +184,7 @@ def test_unavailable_states_are_distinct_from_absent(
 ):
     catalog = ResourceCatalog(
         resource_types=(dataset_type,),
-        descriptors=(
-            descriptor_factory("resource:state", status=status),
-        ),
+        descriptors=(descriptor_factory("resource:state", status=status),),
     )
 
     result = resolve(catalog)
@@ -235,17 +231,13 @@ def test_unknown_type_and_capability_are_unsupported(
     )
     unknown_capability = resolve(
         catalog,
-        requirement(
-            required_capability_ids=("capability:unknown",)
-        ),
+        requirement(required_capability_ids=("capability:unknown",)),
     )
 
     assert unknown_type.status is ResourceResolutionStatus.UNSUPPORTED
     assert unknown_type.reason_codes == (ReasonCode.TYPE_UNSUPPORTED,)
     assert unknown_capability.status is ResourceResolutionStatus.UNSUPPORTED
-    assert unknown_capability.reason_codes == (
-        ReasonCode.CAPABILITY_UNSUPPORTED,
-    )
+    assert unknown_capability.reason_codes == (ReasonCode.CAPABILITY_UNSUPPORTED,)
 
 
 def test_required_constraint_and_namespace_filtering(
@@ -294,9 +286,7 @@ def test_unsupported_required_constraint_returns_result(catalog):
     )
 
     assert result.status is ResourceResolutionStatus.UNSUPPORTED
-    assert result.reason_codes == (
-        ReasonCode.REQUIRED_CONSTRAINT_UNSUPPORTED,
-    )
+    assert result.reason_codes == (ReasonCode.REQUIRED_CONSTRAINT_UNSUPPORTED,)
 
 
 def test_unsupported_preference_is_recorded_but_not_scored(

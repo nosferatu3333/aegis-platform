@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from typing import Any, Protocol
 
+from aegis_core.contracts import CapabilitySelection
+
+from aegis_os.pipeline.bounded_planning_adapter import BoundedPlanningAdapter
 from aegis_os.pipeline.intent_analyzer import IntentAnalyzer
 from aegis_os.pipeline.models import (
     CapabilityMatch,
@@ -14,8 +17,7 @@ from aegis_os.pipeline.workflow_generator import WorkflowGenerator
 class CapabilitySelectorProtocol(Protocol):
     """Minimal selector interface required by the pipeline."""
 
-    def select(self, task: str, **context: Any) -> Any:
-        ...
+    def select(self, task: str, **context: Any) -> Any: ...
 
 
 class CognitiveRequestPipeline:
@@ -31,11 +33,13 @@ class CognitiveRequestPipeline:
         capability_selector: CapabilitySelectorProtocol,
         intent_analyzer: IntentAnalyzer | None = None,
         workflow_generator: WorkflowGenerator | None = None,
+        bounded_planning_adapter: BoundedPlanningAdapter | None = None,
     ) -> None:
         self.capability_selector = capability_selector
         self.intent_analyzer = intent_analyzer or IntentAnalyzer()
-        self.workflow_generator = (
-            workflow_generator or WorkflowGenerator()
+        self.workflow_generator = workflow_generator or WorkflowGenerator()
+        self.bounded_planning_adapter = (
+            bounded_planning_adapter or BoundedPlanningAdapter()
         )
 
     def process_task(self, task: str) -> CognitiveRequestResult:
@@ -66,8 +70,7 @@ class CognitiveRequestPipeline:
                     "workflow_steps": 0,
                     "failure_code": "no_capability_match",
                     "failure_reason": (
-                        "No registered profile matched the "
-                        "required capabilities."
+                        "No registered profile matched the required capabilities."
                     ),
                 },
             )
@@ -103,9 +106,63 @@ class CognitiveRequestPipeline:
             workflow=workflow,
             status=PipelineStatus.READY,
             metadata={
-                "pipeline_version": "0.1.0",
+                "pipeline_version": "0.3.0",
                 "workflow_steps": len(workflow),
+                "capability_source": self._read_value(
+                    selection, "source", default="platform-internal"
+                ),
+                "capability_source_path": self._read_value(
+                    selection, "source_path", default=None
+                ),
             },
+        )
+
+    def process_selection(
+        self,
+        *,
+        task: str,
+        interpretation_id: str,
+        selection: CapabilitySelection,
+        workflow_definition: Any = None,
+    ) -> CognitiveRequestResult:
+        """Create a bounded, non-executing plan from a canonical selection."""
+
+        clean_task = task.strip()
+        if not clean_task:
+            raise ValueError("Task cannot be empty.")
+
+        intent = self.intent_analyzer.analyze(clean_task)
+        capability = CapabilityMatch(
+            capability_id=selection.capability_id,
+            name=selection.capability_id,
+            confidence=1.0,
+            score=1.0,
+            reasons=(selection.rationale,),
+        )
+        workflow = self.workflow_generator.generate(
+            capability_id=selection.capability_id,
+            workflow_definition=workflow_definition,
+        )
+        canonical_plan = self.bounded_planning_adapter.build(
+            selection=selection,
+            interpretation_id=interpretation_id,
+            objective=clean_task,
+            workflow=workflow,
+            intent=intent,
+        )
+
+        return CognitiveRequestResult(
+            task=clean_task,
+            intent=intent,
+            capability=capability,
+            workflow=workflow,
+            status=PipelineStatus.READY,
+            metadata={
+                "pipeline_version": "0.2.0",
+                "workflow_steps": len(workflow),
+                "planning_boundary": "bounded_non_executing",
+            },
+            canonical_plan=canonical_plan,
         )
 
     def _build_capability_match(
