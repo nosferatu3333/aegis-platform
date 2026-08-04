@@ -24,9 +24,27 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Check out pinned AEGIS Core dependency
+
+        uses: actions/checkout@v7
+
+        with:
+
+          repository: nosferatu3333/aegis-core
+
+          ref: 1196aea3384466f713832ee28775459db4779790
+
+          path: aegis-core
+
+          ssh-key: ${{ secrets.AEGIS_CORE_DEPLOY_KEY }}
+
+          persist-credentials: false
+
+
       - name: Install project and validation dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m pip install -e "./aegis-core"
           python -m pip install -e ".[test]"
 
       - name: Run repository validation
