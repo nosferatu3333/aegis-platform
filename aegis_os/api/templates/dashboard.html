@@ -137,6 +137,37 @@
         <pre id="validation-json"></pre>
       </details>
     </section>
+
+    <section id="operator-lifecycle" class="result-panel operator-lifecycle">
+      <div class="section-heading">
+        <div>
+          <p class="step-label">Operator lifecycle</p>
+          <h2>Start, verify, and stop AEGIS safely</h2>
+        </div>
+      </div>
+      <div class="result-grid">
+        <article class="card">
+          <p class="field-label">Start</p>
+          <p class="primary-value"><code id="operator-start-command">python -m aegis_os serve</code></p>
+          <p>Run this command from the canonical platform environment.</p>
+        </article>
+        <article class="card">
+          <p class="field-label">Verify</p>
+          <p class="primary-value"><code>GET /health</code></p>
+          <p>Begin operator work only after the platform reports ready.</p>
+        </article>
+        <article class="card">
+          <p class="field-label">Stop</p>
+          <p class="primary-value"><code id="operator-stop-command">Ctrl+C</code></p>
+          <p>Stop the foreground server from its terminal and wait for the process to exit.</p>
+        </article>
+      </div>
+      <p id="operator-shutdown-guidance" class="section-note">
+        AEGIS does not expose a remote shutdown endpoint. Shutdown remains an
+        explicit operator-controlled terminal action.
+      </p>
+    </section>
+
   </main>
 </body>
 </html>

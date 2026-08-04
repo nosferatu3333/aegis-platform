@@ -75,3 +75,54 @@ def test_dashboard_script_exposes_governed_runtime_demo_separately():
     assert 'governedButton.dataset.endpoint' in response.text
     assert "authority_requirement: authorityRequirement.value" in response.text
     assert '"#reconciliation-outcome"' in response.text
+
+def test_dashboard_documents_operator_lifecycle() -> None:
+    from pathlib import Path
+
+    repository_root = Path(__file__).resolve().parents[2]
+    dashboard = (
+        repository_root
+        / "aegis_os"
+        / "api"
+        / "templates"
+        / "dashboard.html"
+    ).read_text(encoding="utf-8")
+
+    assert 'id="operator-lifecycle"' in dashboard
+    assert 'id="operator-start-command"' in dashboard
+    assert "python -m aegis_os serve" in dashboard
+    assert 'id="operator-stop-command"' in dashboard
+    assert "Ctrl+C" in dashboard
+    assert 'id="operator-shutdown-guidance"' in dashboard
+    assert "does not expose a remote shutdown endpoint" in dashboard
+
+
+def test_dashboard_governed_request_preserves_required_contract() -> None:
+    from pathlib import Path
+
+    repository_root = Path(__file__).resolve().parents[2]
+    script = (
+        repository_root
+        / "aegis_os"
+        / "api"
+        / "static"
+        / "dashboard.js"
+    ).read_text(encoding="utf-8")
+
+    required_fragments = (
+        "function buildGovernedRequest()",
+        "interpretation_id:",
+        "request_id:",
+        "capability_id:",
+        "capability_version:",
+        "rationale:",
+        "selection_id:",
+        "selected_agent:",
+        "authority_requirement:",
+    )
+
+    for fragment in required_fragments:
+        assert fragment in script
+
+    assert '"#authority-outcome"' in script
+    assert '"#verdict-reason"' in script
