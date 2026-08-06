@@ -12,6 +12,9 @@ jobs:
     name: Python 3.11 validation
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      AEGIS_OPS_PATH: ${{ github.workspace }}/aegis-ops
+      AEGIS_RC1_RELEASE_PATH: ${{ github.workspace }}/release-assets/aegis-platform-1.7.0-rc1-official.zip
 
     steps:
       - name: Check out repository
@@ -40,6 +43,14 @@ jobs:
 
           persist-credentials: false
 
+      - name: Check out pinned AEGIS OPS dependency
+        uses: actions/checkout@v7
+        with:
+          repository: nosferatu3333/aegis-ops
+          ref: 2b702573f618184f31bca391d9a77588e7be9da3
+          path: aegis-ops
+          ssh-key: ${{ secrets.AEGIS_OPS_DEPLOY_KEY }}
+          persist-credentials: false
 
       - name: Install project and validation dependencies
         run: |
@@ -48,6 +59,34 @@ jobs:
           rm -rf aegis-core
           python -m pip install -e ".[test]"
 
+      - name: Verify pinned AEGIS OPS dependency
+        shell: bash
+        run: |
+          ops_head="$(git -C "$AEGIS_OPS_PATH" rev-parse HEAD)"
+          printf 'OPS HEAD: %s\n' "$ops_head"
+          test "$ops_head" = "2b702573f618184f31bca391d9a77588e7be9da3"
+          test -d "$AEGIS_OPS_PATH/aegis_os/capabilities/modules"
+          test -f "$AEGIS_OPS_PATH/aegis_os/capabilities/modules/iterative_ai_development.yaml"
+
+      - name: Download official RC1 release
+        shell: bash
+        run: |
+          mkdir -p "$(dirname "$AEGIS_RC1_RELEASE_PATH")"
+          curl --fail --location --retry 3 --retry-delay 2 --retry-all-errors \
+            --output "$AEGIS_RC1_RELEASE_PATH" \
+            "https://github.com/nosferatu3333/aegis-platform/releases/download/v1.7.0-rc1/aegis-platform-1.7.0-rc1-official.zip"
+
+      - name: Verify official RC1 release
+        shell: bash
+        run: |
+          test "$(basename "$AEGIS_RC1_RELEASE_PATH")" = "aegis-platform-1.7.0-rc1-official.zip"
+          test -f "$AEGIS_RC1_RELEASE_PATH"
+          observed_size="$(stat -c %s "$AEGIS_RC1_RELEASE_PATH")"
+          observed_sha256="$(sha256sum "$AEGIS_RC1_RELEASE_PATH" | cut -d ' ' -f 1)"
+          printf 'RC1 size: %s\n' "$observed_size"
+          printf 'RC1 SHA-256: %s\n' "$observed_sha256"
+          test "$observed_size" = "413950"
+          test "$observed_sha256" = "fff6e6f75baf562700c11379e7a20f700d5b10005a70e18a95c8ab11d429d8d4"
       - name: Run repository validation
         run: |
           python -m pip check
