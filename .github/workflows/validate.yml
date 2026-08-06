@@ -49,7 +49,12 @@ jobs:
           python -m pip install -e ".[test]"
 
       - name: Run repository validation
-        run: python scripts/validate.py --allow-external-interpreter
-
+        run: |
+          python -m pip check
+          python -m aegis_os doctor
+          python scripts/release_acceptance.py
+          python -m pre_commit validate-config
+          python -m pytest -q -p no:cacheprovider
+          git diff --check HEAD --
       - name: Confirm validation did not change tracked files
         run: git diff --exit-code
