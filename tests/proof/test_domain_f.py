@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -12,6 +13,8 @@ import pytest
 from aegis_os.proof.domain_f import (
     OVERALL_PASS_VERDICT,
     SINGLE_PASS_VERDICT,
+    DomainFProofError,
+    _safe_extract,
     load_domain_f_definition,
     run_domain_f,
 )
@@ -45,6 +48,62 @@ def _result(directory: Path, scenario_id: str) -> dict:
         (directory / f"{scenario_id}.json").read_text(encoding="utf-8")
     )
 
+
+
+def test_safe_extract_normalizes_windows_paths_and_rejects_traversal(
+    tmp_path: Path,
+):
+    archive_path = tmp_path / "windows-paths.zip"
+
+    with zipfile.ZipFile(
+        archive_path,
+        "w",
+        compression=zipfile.ZIP_DEFLATED,
+    ) as archive:
+        archive.writestr(
+            r"candidate\RELEASE_CANDIDATE_MANIFEST.json",
+            "{}",
+        )
+
+    output = tmp_path / "normalized"
+    output.mkdir()
+
+    _safe_extract(archive_path, output)
+
+    manifest = (
+        output
+        / "candidate"
+        / "RELEASE_CANDIDATE_MANIFEST.json"
+    )
+
+    assert manifest.is_file()
+    assert manifest.read_text(encoding="utf-8") == "{}"
+
+    unsafe_archive = tmp_path / "unsafe.zip"
+
+    with zipfile.ZipFile(
+        unsafe_archive,
+        "w",
+        compression=zipfile.ZIP_DEFLATED,
+    ) as archive:
+        archive.writestr(
+            r"..\outside.txt",
+            "must-not-escape",
+        )
+
+    unsafe_output = tmp_path / "unsafe-output"
+    unsafe_output.mkdir()
+
+    with pytest.raises(
+        DomainFProofError,
+        match="Unsafe release archive path",
+    ):
+        _safe_extract(
+            unsafe_archive,
+            unsafe_output,
+        )
+
+    assert not (tmp_path / "outside.txt").exists()
 
 def test_definitions_are_complete_unique_and_bound_to_exact_rc1():
     payload = load_domain_f_definition()

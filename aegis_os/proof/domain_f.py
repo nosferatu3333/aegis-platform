@@ -30,7 +30,7 @@ import tempfile
 import zipfile
 from dataclasses import asdict, is_dataclass
 from datetime import UTC, datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Iterable
 
 SUITE_VERSION = "1.0"
@@ -206,17 +206,44 @@ def _finish(result: dict[str, Any]) -> dict[str, Any]:
 
 
 def _safe_extract(archive_path: Path, output_directory: Path) -> None:
+    """Extract an RC archive using platform-neutral member paths."""
     output_root = output_directory.resolve()
+
     with zipfile.ZipFile(archive_path) as archive:
         for member in archive.infolist():
-            destination = (output_root / member.filename).resolve()
+            normalized_name = member.filename.replace("\\", "/")
+            archive_path = PurePosixPath(normalized_name)
+
+            if (
+                not archive_path.parts
+                or archive_path.is_absolute()
+                or ".." in archive_path.parts
+                or ":" in archive_path.parts[0]
+            ):
+                raise DomainFProofError(
+                    f"Unsafe release archive path: {member.filename}"
+                )
+
+            destination = (
+                output_root / Path(*archive_path.parts)
+            ).resolve()
+
             try:
                 destination.relative_to(output_root)
             except ValueError as error:
                 raise DomainFProofError(
                     f"Unsafe release archive path: {member.filename}"
                 ) from error
-        archive.extractall(output_root)
+
+            if member.is_dir() or normalized_name.endswith("/"):
+                destination.mkdir(parents=True, exist_ok=True)
+                continue
+
+            destination.parent.mkdir(parents=True, exist_ok=True)
+
+            with archive.open(member, "r") as source:
+                with destination.open("wb") as target:
+                    shutil.copyfileobj(source, target)
 
 
 def _unique_named_file(root: Path, name: str) -> Path:
