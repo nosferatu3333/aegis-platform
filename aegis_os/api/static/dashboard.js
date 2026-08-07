@@ -14,6 +14,54 @@ const governedPanel = document.querySelector("#governed-panel");
 const authorityRequirement = document.querySelector("#authority-requirement");
 const scenarioList = document.querySelector("#scenario-list");
 let latestAnalysis = null;
+let selectedScenario = null;
+
+const canonicalScenarioPresentation = {
+  "analysis-only-research": {
+    code: "DEMO-A",
+    title: "Research / Analysis",
+    boundary: "Analysis only · no execution requested",
+    allowDirectSimulation: false,
+    governedExecute: false,
+  },
+  "live-ops-development": {
+    code: "DEMO-B",
+    title: "Bounded Simulation",
+    boundary: "Deterministic simulated execution · no external effect",
+    allowDirectSimulation: true,
+    governedExecute: true,
+  },
+  "approval-gated-change": {
+    code: "DEMO-C",
+    title: "Approval Gate",
+    boundary: "Approval required · must pause without an explicit grant",
+    allowDirectSimulation: false,
+    governedExecute: true,
+  },
+};
+
+function applyScenarioPolicy(scenario) {
+  const presentation = scenario
+    ? canonicalScenarioPresentation[scenario.id]
+    : null;
+
+  analyzeButton.disabled = false;
+  governedButton.disabled = false;
+  executeButton.disabled = Boolean(
+    presentation && !presentation.allowDirectSimulation,
+  );
+
+  const boundary = document.querySelector("#active-demo-boundary");
+
+  if (!presentation) {
+    boundary.textContent =
+      "Custom mission — execution controls follow the explicit operator choices.";
+    return;
+  }
+
+  boundary.textContent =
+    `${presentation.code} · ${presentation.title} — ${presentation.boundary}`;
+}
 
 function setText(selector, value, fallback = "Not available") {
   const element = document.querySelector(selector);
@@ -241,7 +289,9 @@ function buildGovernedRequest() {
     workflow_definition: (latestAnalysis.workflow || []).map(
       (step) => step.description || step.title,
     ),
-    execute: true,
+    execute: selectedScenario
+      ? canonicalScenarioPresentation[selectedScenario.id].governedExecute
+      : true,
   };
 }
 
@@ -294,15 +344,37 @@ async function loadDemoSurface() {
     const status = await statusResponse.json();
     scenarioList.replaceChildren();
     (scenarios.scenarios || []).forEach((scenario) => {
+      const presentation = canonicalScenarioPresentation[scenario.id];
+
+      if (!presentation) {
+        return;
+      }
+
       const button = document.createElement("button");
       button.type = "button";
       button.className = "scenario-button";
-      button.innerHTML = `<strong>${scenario.title}</strong><span>${scenario.expected_outcome}</span>`;
+      button.dataset.demoId = presentation.code;
+      button.setAttribute(
+        "aria-label",
+        `${presentation.code}: ${presentation.title}`,
+      );
+
+      const title = document.createElement("strong");
+      title.textContent = `${presentation.code} · ${presentation.title}`;
+
+      const boundary = document.createElement("span");
+      boundary.textContent = presentation.boundary;
+
+      button.append(title, boundary);
+
       button.addEventListener("click", () => {
+        selectedScenario = scenario;
         taskInput.value = scenario.task;
         authorityRequirement.value = scenario.authority_requirement;
+        applyScenarioPolicy(scenario);
         taskInput.focus();
       });
+
       scenarioList.append(button);
     });
     const ops = status.ops || {};
@@ -326,6 +398,13 @@ function describeError(payload, status) {
 
   return `Mission analysis failed with status ${status}.`;
 }
+
+taskInput.addEventListener("input", () => {
+  if (selectedScenario && taskInput.value !== selectedScenario.task) {
+    selectedScenario = null;
+    applyScenarioPolicy(null);
+  }
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -360,6 +439,7 @@ form.addEventListener("submit", async (event) => {
   } finally {
     analyzeButton.disabled = false;
     buttonLabel.textContent = "Analyze Mission";
+    applyScenarioPolicy(selectedScenario);
   }
 });
 
@@ -395,9 +475,8 @@ executeButton.addEventListener("click", async () => {
         : "Unable to simulate execution.";
     errorMessage.hidden = false;
   } finally {
-    executeButton.disabled = false;
-    analyzeButton.disabled = false;
     executeButtonLabel.textContent = "Simulate Execution";
+    applyScenarioPolicy(selectedScenario);
   }
 });
 
@@ -427,10 +506,8 @@ governedButton.addEventListener("click", async () => {
       error instanceof Error ? error.message : "Unable to run governed demo.";
     errorMessage.hidden = false;
   } finally {
-    governedButton.disabled = false;
-    analyzeButton.disabled = false;
-    executeButton.disabled = false;
     governedButtonLabel.textContent = "Run Governed Demo";
+    applyScenarioPolicy(selectedScenario);
   }
 });
 

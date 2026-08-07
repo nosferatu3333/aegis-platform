@@ -126,3 +126,175 @@ def test_dashboard_governed_request_preserves_required_contract() -> None:
 
     assert '"#authority-outcome"' in script
     assert '"#verdict-reason"' in script
+
+def test_dashboard_html_ids_are_unique() -> None:
+    import re
+    from collections import Counter
+    from pathlib import Path
+
+    repository_root = Path(__file__).resolve().parents[2]
+    dashboard = (
+        repository_root
+        / "aegis_os"
+        / "api"
+        / "templates"
+        / "dashboard.html"
+    ).read_text(encoding="utf-8")
+
+    identifiers = re.findall(r'id="([^"]+)"', dashboard)
+    counts = Counter(identifiers)
+    duplicates = {
+        identifier: count
+        for identifier, count in counts.items()
+        if count > 1
+    }
+
+    assert duplicates == {}
+
+
+def test_dashboard_preserves_single_validation_evidence_surface() -> None:
+    from pathlib import Path
+
+    repository_root = Path(__file__).resolve().parents[2]
+    dashboard = (
+        repository_root
+        / "aegis_os"
+        / "api"
+        / "templates"
+        / "dashboard.html"
+    ).read_text(encoding="utf-8")
+
+    required_singletons = (
+        'id="validation-panel"',
+        'id="validation-status"',
+        'id="operation-outcome"',
+        'id="validation-count"',
+        'id="validation-checks"',
+        'id="validation-evidence"',
+        'id="validation-json"',
+    )
+
+    for fragment in required_singletons:
+        assert dashboard.count(fragment) == 1
+
+    assert "06 / Evidence" in dashboard
+    assert "Runtime validation" in dashboard
+    assert "CONFORMANCE ONLY" in dashboard
+    assert "not mission success" in dashboard
+    assert "execution authorization" in dashboard
+
+def test_dashboard_exposes_canonical_demo_contract() -> None:
+    from pathlib import Path
+
+    repository_root = Path(__file__).resolve().parents[2]
+    dashboard = (
+        repository_root
+        / "aegis_os"
+        / "api"
+        / "templates"
+        / "dashboard.html"
+    ).read_text(encoding="utf-8")
+
+    assert 'id="canonical-demo-guide"' in dashboard
+    assert 'id="active-demo-boundary"' in dashboard
+
+    required_demo_labels = (
+        "DEMO-A",
+        "Research / Analysis",
+        "DEMO-B",
+        "Bounded Simulation",
+        "DEMO-C",
+        "Approval Gate",
+    )
+
+    for fragment in required_demo_labels:
+        assert fragment in dashboard
+
+    assert "Capability ≠ authority" in dashboard
+    assert "Plan ≠ approval" in dashboard
+    assert "Simulation ≠ real execution" in dashboard
+    assert "Validation ≠ permission" in dashboard
+
+
+def test_dashboard_script_maps_backend_scenarios_to_canonical_demos() -> None:
+    from pathlib import Path
+
+    repository_root = Path(__file__).resolve().parents[2]
+    script = (
+        repository_root
+        / "aegis_os"
+        / "api"
+        / "static"
+        / "dashboard.js"
+    ).read_text(encoding="utf-8")
+
+    required_mappings = (
+        '"analysis-only-research"',
+        'code: "DEMO-A"',
+        '"live-ops-development"',
+        'code: "DEMO-B"',
+        '"approval-gated-change"',
+        'code: "DEMO-C"',
+    )
+
+    for fragment in required_mappings:
+        assert fragment in script
+
+    assert "canonicalScenarioPresentation" in script
+    assert "applyScenarioPolicy(scenario)" in script
+    assert "button.dataset.demoId = presentation.code" in script
+
+
+def test_canonical_demo_policies_preserve_execution_boundaries() -> None:
+    from pathlib import Path
+
+    repository_root = Path(__file__).resolve().parents[2]
+    script = (
+        repository_root
+        / "aegis_os"
+        / "api"
+        / "static"
+        / "dashboard.js"
+    ).read_text(encoding="utf-8")
+
+    assert 'boundary: "Analysis only · no execution requested"' in script
+    assert "allowDirectSimulation: false" in script
+    assert "governedExecute: false" in script
+
+    assert (
+        'boundary: "Deterministic simulated execution · no external effect"'
+        in script
+    )
+
+    assert (
+        'boundary: "Approval required · must pause without an explicit grant"'
+        in script
+    )
+
+    assert (
+        "canonicalScenarioPresentation[selectedScenario.id].governedExecute"
+        in script
+    )
+
+
+def test_demonstration_baseline_documents_complete_operator_journey() -> None:
+    from pathlib import Path
+
+    repository_root = Path(__file__).resolve().parents[2]
+    document = (
+        repository_root
+        / "docs"
+        / "mvp"
+        / "demonstration-baseline.md"
+    ).read_text(encoding="utf-8")
+
+    for step in range(1, 13):
+        assert f"{step}." in document
+
+    assert "DEMO-A — Research / Analysis" in document
+    assert "DEMO-B — Bounded Simulation" in document
+    assert "DEMO-C — Approval Gate" in document
+    assert "`execute = false`" in document
+    assert "`approval_required`" in document
+    assert "Simulation only." in document
+    assert "does not claim autonomous real-world execution" in document

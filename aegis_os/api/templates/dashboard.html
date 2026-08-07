@@ -36,6 +36,37 @@
 
       <div id="scenario-list" class="scenario-list" aria-label="Demonstration scenarios"></div>
 
+      <aside id="canonical-demo-guide" class="simulation-notice" aria-labelledby="canonical-demo-guide-title">
+        <strong id="canonical-demo-guide-title">Three canonical ways to read AEGIS</strong>
+        <p>
+          The presets demonstrate different governance boundaries. They do not
+          represent three autonomous agents or three different runtimes.
+        </p>
+        <div class="result-grid">
+          <article class="card">
+            <p class="field-label">DEMO-A</p>
+            <h3>Research / Analysis</h3>
+            <p>Interpret, select a capability, propose a sequence, inspect evidence, and reach a governed verdict without requesting execution.</p>
+          </article>
+          <article class="card">
+            <p class="field-label">DEMO-B</p>
+            <h3>Bounded Simulation</h3>
+            <p>Demonstrate the execution lifecycle using deterministic simulation only. No external effect is claimed.</p>
+          </article>
+          <article class="card">
+            <p class="field-label">DEMO-C</p>
+            <h3>Approval Gate</h3>
+            <p>Show that capability and planning do not create authority. The governed runtime must pause when approval is required but absent.</p>
+          </article>
+        </div>
+        <p id="active-demo-boundary" class="section-note">
+          Custom mission — choose a preset to expose its canonical governance boundary.
+        </p>
+        <p class="section-note">
+          Capability ≠ authority · Plan ≠ approval · Simulation ≠ real execution · Validation ≠ permission
+        </p>
+      </aside>
+
       <form id="mission-form" data-endpoint="/analyze-task">
         <label for="mission-task">Mission</label>
         <textarea id="mission-task" name="task" rows="5" required placeholder="Design and validate a bounded AI development workflow with tests and release evidence"></textarea>
@@ -94,49 +125,7 @@
       <details class="raw-panel"><summary>Raw governed runtime result</summary><pre id="governed-json"></pre></details>
     </section>
 
-    <section id="validation-panel" class="result-panel" aria-live="polite" hidden>
-      <div class="section-heading result-heading">
-        <div>
-          <p class="step-label">04 / Execution conformance</p>
-          <h2>Runtime validation</h2>
-        </div>
-        <span id="validation-status" class="status-badge"></span>
-      </div>
 
-      <aside class="simulation-notice">
-        <strong>CONFORMANCE ONLY</strong>
-        Confirms runtime consistency, not mission success, quality evaluation,
-        governance approval, or execution authorization.
-      </aside>
-
-      <div class="result-grid">
-        <article class="card">
-          <p class="field-label">Operation outcome</p>
-          <p id="operation-outcome" class="primary-value"></p>
-        </article>
-
-        <article class="card workflow-card">
-          <div class="workflow-heading">
-            <div>
-              <p class="field-label">Validation checks</p>
-              <h3>Execution conformance</h3>
-            </div>
-            <span id="validation-count" class="workflow-count"></span>
-          </div>
-          <ol id="validation-checks" class="workflow-list"></ol>
-        </article>
-
-        <article class="card card-wide">
-          <p class="field-label">Validation evidence</p>
-          <ul id="validation-evidence"></ul>
-        </article>
-      </div>
-
-      <details class="raw-panel">
-        <summary>Raw validation result</summary>
-        <pre id="validation-json"></pre>
-      </details>
-    </section>
 
     <section id="operator-lifecycle" class="result-panel operator-lifecycle">
       <div class="section-heading">
