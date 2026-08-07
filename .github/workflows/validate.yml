@@ -87,6 +87,84 @@ jobs:
           printf 'RC1 SHA-256: %s\n' "$observed_sha256"
           test "$observed_size" = "413950"
           test "$observed_sha256" = "fff6e6f75baf562700c11379e7a20f700d5b10005a70e18a95c8ab11d429d8d4"
+      - name: Diagnose Domain F proof failure
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import tempfile
+          from pathlib import Path
+
+          from aegis_os.proof.domain_f import run_domain_f
+
+          release = Path(
+              os.environ["AEGIS_RC1_RELEASE_PATH"]
+          ).expanduser().resolve()
+
+          with tempfile.TemporaryDirectory(
+              prefix="aegis-domain-f-ci-diagnostic-"
+          ) as temp:
+              aggregate, directory = run_domain_f(
+                  output_root=Path(temp),
+                  release_zip=release,
+              )
+
+              print("=== DOMAIN F LINUX DIAGNOSTIC ===")
+              print(
+                  "aggregate_verdict="
+                  + str(aggregate.get("overall_domain_verdict"))
+              )
+              print(
+                  "scenarios_executed="
+                  + str(aggregate.get("scenarios_executed"))
+              )
+              print(
+                  "passed="
+                  + str(aggregate.get("passed"))
+              )
+              print(
+                  "failed="
+                  + str(aggregate.get("failed"))
+              )
+              print(
+                  "blocked="
+                  + str(aggregate.get("blocked"))
+              )
+
+              for scenario_id in (
+                  "AEGIS-RC1-S19",
+                  "AEGIS-RC1-S20",
+              ):
+                  result_path = directory / f"{scenario_id}.json"
+
+                  if not result_path.is_file():
+                      print("---")
+                      print(f"scenario_id={scenario_id}")
+                      print("RESULT_FILE_MISSING")
+                      continue
+
+                  payload = json.loads(
+                      result_path.read_text(encoding="utf-8")
+                  )
+
+                  print("---")
+                  print(f"scenario_id={scenario_id}")
+                  print(
+                      "actual_canonical_outcome="
+                      + str(
+                          payload.get(
+                              "actual_canonical_outcome"
+                          )
+                      )
+                  )
+                  print(
+                      "failure_reason="
+                      + str(payload.get("failure_reason"))
+                  )
+
+              print("=== END DOMAIN F LINUX DIAGNOSTIC ===")
+          PY
       - name: Run repository validation
         run: |
           python -m pip check
