@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      AEGIS_OPS_PATH: ${{ github.workspace }}/aegis-ops
+      AEGIS_OPS_PATH: ${{ github.workspace }}/.aegis-deps/aegis-ops
       AEGIS_RC1_RELEASE_PATH: ${{ github.workspace }}/release-assets/aegis-platform-1.7.0-rc1-official.zip
 
     steps:
@@ -48,7 +48,7 @@ jobs:
         with:
           repository: nosferatu3333/aegis-ops
           ref: 2b702573f618184f31bca391d9a77588e7be9da3
-          path: aegis-ops
+          path: .aegis-deps/aegis-ops
           ssh-key: ${{ secrets.AEGIS_OPS_DEPLOY_KEY }}
           persist-credentials: false
 
