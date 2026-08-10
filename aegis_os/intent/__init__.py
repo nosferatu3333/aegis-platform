@@ -10,6 +10,7 @@ from .models import (
     IntentRequest,
     IntentType,
 )
+from .outcome import OutcomeModel, OutcomeModeler
 
 __all__ = [
     "ClarificationAssessment",
@@ -20,4 +21,6 @@ __all__ = [
     "IntentInterpreter",
     "IntentRequest",
     "IntentType",
+    "OutcomeModel",
+    "OutcomeModeler",
 ]
